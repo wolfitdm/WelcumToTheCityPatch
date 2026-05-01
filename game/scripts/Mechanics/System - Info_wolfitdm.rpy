@@ -45,6 +45,10 @@ screen UI_Menu_Options():
                 hover "images/UI/SUBMENU_Option_Contacts.webp"
                 action Jump("UI_Menu_Options_Contacts")
             imagebutton:
+                idle "images/UI/SUBMENU_Option_ContactsX.png"
+                hover "images/UI/SUBMENU_Option_ContactsX.png"
+                action Jump("UI_Menu_Options_Contacts_Redefine")
+            imagebutton:
                 idle "images/UI/SUBMENU_Option_Study.webp"
                 hover "images/UI/SUBMENU_Option_Study.webp"
                 action Jump("UI_Menu_Options_Skill")
@@ -53,8 +57,8 @@ screen UI_Menu_Options():
                 hover "images/UI/SUBMENU_Option_Code.webp"
                 action Jump("inputcheat")
             imagebutton:
-                idle "images/UI/SUBMENU_Option_Code.webp"
-                hover "images/UI/SUBMENU_Option_Code.webp"
+                idle "images/UI/SUBMENU_Option_CodeX.png"
+                hover "images/UI/SUBMENU_Option_CodeX.png"
                 action Jump("wolfitdm_inputcheat")
             imagebutton:
                 idle "images/UI/SUBMENU_Option_KCC.webp"
@@ -76,6 +80,172 @@ screen UI_Menu_Options():
                 idle "images/UI/SUBMENU_Option_BottomSquare IDLE.webp"
                 hover "images/UI/SUBMENU_Option_BottomSquare HOVER.webp"
                 action Jump("show_ui")
+
+screen UI_Menu_Options_Contacts_Redefine():
+    hbox:
+        #xpos 100
+        frame:
+            background None
+            xpadding 0
+            ypadding 0
+            xsize 620
+            ysize 1080
+
+            add AlphaMask(
+                Fixed(
+                    Transform("images/UI/CellphoneBG/"+str(cellbg[a_menu_3])+".webp",
+                        zoom = 0.9 + (cellwz/25),
+                        xalign = (cellwx/100),
+                        yalign = (cellwy/100)),
+                        xysize=(620, 1080)  # Size of the masked area
+                ),
+                "images/UI/CellphoneBG/Menu_Mask_2.webp"
+            )
+
+            add "images/UI/CellphoneBG/Menu_MG_2A.webp"
+
+            if a_menu_1 != "none":
+                image "[a_menu_1!u] STYLE":
+                    xalign 0.5 yalign 0.0 zoom 0.75 xpos 312 ypos 100
+            else:
+                image AlphaMask(
+                Fixed(
+                    Transform("NONE",
+                        xalign = 0.5,
+                        yalign = 0.0,
+                        zoom = 0.47,
+                        xpos = 312,
+                        ypos = 100),
+                        xysize=(620, 1080)
+                ),
+                "images/UI/CellphoneBG/Menu_Mask_2.webp"
+                )
+
+            add "images/UI/CellphoneBG/Menu_MG_1.webp"
+
+            if a_menu_1 != "none":
+                vbox:
+                    spacing 10 xalign 0.5 yalign 0.15
+                    if a_menu_1 in ["wsis", "wmom"]:
+                        label str(getattr(store, f"fname{a_menu_1}") + " [lnamestep]") xalign 0.5
+                    elif a_menu_1 in ["wcou", "wgma", "waun"]:
+                        label str(getattr(store, f"fname{a_menu_1}") + " [lnamerela]") xalign 0.5
+                    else:
+                        label str(getattr(store, f"fname{a_menu_1}") + " " + getattr(store, f"lname{a_menu_1}")) xalign 0.5
+                    hbox:
+                        xalign 0.5
+                        if len(Char_Data[a_menu_1]["achiev"]["wear"]) >= 2:
+                            textbutton "{size=60}◀{/size}" action [SetVariable("a_menu_8", (a_menu_8 - 1) % max(1, len(Char_Data[a_menu_1]["achiev"]["wear"]))), Function(set_wear_var, a_menu_1, a_menu_8)]
+                        else:
+                            textbutton "{size=60}◀{/size}" action None
+                        text "{size=60} Style {/size}"
+                        if len(Char_Data[a_menu_1]["achiev"]["wear"]) >= 2:
+                            textbutton "{size=60}▶{/size}" action [SetVariable("a_menu_8", (a_menu_8 + 1) % max(1, len(Char_Data[a_menu_1]["achiev"]["wear"]))), Function(set_wear_var, a_menu_1, a_menu_8)]
+                        else:
+                            textbutton "{size=60}▶{/size}" action None
+            else:
+                vbox:
+                    spacing 10 xalign 0.5 yalign 0.15
+                    label "Select a Character" xalign 0.5 yalign 0.15
+                    textbutton "{size=40}Style{/size}" action None xalign 0.5
+
+
+            add "images/UI/CellphoneBG/Menu_FG.webp"
+            
+            hbox:
+                xalign 0.5
+                yalign 0.9
+                spacing 50
+                imagebutton:
+                    idle "images/UI/SUBMENU_Option_BottomTriangle IDLE.webp"
+                    hover "images/UI/SUBMENU_Option_BottomTriangle HOVER.webp"
+                    action Jump("UI_Menu_Options_Triangle")
+                imagebutton:
+                    idle "images/UI/SUBMENU_Option_BottomCircle IDLE.webp"
+                    hover "images/UI/SUBMENU_Option_BottomCircle HOVER.webp"
+                    action Jump("show_ui")
+                imagebutton:
+                    idle "images/UI/SUBMENU_Option_BottomSquare IDLE.webp"
+                    hover "images/UI/SUBMENU_Option_BottomSquare HOVER.webp"
+                    action Jump("show_ui")
+
+        frame:
+            xysize(1200, 1080)
+            xpadding 25
+            ypadding 25
+            hbox:
+                spacing 50
+                side ("c l"):
+                    area (0, 0, 200, 1030)
+                    vpgrid id "ScrollOCButton":
+                        draggable True mousewheel True
+                        xoffset 20
+                        spacing 25
+                        cols 1
+                        if a_menu_2 in ["Any", 0]:
+                            if gametimeday >= 2:
+                                imagebutton:
+                                    idle At("images/UI/OC_NONE.webp", ButtonIdle)
+                                    hover At("images/UI/OC_NONE.webp", ButtonHover)
+                                    action [SetVariable("a_menu_1", "none"), SetVariable("a_menu_8", 0)]
+                            imagebutton:
+                                idle At("images/UI/OC_HERO.webp", ButtonIdle)
+                                hover At("images/UI/OC_HERO.webp", ButtonHover)
+                                action [SetVariable("a_menu_1", "hero"), SetVariable("a_menu_8", 0)]
+                        if a_menu_2 in ["Dateable", "Any"]:
+                            imagebutton:
+                                idle At("images/UI/OC_WMOM.webp", ButtonIdle)
+                                hover At("images/UI/OC_WMOM.webp", ButtonHover)
+                                action [SetVariable("a_menu_1", "wmom"), SetVariable("a_menu_8", 0)]
+                            imagebutton:
+                                idle At("images/UI/OC_WSIS.webp", ButtonIdle)
+                                hover At("images/UI/OC_WSIS.webp", ButtonHover)
+                                action [SetVariable("a_menu_1", "wsis"), SetVariable("a_menu_8", 0)]
+                            imagebutton:
+                                idle At("images/UI/OC_WNEI.webp", ButtonIdle)
+                                hover At("images/UI/OC_WNEI.webp", ButtonHover)
+                                action [SetVariable("a_menu_1", "wnei"), SetVariable("a_menu_8", 0)]
+                    vbar value YScrollValue("ScrollOCButton")
+
+                vbox:
+                    xysize(850, 980)
+                    xalign 0.5
+                    yalign 0.0
+                    spacing 50
+
+                    hbox:
+                        spacing 10
+                        xalign 0.5
+                        yalign 0.0
+                        imagebutton:
+                            idle At("images/UI/SUBMENU_Option_Stat.webp", ButtonIdle)
+                            hover At("images/UI/SUBMENU_Option_Stat.webp", ButtonHover)
+                            action SetVariable("a_menu_4", 0)
+                        imagebutton:
+                            idle At("images/UI/SUBMENU_Option_List.webp", ButtonIdle)
+                            hover At("images/UI/SUBMENU_Option_List.webp", ButtonHover)
+                            action SetVariable("a_menu_4", 1)
+                        imagebutton:
+                            idle At("images/UI/SUBMENU_Option_Quest.webp", ButtonIdle)
+                            hover At("images/UI/SUBMENU_Option_Quest.webp", ButtonHover)
+                            action SetVariable("a_menu_4", 2)
+                        if persistent.debug == True or perk_int_obs >= 1:
+                            imagebutton:
+                                idle At("images/UI/QUICK_Time.webp", ButtonIdle)
+                                hover At("images/UI/QUICK_Time.webp", ButtonHover)
+                                action SetVariable("a_menu_4", 3)
+
+
+label UI_Menu_Options_Contacts_Redefine:
+    call gamecheck
+    $ a_menu_1 = "none"
+    $ a_menu_2 = "Any"
+    $ a_menu_3 = 0
+    $ a_menu_4 = 0
+    $ a_menu_8 = 0
+    call hide_ui
+    call screen UI_Menu_Options_Contacts_Redefine
+    jump show_ui
 
 label wolfitdm_inputcheat:
     $ cheatvar = renpy.input("Input a code. Don't know how to use codes? then type [C_Dat]guide[C_Off]", length=12)
