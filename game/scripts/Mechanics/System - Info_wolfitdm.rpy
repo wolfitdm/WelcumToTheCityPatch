@@ -248,7 +248,10 @@ label UI_Menu_Options_Contacts_Redefine:
     jump show_ui
 
 label wolfitdm_inputcheat:
-    $ cheatvar = renpy.input("Input a code. Don't know how to use codes? then type [C_Dat]guide[C_Off]", length=12)
+    $ cheatvar = renpy.input("Input a code. To show all codes, type [C_Dat]show[C_Off] or type nothing and press enter", length=12)
+
+    if cheatvar == "":
+       $ cheatvar = "show"
 
     python:
         givemeall = "givemeall"
