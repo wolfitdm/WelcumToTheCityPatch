@@ -202,42 +202,6 @@ screen UI_Menu_Options_Contacts_Redefine():
                         xoffset 20
                         spacing 25
                         cols 1
-                        if a_menu_2 in ["Any", 0]:
-                            if gametimeday >= 2:
-                                imagebutton:
-                                    idle At("images/UI/OC_NONE.webp", ButtonIdle)
-                                    hover At("images/UI/OC_NONE.webp", ButtonHover)
-                                    action [SetVariable("a_menu_1", "none"), SetVariable("a_menu_8", 0)]
-                            imagebutton:
-                                idle At("images/UI/OC_HERO.webp", ButtonIdle)
-                                hover At("images/UI/OC_HERO.webp", ButtonHover)
-                                action [SetVariable("a_menu_1", "hero"), SetVariable("a_menu_8", 0)]
-                        if a_menu_2 in ["Dateable", "Any"]:
-                            imagebutton:
-                                idle At("images/UI/OC_WMOM.webp", ButtonIdle)
-                                hover At("images/UI/OC_WMOM.webp", ButtonHover)
-                                action [SetVariable("a_menu_1", "wmom"), SetVariable("a_menu_8", 0)]
-                            imagebutton:
-                                idle At("images/UI/OC_WSIS.webp", ButtonIdle)
-                                hover At("images/UI/OC_WSIS.webp", ButtonHover)
-                                action [SetVariable("a_menu_1", "wsis"), SetVariable("a_menu_8", 0)]
-                            imagebutton:
-                                idle At("images/UI/OC_WNEI.webp", ButtonIdle)
-                                hover At("images/UI/OC_WNEI.webp", ButtonHover)
-                                action [SetVariable("a_menu_1", "wnei"), SetVariable("a_menu_8", 0)]
-        frame:
-            xysize(1200, 1080)
-            xpadding 25
-            ypadding 25
-            hbox:
-                spacing 50
-                side ("c l"):
-                    area (0, 0, 200, 1030)
-                    vpgrid id "ScrollOCButton":
-                        draggable True mousewheel True
-                        xoffset 20
-                        spacing 25
-                        cols 1
                         if True:
                             if gametimeday >= 2:
                                 imagebutton:
