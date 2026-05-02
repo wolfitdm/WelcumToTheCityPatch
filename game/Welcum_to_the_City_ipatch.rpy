@@ -1,3 +1,5 @@
+default incest_patch_on = True
+
 ######################################################  MADE BY simple_human   
 
 ######################################################  DOWNLOADED FROM https://f95zone.to/threads/welcum-to-the-city-v0-15-0-quiquersson.168621/post-12597838
@@ -6,6 +8,16 @@ init 1 python hide:
 
 ######################################################
     translate = renpy.translation.StringTranslator.translate
+
+    def set_incest_patch_on(set):
+        incest_patch_on = set
+
+        f = renpy.translation.StringTranslator
+
+        if not hasattr(f, "incest_patch_on"):
+           setattr(f, "incest_patch_on", incest_patch_on)
+
+        setattr(f, "incest_patch_on", set)
 
 ######################################################
     from re import compile
@@ -21,6 +33,12 @@ init 1 python hide:
 ######################################################
     def sim_hum_ipatch(self, t):
         t = translate(self, t)
+
+        if not hasattr(self, "incest_patch_on"):
+           setattr(self, "incest_patch_on", incest_patch_on)
+
+        if not self.incest_patch_on:
+           return t
 
 ##################
         t = t.replace("It's a strange feeling, knowing that my father is gone.{w=[wt4]} Well{w=[wt2]}, now he must be happy with my mother again...{w=[wt2]} But now I'm alone.{w=[wt3]} And my situation has become very difficult in the countryside without their support.)","It's a strange feeling, knowing that my father is gone.)")
@@ -75,11 +93,16 @@ init 1 python hide:
 
 ##################
         return t
+
     renpy.translation.StringTranslator.translate = sim_hum_ipatch
     del sim_hum_ipatch
 
 ######################################################
     def replace_text(text):
+
+        if not incest_patch_on:
+
+           return text
 
         text = text.replace("Home - Step-mother's bedroom","Home - Mother's bedroom")
         text = text.replace("Home - Step-sis' bedroom","Home - Sister's bedroom")

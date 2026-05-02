@@ -1,3 +1,23 @@
+default check_playermap_var = False
+default incest_patch_on = True
+
+init python:
+    def rewrite_check_playermap_jumps():
+        if check_playermap_var:
+           config.label_overrides["check_playermap"] = "check_playermap_new"
+        else:
+           config.label_overrides["check_playermap"] = "check_playermap"
+
+    def set_incest_patch_on(set):
+        incest_patch_on = set
+
+        f = renpy.translation.StringTranslator
+
+        if not hasattr(f, "incest_patch_on"):
+           setattr(f, "incest_patch_on", incest_patch_on)
+
+        setattr(f, "incest_patch_on", set)
+
 screen UI_Menu_Options():
     frame:
         background None
@@ -261,13 +281,18 @@ label wolfitdm_inputcheat:
         outfits = "outfits"
         kawaii = "kawaii"
         show_code = "show"
+        show_code2 = "show2"
         gettheme = "gettheme"
         guide = "guide"
         guide2 = "Guide"
         guide3 = "GUIDE"
         changeimg = "changeimg"
+        nudist = "nudist"
+        nonudist = "nonudist"
+        incest = "incest"
+        noincest = "noincest"
 
-        cheat_codes = [givemeall,kcc_code,codecheat,codecheat2,outfits,kawaii,show_code,gettheme,guide,guide2,guide3,changeimg]
+        cheat_codes = [givemeall,kcc_code,codecheat,codecheat2,outfits,kawaii,show_code,show_code2,gettheme,guide,guide2,guide3,changeimg,nudist,nonudist,incest,noincest]
 
         if cheatvar == givemeall:
 
@@ -321,17 +346,47 @@ label wolfitdm_inputcheat:
 
            msg.msg("kawaii outfit added")
 
+        elif cheatvar == "nudist":
+
+           check_playermap_var = True
+           rewrite_check_playermap_jumps()
+           msg.msg("clothes checks on")
+
+        elif cheatvar == "nonudist":
+
+           check_playermap_var = False
+           rewrite_check_playermap_jumps()
+           msg.msg("clothes checks off")
+
+        elif cheatvar == "incest":
+
+           set_incest_patch_on(True)
+           msg.msg("incest on")
+
+        elif cheatvar == "noincest":
+
+           set_incest_patch_on(False)
+           msg.msg("incest off")
+
         elif cheatvar == show_code:
 
            msg.msg("Give Me All code: givemeall")
            msg.msg("kawaii outfit: kawaii")
            msg.msg("All outfits code: outfits")
-           msg.msg("Show All Codes: show")
            msg.msg("guide code: guide")
            msg.msg("kawaii code editor code (kcc_code): [kcc_code]")
+           msg.msg("Show All Codes 1: show")
+           msg.msg("Show All Codes 2: show2")
+
+        elif cheatvar == show_code2:
            msg.msg("cheat mode code: [codecheat]")
+           msg.msg("cheat mode code: [codecheat2]")
            msg.msg("events code: gettheme")
            msg.msg("more images code: changeimg")
+           msg.msg("clothes checks off code: nudist")
+           msg.msg("clothes checks on code: nonudist")
+           msg.msg("incest on code: incest")
+           msg.msg("noincest: noincest")
 
     if not cheatvar in cheat_codes:
        play SE1 "BeepWrong.ogg"
