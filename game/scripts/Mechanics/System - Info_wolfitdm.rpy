@@ -350,7 +350,7 @@ label wolfitdm_inputcheat:
 
            check_playermap_var = True
            rewrite_check_playermap_jumps()
-           msg.msg("clothes checks on")
+           msg.msg("clothes checks off")
 
         elif cheatvar == "nonudist":
 
