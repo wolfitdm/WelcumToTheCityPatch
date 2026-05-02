@@ -225,6 +225,123 @@ screen UI_Menu_Options_Contacts_Redefine():
                                 idle At("images/UI/OC_WNEI.webp", ButtonIdle)
                                 hover At("images/UI/OC_WNEI.webp", ButtonHover)
                                 action [SetVariable("a_menu_1", "wnei"), SetVariable("a_menu_8", 0)]
+        frame:
+            xysize(1200, 1080)
+            xpadding 25
+            ypadding 25
+            hbox:
+                spacing 50
+                side ("c l"):
+                    area (0, 0, 200, 1030)
+                    vpgrid id "ScrollOCButton":
+                        draggable True mousewheel True
+                        xoffset 20
+                        spacing 25
+                        cols 1
+                        if True:
+                            if gametimeday >= 2:
+                                imagebutton:
+                                    idle At("images/UI/OC_NONE.webp", ButtonIdle)
+                                    hover At("images/UI/OC_NONE.webp", ButtonHover)
+                                    action [SetVariable("a_menu_1", "none"), SetVariable("a_menu_8", 0)]
+                            imagebutton:
+                                idle At("images/UI/OC_HERO.webp", ButtonIdle)
+                                hover At("images/UI/OC_HERO.webp", ButtonHover)
+                                action [SetVariable("a_menu_1", "hero"), SetVariable("a_menu_8", 0)]
+                        if True:
+                            imagebutton:
+                                idle At("images/UI/OC_WMOM.webp", ButtonIdle)
+                                hover At("images/UI/OC_WMOM.webp", ButtonHover)
+                                action [SetVariable("a_menu_1", "wmom"), SetVariable("a_menu_8", 0)]
+                            imagebutton:
+                                idle At("images/UI/OC_WSIS.webp", ButtonIdle)
+                                hover At("images/UI/OC_WSIS.webp", ButtonHover)
+                                action [SetVariable("a_menu_1", "wsis"), SetVariable("a_menu_8", 0)]
+                            imagebutton:
+                                idle At("images/UI/OC_WNEI.webp", ButtonIdle)
+                                hover At("images/UI/OC_WNEI.webp", ButtonHover)
+                                action [SetVariable("a_menu_1", "wnei"), SetVariable("a_menu_8", 0)]
+                            if True:
+                                imagebutton:
+                                    idle At("images/UI/OC_WPRE.webp", ButtonIdle)
+                                    hover At("images/UI/OC_WPRE.webp", ButtonHover)
+                                    action [SetVariable("a_menu_1", "wpre"), SetVariable("a_menu_8", 0)]
+                            if True:
+                                    imagebutton:
+                                        idle At("images/UI/OC_WOTA.webp", ButtonIdle)
+                                        hover At("images/UI/OC_WOTA.webp", ButtonHover)
+                                        action [SetVariable("a_menu_1", "wota"), SetVariable("a_menu_8", 0)]
+                            if True:
+                                    imagebutton:
+                                        idle At("images/UI/OC_WDIS.webp", ButtonIdle)
+                                        hover At("images/UI/OC_WDIS.webp", ButtonHover)
+                                        action [SetVariable("a_menu_1", "wdis"), SetVariable("a_menu_8", 0)]
+                            if True:
+                                    imagebutton:
+                                        idle At("images/UI/OC_WGAL.webp", ButtonIdle)
+                                        hover At("images/UI/OC_WGAL.webp", ButtonHover)
+                                        action [SetVariable("a_menu_1", "wgal"), SetVariable("a_menu_8", 0)]
+                            if True:
+                                    imagebutton:
+                                        idle At("images/UI/OC_WRIC.webp", ButtonIdle)
+                                        hover At("images/UI/OC_WRIC.webp", ButtonHover)
+                                        action [SetVariable("a_menu_1", "wric"), SetVariable("a_menu_8", 0)]
+                            if True:
+                                    imagebutton:
+                                        idle At("images/UI/OC_WGOT.webp", ButtonIdle)
+                                        hover At("images/UI/OC_WGOT.webp", ButtonHover)
+                                        action [SetVariable("a_menu_1", "wgot"), SetVariable("a_menu_8", 0)]
+                            if True:
+                                    imagebutton:
+                                        idle At("images/UI/OC_WDEL.webp", ButtonIdle)
+                                        hover At("images/UI/OC_WDEL.webp", ButtonHover)
+                                        action [SetVariable("a_menu_1", "wdel"), SetVariable("a_menu_8", 0)]
+                            if True:
+                                    imagebutton:
+                                        idle At("images/UI/OC_WUZA.webp", ButtonIdle)
+                                        hover At("images/UI/OC_WUZA.webp", ButtonHover)
+                                        action [SetVariable("a_menu_1", "wuza"), SetVariable("a_menu_8", 0)]
+                            if True:
+                                    imagebutton:
+                                        idle At("images/UI/OC_WLAZ.webp", ButtonIdle)
+                                        hover At("images/UI/OC_WLAZ.webp", ButtonHover)
+                                        action [SetVariable("a_menu_1", "wlaz"), SetVariable("a_menu_8", 0)]
+
+                        if True:
+                            if True:
+                                    imagebutton:
+                                        idle At("images/UI/OC_HPRV.webp", ButtonIdle)
+                                        hover At("images/UI/OC_HPRV.webp", ButtonHover)
+                                        action [SetVariable("a_menu_1", "hprv"), SetVariable("a_menu_8", 0)]
+                            if True:
+                                    imagebutton:
+                                        idle At("images/UI/OC_HINE.webp", ButtonIdle)
+                                        hover At("images/UI/OC_HINE.webp", ButtonHover)
+                                        action [SetVariable("a_menu_1", "hine"), SetVariable("a_menu_8", 0)]
+                            if True:
+                                    imagebutton:
+                                        idle At("images/UI/OC_HRIV.webp", ButtonIdle)
+                                        hover At("images/UI/OC_HRIV.webp", ButtonHover)
+                                        action [SetVariable("a_menu_1", "hriv"), SetVariable("a_menu_8", 0)]
+
+                        if True:
+                            if True:
+                                imagebutton:
+                                    idle At("images/UI/OC_WCOU.webp", ButtonIdle)
+                                    hover At("images/UI/OC_WCOU.webp", ButtonHover)
+                                    action [SetVariable("a_menu_1", "wcou"), SetVariable("a_menu_8", 0)]
+
+                        if True:
+                            if True:
+                                imagebutton:
+                                    idle At("images/UI/OC_WGMA.webp", ButtonIdle)
+                                    hover At("images/UI/OC_WGMA.webp", ButtonHover)
+                                    action [SetVariable("a_menu_1", "wgma"), SetVariable("a_menu_8", 0)]
+                            if True:
+                                imagebutton:
+                                    idle At("images/UI/OC_wsuk.webp", ButtonIdle)
+                                    hover At("images/UI/OC_wsuk.webp", ButtonHover)
+                                    action [SetVariable("a_menu_1", "wsuk"), SetVariable("a_menu_8", 0)]
                     vbar value YScrollValue("ScrollOCButton")
 
                 vbox:
