@@ -11,13 +11,6 @@ init python:
     def set_incest_patch_on(set):
         incest_patch_on = set
 
-        f = renpy.translation.StringTranslator
-
-        if not hasattr(f, "incest_patch_on"):
-           setattr(f, "incest_patch_on", incest_patch_on)
-
-        setattr(f, "incest_patch_on", set)
-
 screen UI_Menu_Options():
     frame:
         background None

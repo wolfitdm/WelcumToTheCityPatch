@@ -5,6 +5,8 @@ label popup(message):
 
 default Cur_Wear = {}
 default Char_Data = {}
+default a_menu_1 = ""
+default a_menu_8 = 0
 
 init -1000 python:
     def wear_test_head(part, name):
