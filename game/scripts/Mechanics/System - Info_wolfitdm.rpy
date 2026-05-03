@@ -19,6 +19,10 @@ init -9000 python:
            config.label_overrides["check_playermap"] = "check_playermap"
            store.config.label_overrides["check_playermap"] = "check_playermap"
 
+    def get_incest_patch_on():
+        return incest_patch_on
+
+
 screen UI_Menu_Options():
     frame:
         background None
@@ -571,7 +575,7 @@ label wolfitdm_inputcheat_exec(cheatvar):
            msg.msg("nudiststatus: nudist status")
 
         elif cheatvar == inceststatus:
-           if incest_patch_on:
+           if get_incest_patch_on():
               msg.msg("incest: on")
            else:
               msg.msg("incest: off")
