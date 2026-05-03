@@ -12,8 +12,10 @@ init python:
     def rewrite_check_playermap_jumps():
         if check_playermap_var:
            config.label_overrides["check_playermap"] = "check_playermap_new"
+           store.config.label_overrides["check_playermap"] = "check_playermap_new"
         else:
            config.label_overrides["check_playermap"] = "check_playermap"
+           store.config.label_overrides["check_playermap"] = "check_playermap"
 
 screen UI_Menu_Options():
     frame:
