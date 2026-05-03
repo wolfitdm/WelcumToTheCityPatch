@@ -1,5 +1,12 @@
 default incest_patch_on = True
 
+init -9000 python:
+    def set_incest_patch_on(set):
+        incest_patch_on = set
+
+    def get_incest_patch_on():
+        return incest_patch_on
+
 # Icons & Emojis
 define C_Heart_Icon = "{outlinecolor=#960000}{color=#FF3232}{b}❤{/b}{/color}{/outlinecolor}"
 define C_Pencil_Icon = "{outlinecolor=#960000}{color=#FFFF64}{b}✏{/b}{/color}{/outlinecolor}"
@@ -10,12 +17,9 @@ define C_Checkmark_Icon = "{outlinecolor=#960000}{color=#32FF32}{b}✔{/b}{/colo
 
 ######################################################  DOWNLOADED FROM https://f95zone.to/threads/welcum-to-the-city-v0-15-0-quiquersson.168621/post-12597838
 
-init 1 python hide:
+init 1 python:
 ######################################################
     translate = renpy.translation.StringTranslator.translate
-
-    def set_incest_patch_on(set):
-        incest_patch_on = set
 
 ######################################################
     from re import compile
@@ -41,31 +45,31 @@ init 1 python hide:
 
     def incest_sub(character, t):
         if character == "Mother":
-           if incest_patch_on:
+           if get_incest_patch_on():
               t = mom.sub(character, t)
            else:
               t = momr.sub("Step-"+character, t)
 
         elif character == "Sister":
-           if incest_patch_on:
+           if get_incest_patch_on():
               t = sis.sub(character, t)
            else:
               t = sisr.sub("Step-"+character, t)
 
         elif character == "Brother":
-           if incest_patch_on:
+           if get_incest_patch_on():
               t = bro.sub(character, t)
            else:
               t = bror.sub("Step-"+character, t)
 
         elif character == "Grandmother":
-           if incest_patch_on:
+           if get_incest_patch_on():
               t = gmom.sub(character, t)
            else:
               t = gmomr.sub("Step-"+character, t)
 
         elif character == "Cousin":
-           if incest_patch_on:
+           if get_incest_patch_on():
               t = cuz.sub(character, t)
            else:
               t = cuzr.sub("Step-"+character, t)
@@ -73,7 +77,7 @@ init 1 python hide:
         return t
 
     def incest_replace(t,old,new):
-        if incest_patch_on:
+        if get_incest_patch_on():
            t = t.replace(old, new)
         else:
            t = t.replace(new, old)

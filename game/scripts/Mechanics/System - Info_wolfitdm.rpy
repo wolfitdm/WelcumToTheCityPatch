@@ -1,5 +1,4 @@
 default check_playermap_var = False
-default incest_patch_on = True
 
 default a_menu_1 = "none"
 default a_menu_2 = "Any"
@@ -15,9 +14,6 @@ init python:
            config.label_overrides["check_playermap"] = "check_playermap_new"
         else:
            config.label_overrides["check_playermap"] = "check_playermap"
-
-    def set_incest_patch_on(set):
-        incest_patch_on = set
 
 screen UI_Menu_Options():
     frame:
@@ -384,8 +380,9 @@ label wolfitdm_inputcheat_exec(cheatvar):
         nonudist = "nonudist"
         incest = "incest"
         noincest = "noincest"
+        inceststatus = "inceststatus"
 
-        cheat_codes = [givemeall,kcc_code,codecheat,codecheat2,outfits,kawaii,show_code,show_code2,gettheme,guide,guide2,guide3,changeimg,nudist,nonudist,incest,noincest]
+        cheat_codes = [givemeall,kcc_code,codecheat,codecheat2,outfits,kawaii,show_code,show_code2,gettheme,guide,guide2,guide3,changeimg,nudist,nonudist,incest,noincest,inceststatus]
 
         if cheatvar == givemeall:
 
@@ -453,11 +450,13 @@ label wolfitdm_inputcheat_exec(cheatvar):
 
         elif cheatvar == "incest":
 
+           incest_patch_on = True
            set_incest_patch_on(True)
            msg.msg("incest on")
 
         elif cheatvar == "noincest":
 
+           incest_patch_on = False
            set_incest_patch_on(False)
            msg.msg("incest off")
 
@@ -481,6 +480,13 @@ label wolfitdm_inputcheat_exec(cheatvar):
            msg.msg("incest on code: incest")
            msg.msg("noincest: noincest")
            msg.msg("best: nudist,outfits,kcc,incest,cheatmode")
+           msg.msg("inceststatus: incest status")
+
+        elif cheatvar == inceststatus:
+           if get_incest_patch_on():
+              msg.msg("incest: on")
+           else:
+              msg.msg("incest: off")
 
     if not cheatvar in cheat_codes:
        play SE1 "BeepWrong.ogg"
