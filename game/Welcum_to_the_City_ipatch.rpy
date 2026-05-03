@@ -26,7 +26,7 @@ init 1 python hide:
     gmom = compile(r"(?i)step(?:[-\s]?grandma|[-\s]?grandmother)")   
     cuz = compile(r"(?i)step(?:[-\s]?cuz|[-\s]?cousin)")
 
-    momr = compile(r"Mother)")  
+    momr = compile(r"Mother")  
     sisr = compile(r"Sister") 
     bror = compile(r"Brother") 
     gmomr = compile(r"Grandmother")   
