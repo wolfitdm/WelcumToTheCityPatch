@@ -8,7 +8,7 @@ default a_menu_8 = 0
 
 default cellbg = ["00"]
 
-init python:
+init -9000 python:
     def rewrite_check_playermap_jumps():
         if check_playermap_var:
            config.label_overrides["check_playermap"] = "check_playermap_new"
@@ -467,8 +467,9 @@ label wolfitdm_inputcheat_exec(cheatvar):
         incest = "incest"
         noincest = "noincest"
         inceststatus = "inceststatus"
+        nudiststatus = "nudiststatus"
 
-        cheat_codes = [givemeall,kcc_code,codecheat,codecheat2,outfits,kawaii,show_code,show_code2,gettheme,guide,guide2,guide3,changeimg,nudist,nonudist,incest,noincest,inceststatus]
+        cheat_codes = [givemeall,kcc_code,codecheat,codecheat2,outfits,kawaii,show_code,show_code2,gettheme,guide,guide2,guide3,changeimg,nudist,nonudist,incest,noincest,inceststatus,nudiststatus]
 
         if cheatvar == givemeall:
 
@@ -567,12 +568,18 @@ label wolfitdm_inputcheat_exec(cheatvar):
            msg.msg("noincest: noincest")
            msg.msg("best: nudist,outfits,kcc,incest,cheatmode")
            msg.msg("inceststatus: incest status")
+           msg.msg("nudiststatus: nudist status")
 
         elif cheatvar == inceststatus:
            if get_incest_patch_on():
               msg.msg("incest: on")
            else:
               msg.msg("incest: off")
+        elif cheatvar == nudiststatus:
+           if check_playermap_var:
+              msg.msg("nudist: on")
+           else:
+              msg.msg("nudist: off")
 
     if not cheatvar in cheat_codes:
        play SE1 "BeepWrong.ogg"

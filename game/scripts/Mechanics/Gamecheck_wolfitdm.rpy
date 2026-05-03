@@ -7,3 +7,4 @@ init 90000 python:
     def check_stat():
         wolfitdm_check_stat()
         update_wear_vars()
+        rewrite_check_playermap_jumps()
