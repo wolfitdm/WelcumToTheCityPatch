@@ -3,8 +3,11 @@ default incest_patch_on = True
 
 default a_menu_1 = "none"
 default a_menu_2 = "Any"
+default a_menu_3 = ""
 default a_menu_4 = 0
 default a_menu_8 = 0
+
+default cellbg = ["00"]
 
 init python:
     def rewrite_check_playermap_jumps():
@@ -354,7 +357,6 @@ label wolfitdm_inputcheat:
        call wolfitdm_inputcheat_exec("DpBnD")
        call wolfitdm_inputcheat_exec("Taj0T")
        call wolfitdm_inputcheat_exec("outfits")
-       call wolfitdm_inputcheat_exec("kawaii")
     else:
        call wolfitdm_inputcheat_exec(cheatvar)
 
@@ -478,6 +480,7 @@ label wolfitdm_inputcheat_exec(cheatvar):
            msg.msg("clothes checks on code: nonudist")
            msg.msg("incest on code: incest")
            msg.msg("noincest: noincest")
+           msg.msg("best: nudist,outfits,kcc,incest,cheatmode")
 
     if not cheatvar in cheat_codes:
        play SE1 "BeepWrong.ogg"
