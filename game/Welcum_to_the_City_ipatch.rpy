@@ -7,20 +7,14 @@ init -9000 python:
     def get_incest_patch_on():
         return incest_patch_on
 
-# Icons & Emojis
-define C_Heart_Icon = "{outlinecolor=#960000}{color=#FF3232}{b}❤{/b}{/color}{/outlinecolor}"
-define C_Pencil_Icon = "{outlinecolor=#960000}{color=#FFFF64}{b}✏{/b}{/color}{/outlinecolor}"
-define C_X_Icon = "{outlinecolor=#960000}{color=#FF3232}{b}✖{/b}{/color}{/outlinecolor}"
-define C_Checkmark_Icon = "{outlinecolor=#960000}{color=#32FF32}{b}✔{/b}{/color}{/outlinecolor}"
-
 ######################################################  MADE BY simple_human   
 
 ######################################################  DOWNLOADED FROM https://f95zone.to/threads/welcum-to-the-city-v0-15-0-quiquersson.168621/post-12597838
 
 init 1 python:
 ######################################################
-    translate = renpy.translation.StringTranslator.translate
-
+    translate_ipatch = renpy.translation.StringTranslator.translate
+    _orig_replace_text_ipatch = config.replace_text
 ######################################################
     from re import compile
 
@@ -35,11 +29,6 @@ init 1 python:
     bror = compile(r"Brother") 
     gmomr = compile(r"Grandmother")   
     cuzr = compile(r"Cousin")
-
-    heart_icon = compile(r"\[❤\]")
-    pencil_icon = compile(r"\[✏\]") 
-    x_icon = compile(r"\[✖\]")
-    checkmark_icon = compile(r"\[✔\]")
 
     del compile
 
@@ -86,18 +75,7 @@ init 1 python:
 
 ######################################################
     def sim_hum_ipatch(self, t):
-        t = translate(self, t)
-
-        t = t.replace("[❤]", "[C_Heart_Icon]")
-        t = t.replace("[✏]", "[C_Pencil_Icon]")
-        t = t.replace("[✖]", "[C_X_Icon]")
-        t = t.replace("[✔]", "[C_Checkmark_Icon]")
-
-        t = heart_icon.sub("[C_Heart_Icon]", t)
-        t = pencil_icon.sub("[C_Pencil_Icon]", t)
-        t = x_icon.sub("[C_X_Icon]", t)
-        t = checkmark_icon.sub("[C_Checkmark_Icon]", t)
-
+        t = translate_ipatch(self, t)
 ##################
         t = incest_replace(t, "It's a strange feeling, knowing that my father is gone.{w=[wt4]} Well{w=[wt2]}, now he must be happy with my mother again...{w=[wt2]} But now I'm alone.{w=[wt3]} And my situation has become very difficult in the countryside without their support.)","It's a strange feeling, knowing that my father is gone.)")
         t = incest_replace(t, "{mind}(Well...{w=[wt2]} maybe not much{w=[wt2]}, but it can't be that bad, right?{w=[wt3]} She's not my biological grandmother{w=[wt1]}, but it would still be good to see {nm}[talkto_wgma]{/nm} again.){/mind}","{mind}(Well...{w=[wt2]} maybe not much{w=[wt2]}, but it can't be that bad, right?{w=[wt3]} It would be nice to see {nm}[talkto_wgma]{/nm} again.){/mind}")
@@ -156,19 +134,17 @@ init 1 python:
     del sim_hum_ipatch
 
 ######################################################
-    def replace_text(text):
-
-        text = text.replace("[❤]", "[C_Heart_Icon]")
-        text = text.replace("[✏]", "[C_Pencil_Icon]")
-        text = text.replace("[✖]", "[C_X_Icon]")
-        text = text.replace("[✔]", "[C_Checkmark_Icon]")
+    def replace_text_ipatch(text):
+        text = _orig_replace_text_ipatch(text)
 
         text = incest_replace(text, "Home - Step-mother's bedroom","Home - Mother's bedroom")
         text = incest_replace(text, "Home - Step-sis' bedroom","Home - Sister's bedroom")
 
         return text
 
-    config.replace_text = replace_text
+    config.replace_text = replace_text_ipatch
+
+    del replace_text_ipatch
 
 ######################################################
 
