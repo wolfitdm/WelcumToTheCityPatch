@@ -1,6 +1,11 @@
 default check_playermap_var = False
 default incest_patch_on = True
 
+default a_menu_1 = "none"
+default a_menu_2 = "Any"
+default a_menu_4 = 0
+default a_menu_8 = 0
+
 init python:
     def rewrite_check_playermap_jumps():
         if check_playermap_var:
@@ -329,7 +334,6 @@ screen UI_Menu_Options_Contacts_Redefine():
                                 hover At("images/UI/QUICK_Time.webp", ButtonHover)
                                 action SetVariable("a_menu_4", 3)
 
-
 label UI_Menu_Options_Contacts_Redefine:
     call gamecheck
     $ a_menu_1 = "none"
@@ -344,6 +348,19 @@ label UI_Menu_Options_Contacts_Redefine:
 label wolfitdm_inputcheat:
     $ cheatvar = renpy.input("Input a code. To show all codes, type [C_Dat]show[C_Off] or type nothing and press enter", length=12)
 
+    if cheatvar == "best":
+       call wolfitdm_inputcheat_exec("nudist")
+       call wolfitdm_inputcheat_exec("incest")
+       call wolfitdm_inputcheat_exec("DpBnD")
+       call wolfitdm_inputcheat_exec("Taj0T")
+       call wolfitdm_inputcheat_exec("outfits")
+       call wolfitdm_inputcheat_exec("kawaii")
+    else:
+       call wolfitdm_inputcheat_exec(cheatvar)
+
+    jump UI_Menu_Options
+
+label wolfitdm_inputcheat_exec(cheatvar):
     if cheatvar == "":
        $ cheatvar = "show"
 
@@ -526,4 +543,4 @@ label wolfitdm_inputcheat:
             play SE1 "BeepWrong.ogg"
             $ msg.msg("You need to activate the KCC code first")
 
-    jump UI_Menu_Options
+    return
