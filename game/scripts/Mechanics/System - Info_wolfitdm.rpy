@@ -8,6 +8,8 @@ default a_menu_8 = 0
 
 default cellbg = ["00"]
 
+default incest_patch_on = True
+
 init -9000 python:
     def rewrite_check_playermap_jumps():
         if check_playermap_var:
@@ -538,13 +540,11 @@ label wolfitdm_inputcheat_exec(cheatvar):
         elif cheatvar == "incest":
 
            incest_patch_on = True
-           set_incest_patch_on(True)
            msg.msg("incest on")
 
         elif cheatvar == "noincest":
 
            incest_patch_on = False
-           set_incest_patch_on(False)
            msg.msg("incest off")
 
         elif cheatvar == show_code:
@@ -571,7 +571,7 @@ label wolfitdm_inputcheat_exec(cheatvar):
            msg.msg("nudiststatus: nudist status")
 
         elif cheatvar == inceststatus:
-           if get_incest_patch_on():
+           if incest_patch_on:
               msg.msg("incest: on")
            else:
               msg.msg("incest: off")

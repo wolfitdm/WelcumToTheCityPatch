@@ -1,12 +1,5 @@
 default incest_patch_on = True
 
-init -9000 python:
-    def set_incest_patch_on(set):
-        incest_patch_on = set
-
-    def get_incest_patch_on():
-        return incest_patch_on
-
 ######################################################  MADE BY simple_human   
 
 ######################################################  DOWNLOADED FROM https://f95zone.to/threads/welcum-to-the-city-v0-15-0-quiquersson.168621/post-12597838
