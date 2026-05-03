@@ -5,10 +5,11 @@ define C_Pencil_Icon = "{outlinecolor=#960000}{color=#FFFF64}{b}✏{/b}{/color}{
 define C_X_Icon = "{outlinecolor=#960000}{color=#FF3232}{b}✖{/b}{/color}{/outlinecolor}"
 define C_Checkmark_Icon = "{outlinecolor=#960000}{color=#32FF32}{b}✔{/b}{/color}{/outlinecolor}"
 
-init -1000 python:
+init 0 python:
     translate_scenefix = renpy.translation.StringTranslator.translate
     _orig_replace_text_scenefix = config.replace_text
-
+    _exec_orig_replace_text_scenefix = not _orig_replace_text_scenefix == None
+    _exec_orig_replace_text_scenefix = _exec_orig_replace_text_scenefix and callable(_orig_replace_text_scenefix)
     from re import compile
 
     heart_icon = compile(r"\[❤\]")
@@ -38,7 +39,9 @@ init -1000 python:
     del scenefix_patch
 
     def replace_text_scenefix(text):
-        text = _orig_replace_text_scenefix(text)
+        
+        if _exec_orig_replace_text_scenefix:
+           text = _orig_replace_text_scenefix(text)
 
         text = text.replace("[❤]", "[C_Heart_Icon]")
         text = text.replace("[✏]", "[C_Pencil_Icon]")

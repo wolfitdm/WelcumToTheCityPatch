@@ -15,6 +15,8 @@ init 1 python:
 ######################################################
     translate_ipatch = renpy.translation.StringTranslator.translate
     _orig_replace_text_ipatch = config.replace_text
+    _exec_orig_replace_text_ipatch = not _orig_replace_text_ipatch == None
+    _exec_orig_replace_text_ipatch = _exec_orig_replace_text_ipatch and callable(_orig_replace_text_ipatch)
 ######################################################
     from re import compile
 
@@ -135,7 +137,9 @@ init 1 python:
 
 ######################################################
     def replace_text_ipatch(text):
-        text = _orig_replace_text_ipatch(text)
+
+        if  _exec_orig_replace_text_ipatch:
+            text = _orig_replace_text_ipatch(text)
 
         text = incest_replace(text, "Home - Step-mother's bedroom","Home - Mother's bedroom")
         text = incest_replace(text, "Home - Step-sis' bedroom","Home - Sister's bedroom")
