@@ -327,11 +327,95 @@ screen UI_Menu_Options_Contacts_Redefine():
                             idle At("images/UI/SUBMENU_Option_Quest.webp", ButtonIdle)
                             hover At("images/UI/SUBMENU_Option_Quest.webp", ButtonHover)
                             action SetVariable("a_menu_4", 2)
-                        if persistent.debug == True or perk_int_obs >= 1:
+                        if True:
                             imagebutton:
                                 idle At("images/UI/QUICK_Time.webp", ButtonIdle)
                                 hover At("images/UI/QUICK_Time.webp", ButtonHover)
                                 action SetVariable("a_menu_4", 3)
+
+                    vbox:
+                        xalign 0.5
+                        yalign 0.0
+                        spacing 25
+
+                        if a_menu_4 == 0 and a_menu_1 not in ["none"]:
+                            frame:
+                                side ("c r"):
+                                    area (25, 0, 850, 800)
+                                    viewport id "Scroll_Database":
+                                        draggable True mousewheel True
+                                        vbox:
+                                                text _p("""{size=40}
+                                                            {b}No Data{/b}
+                                                            {/size}""")
+                                    vbar value YScrollValue("Scroll_Database")
+                            null height 20 #just a height set.
+                        elif a_menu_4 == 0 and a_menu_1 == "none":
+                            frame:
+                                side ("c r"):
+                                    area (25, 0, 850, 800)
+                                    viewport id "Scroll_Database":
+                                        draggable True mousewheel True
+                                        vbox:
+                                                text _p("""{size=40}
+                                                            {b}No Data{/b}
+                                                            {/size}""")
+                                    vbar value YScrollValue("Scroll_Database")
+                            null height 20 #just a height set.
+                        elif a_menu_4 == 1:
+                            frame:
+                                side ("c r"):
+                                    area (25, 0, 850, 800)
+                                    viewport id "Scroll_Database":
+                                        draggable True mousewheel True
+                                        vbox:
+                                                text _p("""{size=40}
+                                                            {b}No Data{/b}
+                                                            {/size}""")
+                                    vbar value YScrollValue("Scroll_Database")
+                            null height 20 #just a height set.
+
+                        elif a_menu_4 == 2:
+                            vbox:
+                                xalign 0.0
+                                yalign 0.0
+                                spacing 10
+                                vbox:
+                                    xalign 0.5
+                                    label "Content Progress"
+                                    vbox:
+                                        xalign 0.5
+                                        bar value 1 range 1 xmaximum 650
+                                text ""
+                                frame:
+                                    background "gui/game_menu.webp"
+                                    side ("c r"):
+                                        area (25, 0, 850, 650)
+                                        viewport id "ScrollContent":
+                                            draggable True mousewheel True
+
+                                            vbox:
+                                                xalign 0.0
+                                                yalign 0.0
+                                                spacing 15
+                                                vbox:
+                                                     xalign 0.5
+                                                     label "{p}Unavailable Content" xalign 0.5
+                                                     text "Oops. No data available for this character in the current game version." xalign 0.5
+                                        vbar value YScrollValue("ScrollContent")
+
+                        elif a_menu_4 == 3 and a_menu_1 not in  ["none"]:
+                            side ("c r"):
+                                area (25, 0, 1000, 850)
+                                viewport id "Scroll_Schedule":
+                                    draggable True mousewheel True
+                                    vbox:
+                                        spacing 10
+                                        text "{b}Map:{/b} " + str(Char_Data[a_menu_1]["map"])
+                                        text "{b}Wear:{/b} " + str(Char_Data[a_menu_1]["wear"])
+                                vbar value YScrollValue("Scroll_Schedule")
+
+
 
 label UI_Menu_Options_Contacts_Redefine:
     call gamecheck
