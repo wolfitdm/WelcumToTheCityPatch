@@ -8,6 +8,8 @@ default Char_Data = {}
 default a_menu_1 = ""
 default a_menu_8 = 0
 
+default wolfitdm_hero_name = "hero"
+
 init -1000 python:
     def wear_test_head(part, name):
         test_string = "kawaii_" + name
@@ -67,6 +69,9 @@ init -1000 python:
 
         if var < len(Char_Data[i]['achiev']['wear']):
            Cur_Wear[i]["wear_string"] = Char_Data[i]['achiev']['wear'][var]
+           if i == "hero" and not Cur_Wear[i]["wear_string"].startswith("kawaii"):
+              if not wolfitdm_hero_name == i:
+                 set_wear_var(wolfitdm_hero_name, var)
            Char_Data[i]['wear'] = Cur_Wear[i]["wear_string"]
            #my_renpy_say("Current wear: " + i + ":" + Cur_Wear[i]["wear_string"])
 

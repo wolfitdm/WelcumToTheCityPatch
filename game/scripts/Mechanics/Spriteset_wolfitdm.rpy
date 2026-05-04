@@ -248,10 +248,12 @@ image HERO STYLE DEFAULT = Composite(
     ),
     )
 
+default wolfitdm_image_style = "HERO STYLE DEFAULT"
+
 image HERO STYLE:
     ConditionSwitch(
        "len(Char_Data['hero']['achiev']['wear']) > 0 and isinstance(Char_Data['hero']['achiev']['wear'][get_wear_var('hero')], str) and Char_Data['hero']['achiev']['wear'][get_wear_var('hero')].startswith('kawaii')", "KAWAII STYLE",
-       "(len(Char_Data['hero']['achiev']['wear']) > 0 and isinstance(Char_Data['hero']['achiev']['wear'][get_wear_var('hero')], str) and Char_Data['hero']['achiev']['wear'][get_wear_var('hero')].startswith('kawaii')) == False", "HERO STYLE DEFAULT"
+       "(len(Char_Data['hero']['achiev']['wear']) > 0 and isinstance(Char_Data['hero']['achiev']['wear'][get_wear_var('hero')], str) and Char_Data['hero']['achiev']['wear'][get_wear_var('hero')].startswith('kawaii')) == False", "[wolfitdm_image_style]"
     )
 
 image HERO DEFAULT:
@@ -260,10 +262,12 @@ image HERO DEFAULT:
 image HERO KAWAII:    
     "KAWAII PARTS"
 
+default wolfitdm_image = "HERO DEFAULT"
+
 image HERO:
     ConditionSwitch(
        "len(Char_Data['hero']['achiev']['wear']) > 0 and isinstance(Char_Data['hero']['achiev']['wear'][get_wear_var('hero')], str) and Char_Data['hero']['achiev']['wear'][get_wear_var('hero')].startswith('kawaii')", "HERO KAWAII",
-       "(len(Char_Data['hero']['achiev']['wear']) > 0 and isinstance(Char_Data['hero']['achiev']['wear'][get_wear_var('hero')], str) and Char_Data['hero']['achiev']['wear'][get_wear_var('hero')].startswith('kawaii')) == False", "HERO DEFAULT"
+       "(len(Char_Data['hero']['achiev']['wear']) > 0 and isinstance(Char_Data['hero']['achiev']['wear'][get_wear_var('hero')], str) and Char_Data['hero']['achiev']['wear'][get_wear_var('hero')].startswith('kawaii')) == False", "[wolfitdm_image]"
     )
     yalign 1.0
     ypos 1400
