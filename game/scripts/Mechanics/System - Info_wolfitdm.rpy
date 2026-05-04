@@ -32,7 +32,7 @@ init -9000 python:
         return incest_patch_on
 
     def wolfitdm_change_style(i):
-        if i in ["hero", "hriv", "hprv", "hine", "wsis", "wnei", "wmom", "wgma", "wcou", "wpre", "wgal", "wota", "wdis", "wric", "wuza", "wlaz", "wdel", "wgot", "wdan", "wkuu", "wrin", "wsuk"]:
+        if i in wear_get_chars():
            if i == "hero":
               _wolfitdm_image = wolfitdm_image_hero
               _wolfitdm_image_style = wolfitdm_image_hero_style
@@ -59,7 +59,7 @@ init -9000 python:
 
         rewrite_check_playermap_jumps()
 
-        for i in ["hero", "hriv", "hprv", "hine", "wsis", "wnei", "wmom", "wgma", "wcou", "wpre", "wgal", "wota", "wdis", "wric", "wuza", "wlaz", "wdel", "wgot", "wdan", "wkuu", "wrin", "wsuk"]:
+        for i in wear_get_chars():
             for j in ["home", "under", "sleep", "casual", "dressy", "formal", "sport", "swim", "school", "school_swim", "school_sport", "work", "soap"]:
                 if j not in Char_Data[i]["achiev"]["wear"]:
                    Char_Data[i]["achiev"]["wear"].append(j)
@@ -98,7 +98,7 @@ init -9000 python:
             if isinstance(i, int):
                i += 10000
 
-        for i in ["hero", "hriv", "hprv", "hine", "wsis", "wnei", "wmom", "wgma", "wcou", "wpre", "wgal", "wota", "wdis", "wric", "wuza", "wlaz", "wdel", "wgot", "wdan", "wkuu", "wrin", "wsuk"]:
+        for i in wear_get_chars():
             if not i in Char_Data:
                continue
             for j in ["stat"]:
@@ -311,104 +311,13 @@ screen UI_Menu_Options_Contacts_Redefine():
                                     idle At("images/UI/OC_NONE.webp", ButtonIdle)
                                     hover At("images/UI/OC_NONE.webp", ButtonHover)
                                     action [SetVariable("a_menu_1", "none"), SetVariable("a_menu_8", 0)]
-                            imagebutton:
-                                idle At("images/UI/OC_HERO.webp", ButtonIdle)
-                                hover At("images/UI/OC_HERO.webp", ButtonHover)
-                                action [SetVariable("a_menu_1", "hero"), SetVariable("a_menu_8", 0)]
-                        if True:
-                            imagebutton:
-                                idle At("images/UI/OC_WMOM.webp", ButtonIdle)
-                                hover At("images/UI/OC_WMOM.webp", ButtonHover)
-                                action [SetVariable("a_menu_1", "wmom"), SetVariable("a_menu_8", 0)]
-                            imagebutton:
-                                idle At("images/UI/OC_WSIS.webp", ButtonIdle)
-                                hover At("images/UI/OC_WSIS.webp", ButtonHover)
-                                action [SetVariable("a_menu_1", "wsis"), SetVariable("a_menu_8", 0)]
-                            imagebutton:
-                                idle At("images/UI/OC_WNEI.webp", ButtonIdle)
-                                hover At("images/UI/OC_WNEI.webp", ButtonHover)
-                                action [SetVariable("a_menu_1", "wnei"), SetVariable("a_menu_8", 0)]
-                            if True:
-                                imagebutton:
-                                    idle At("images/UI/OC_WPRE.webp", ButtonIdle)
-                                    hover At("images/UI/OC_WPRE.webp", ButtonHover)
-                                    action [SetVariable("a_menu_1", "wpre"), SetVariable("a_menu_8", 0)]
-                            if True:
-                                    imagebutton:
-                                        idle At("images/UI/OC_WOTA.webp", ButtonIdle)
-                                        hover At("images/UI/OC_WOTA.webp", ButtonHover)
-                                        action [SetVariable("a_menu_1", "wota"), SetVariable("a_menu_8", 0)]
-                            if True:
-                                    imagebutton:
-                                        idle At("images/UI/OC_WDIS.webp", ButtonIdle)
-                                        hover At("images/UI/OC_WDIS.webp", ButtonHover)
-                                        action [SetVariable("a_menu_1", "wdis"), SetVariable("a_menu_8", 0)]
-                            if True:
-                                    imagebutton:
-                                        idle At("images/UI/OC_WGAL.webp", ButtonIdle)
-                                        hover At("images/UI/OC_WGAL.webp", ButtonHover)
-                                        action [SetVariable("a_menu_1", "wgal"), SetVariable("a_menu_8", 0)]
-                            if True:
-                                    imagebutton:
-                                        idle At("images/UI/OC_WRIC.webp", ButtonIdle)
-                                        hover At("images/UI/OC_WRIC.webp", ButtonHover)
-                                        action [SetVariable("a_menu_1", "wric"), SetVariable("a_menu_8", 0)]
-                            if True:
-                                    imagebutton:
-                                        idle At("images/UI/OC_WGOT.webp", ButtonIdle)
-                                        hover At("images/UI/OC_WGOT.webp", ButtonHover)
-                                        action [SetVariable("a_menu_1", "wgot"), SetVariable("a_menu_8", 0)]
-                            if True:
-                                    imagebutton:
-                                        idle At("images/UI/OC_WDEL.webp", ButtonIdle)
-                                        hover At("images/UI/OC_WDEL.webp", ButtonHover)
-                                        action [SetVariable("a_menu_1", "wdel"), SetVariable("a_menu_8", 0)]
-                            if True:
-                                    imagebutton:
-                                        idle At("images/UI/OC_WUZA.webp", ButtonIdle)
-                                        hover At("images/UI/OC_WUZA.webp", ButtonHover)
-                                        action [SetVariable("a_menu_1", "wuza"), SetVariable("a_menu_8", 0)]
-                            if True:
-                                    imagebutton:
-                                        idle At("images/UI/OC_WLAZ.webp", ButtonIdle)
-                                        hover At("images/UI/OC_WLAZ.webp", ButtonHover)
-                                        action [SetVariable("a_menu_1", "wlaz"), SetVariable("a_menu_8", 0)]
 
-                        if True:
-                            if True:
-                                    imagebutton:
-                                        idle At("images/UI/OC_HPRV.webp", ButtonIdle)
-                                        hover At("images/UI/OC_HPRV.webp", ButtonHover)
-                                        action [SetVariable("a_menu_1", "hprv"), SetVariable("a_menu_8", 0)]
-                            if True:
-                                    imagebutton:
-                                        idle At("images/UI/OC_HINE.webp", ButtonIdle)
-                                        hover At("images/UI/OC_HINE.webp", ButtonHover)
-                                        action [SetVariable("a_menu_1", "hine"), SetVariable("a_menu_8", 0)]
-                            if True:
-                                    imagebutton:
-                                        idle At("images/UI/OC_HRIV.webp", ButtonIdle)
-                                        hover At("images/UI/OC_HRIV.webp", ButtonHover)
-                                        action [SetVariable("a_menu_1", "hriv"), SetVariable("a_menu_8", 0)]
+                        for i in wear_get_chars():
+                            imagebutton:
+                                idle At("images/UI/OC_" + i.upper() +".webp", ButtonIdle)
+                                hover At("images/UI/OC_" + i.upper() +".webp", ButtonHover)
+                                action [SetVariable("a_menu_1", i), SetVariable("a_menu_8", 0)]
 
-                        if True:
-                            if True:
-                                imagebutton:
-                                    idle At("images/UI/OC_WCOU.webp", ButtonIdle)
-                                    hover At("images/UI/OC_WCOU.webp", ButtonHover)
-                                    action [SetVariable("a_menu_1", "wcou"), SetVariable("a_menu_8", 0)]
-
-                        if True:
-                            if True:
-                                imagebutton:
-                                    idle At("images/UI/OC_WGMA.webp", ButtonIdle)
-                                    hover At("images/UI/OC_WGMA.webp", ButtonHover)
-                                    action [SetVariable("a_menu_1", "wgma"), SetVariable("a_menu_8", 0)]
-                            if True:
-                                imagebutton:
-                                    idle At("images/UI/OC_wsuk.webp", ButtonIdle)
-                                    hover At("images/UI/OC_wsuk.webp", ButtonHover)
-                                    action [SetVariable("a_menu_1", "wsuk"), SetVariable("a_menu_8", 0)]
                     vbar value YScrollValue("ScrollOCButton")
 
                 vbox:
@@ -617,7 +526,7 @@ label wolfitdm_inputcheat_exec(cheatvar,messagesoff):
 
         elif cheatvar == outfits:
 
-           for i in ["hero", "hriv", "hprv", "hine", "wsis", "wnei", "wmom", "wgma", "wcou", "wpre", "wgal", "wota", "wdis", "wric", "wuza", "wlaz", "wdel", "wgot", "wdan", "wkuu", "wrin", "wsuk"]:
+           for i in wear_get_chars():
                for j in ["home", "under", "sleep", "casual", "dressy", "formal", "sport", "swim", "school", "school_swim", "school_sport", "work", "soap"]:
                    if j not in Char_Data[i]["achiev"]["wear"]:
                       Char_Data[i]["achiev"]["wear"].append(j)
@@ -840,7 +749,7 @@ label wolfitdm_inputcheat_exec(cheatvar,messagesoff):
         $ menu_items = []
         python:
             menu_items = []
-            for i in ["hero", "hriv", "hprv", "hine", "wsis", "wnei", "wmom", "wgma", "wcou", "wpre", "wgal", "wota", "wdis", "wric", "wuza", "wlaz", "wdel", "wgot", "wdan", "wkuu", "wrin", "wsuk"]:
+            for i in wear_get_chars():
                 if i == "hero":
                    _wolfitdm_image = wolfitdm_image_hero
                    _wolfitdm_image_style = wolfitdm_image_hero_style

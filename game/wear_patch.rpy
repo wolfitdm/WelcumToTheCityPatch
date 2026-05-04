@@ -10,6 +10,12 @@ default a_menu_8 = 0
 
 default wolfitdm_hero_name = "hero"
 
+init -100000 python:
+    def wear_get_chars():
+        hero_chars = ["hero", "wmom", "wsis", "wnei", "wpre", "wota", "wdis", "wgal", "wric", "wgot", "wdel", "wuza", "wlaz", "hprv", "hine", "hriv", "wcou", "wgma", "wsuk", "wdan", "wkuu", "wrin"]
+        # hero_chars.extend(["wemo","wido","wtec","wnem","wahu","hbul","hfem","whip","wfat","hbla","hfre","wtpe"])
+        return hero_chars
+
 init -1000 python:
     def wear_test_head(part, name):
         test_string = "kawaii_" + name
@@ -55,7 +61,7 @@ init -1000 python:
            Cur_Wear[i]["wear_string"] = None
 
     def update_wear_vars():
-        for i in ["hero", "hriv", "hprv", "hine", "wsis", "wnei", "wmom", "wgma", "wcou", "wpre", "wgal", "wota", "wdis", "wric", "wuza", "wlaz", "wdel", "wgot", "wdan", "wkuu", "wrin", "wsuk"]:
+        for i in wear_get_chars():
             init_cur_wear(i)
             init_char_data_wear(i)
             if not Cur_Wear[i]["wear_string"] == None:
