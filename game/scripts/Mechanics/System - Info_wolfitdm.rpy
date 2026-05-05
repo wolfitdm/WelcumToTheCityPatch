@@ -19,6 +19,26 @@ default wolfitdm_image_style = "HERO STYLE DEFAULT"
 
 default wolfitdm_full_nudist = False
 
+default transform_incest_patch = False
+
+default wolfitdm_hero_talk_gender = "brother"
+
+default wolfitdm_hero_talk_gender_wsis = "Big Bro"
+
+default wolfitdm_hero_talk_gender2 = "Brother"
+
+default wolfitdm_hero_talk_gender_male = "brother"
+
+default wolfitdm_hero_talk_gender_wsis_male = "Big Bro"
+
+default wolfitdm_hero_talk_gender2_male = "Brother"
+
+default wolfitdm_hero_talk_gender_female = "brother"
+
+default wolfitdm_hero_talk_gender_wsis_female = "Big Sis"
+
+default wolfitdm_hero_talk_gender2_female = "Sister"
+
 init -9000 python:
     def rewrite_check_playermap_jumps():
         if check_playermap_var:
@@ -30,6 +50,84 @@ init -9000 python:
 
     def get_incest_patch_on():
         return incest_patch_on
+
+    def wolfitdm_change_gender(m2f, messagesoff):
+        if m2f:
+           transform_incest_patch = True
+           store.transform_incest_patch = True
+           wolfitdm_hero_talk_gender = wolfitdm_hero_talk_gender_female
+           store.wolfitdm_hero_talk_gender = store.wolfitdm_hero_talk_gender_female
+           wolfitdm_hero_talk_gender_wsis = wolfitdm_hero_talk_gender_wsis_female
+           store.wolfitdm_hero_talk_gender_wsis = store.wolfitdm_hero_talk_gender_wsis_female
+           wolfitdm_hero_talk_gender2 = wolfitdm_hero_talk_gender2_female
+           store.wolfitdm_hero_talk_gender2 = store.wolfitdm_hero_talk_gender2_female
+ 
+           if messagesoff:
+              return
+
+           msg.msg("change gender from male to female")
+        else:
+           transform_incest_patch = False
+           store.transform_incest_patch = False
+           wolfitdm_hero_talk_gender = wolfitdm_hero_talk_gender_male
+           store.wolfitdm_hero_talk_gender = store.wolfitdm_hero_talk_gender_male
+           wolfitdm_hero_talk_gender_wsis = wolfitdm_hero_talk_gender_wsis_male
+           store.wolfitdm_hero_talk_gender_wsis = store.wolfitdm_hero_talk_gender_wsis_male
+           wolfitdm_hero_talk_gender2 = wolfitdm_hero_talk_gender2_male
+           store.wolfitdm_hero_talk_gender2 = store.wolfitdm_hero_talk_gender2_male
+
+           if messagesoff:
+              return
+
+           msg.msg("change gender from female to male")
+
+    def wolfitdm_change_gender_menu(messagesoff):
+        menu_items = []
+
+        menu_items.append(("male -> female", True))
+        menu_items.append(("female -> male", False))
+        
+        choice = renpy.display_menu(menu_items)
+
+        wolfitdm_change_gender(choice, messagesoff)
+
+    def wolfitdm_change_gender_menu_new():
+        renpy.invoke_in_new_context(wolfitdm_change_gender_menu, False)
+
+    def wolfitdm_change_outfits_all_menu(messagesoff):
+        menu_items = []
+
+        for i in wear_get_clothes():
+            menu_items.append((i, i))
+        
+        choice_cloth = renpy.display_menu(menu_items)
+
+        for i in wear_get_chars():
+            for j in wear_get_clothes():
+                if j not in Char_Data[i]["achiev"]["wear"]:
+                   Char_Data[i]["achiev"]["wear"].append(j)
+
+        for i in ["hero"]:
+            if "my_kawaii_character" in Char_Data[i]["achiev"]["wear"]:
+               Char_Data[i]["achiev"]["wear"].remove("my_kawaii_character")
+
+            for j in wear_kawaii_get_clothes():
+                if j not in Char_Data[i]["achiev"]["wear"]:
+                   Char_Data[i]["achiev"]["wear"].append(j)
+
+        for i in wear_get_chars():
+            for j, cloth in enumerate(Char_Data[i]["achiev"]["wear"]):
+                if cloth == choice_cloth:
+                   set_wear_var(i, j)
+                   continue
+
+        if messagesoff:
+           return
+        
+        msg.msg("change clothes from all chars to " + choice_cloth)
+
+    def wolfitdm_change_outfits_all_menu_new():
+        renpy.invoke_in_new_context(wolfitdm_change_outfits_all_menu, False)
 
     def wolfitdm_change_style(i):
         if i in wear_get_chars():
@@ -46,7 +144,7 @@ init -9000 python:
 
            msg.msg("Style changed to " + i)
 
-    def wolfitdm_best_cheats():
+    def wolfitdm_best_cheats(messagesoff):
         preferences.cheatmode = True
         preferences.codecheatuse = preferences.codecheat
         incest_patch_on = True
@@ -60,7 +158,7 @@ init -9000 python:
         rewrite_check_playermap_jumps()
 
         for i in wear_get_chars():
-            for j in ["home", "under", "sleep", "casual", "dressy", "formal", "sport", "swim", "school", "school_swim", "school_sport", "work", "soap"]:
+            for j in wear_get_clothes():
                 if j not in Char_Data[i]["achiev"]["wear"]:
                    Char_Data[i]["achiev"]["wear"].append(j)
 
@@ -68,8 +166,7 @@ init -9000 python:
             if "my_kawaii_character" in Char_Data[i]["achiev"]["wear"]:
                Char_Data[i]["achiev"]["wear"].remove("my_kawaii_character")
 
-            for j in ["home", "under", "sleep", "casual", "dressy", "formal", "sport", "swim", "school", "school_swim", "school_sport", "work", "soap"]:
-                j = "kawaii_" + j
+            for j in wear_kawaii_get_clothes():
                 if j not in Char_Data[i]["achiev"]["wear"]:
                    Char_Data[i]["achiev"]["wear"].append(j)
 
@@ -81,9 +178,17 @@ init -9000 python:
            cellbg.insert(1, "KCC2")
            cellbg.insert(1, "KCC1")
 
+        if messagesoff:
+           return
+
+        msg.msg("Incest Patch On")
+        msg.msg("nudist/fullnudist on")
+        msg.msg("kcc code executed")
+        msg.msg("Cheat Mode Enabled")
+        msg.msg("All Outfits added")
         msg.msg("Best Cheats Executed")
 
-    def wolfitdm_give_me_all():
+    def wolfitdm_give_me_all(messagesoff):
         for i in [stat_cha, stat_int, stat_phy, perk]:
             if i == None:
                continue
@@ -112,6 +217,9 @@ init -9000 python:
                    else:
                       Char_Data[i][j][k] += 10000
 
+        if messagesoff:
+           return
+
         msg.msg("500 charisma to all chars added")
         msg.msg("500 Intelligence to all chars added")
         msg.msg("500 Physics to all chars added")
@@ -120,6 +228,407 @@ init -9000 python:
         msg.msg("10000 money to all chars added")
         msg.msg("Give Me All Cheat Executed")
 
+    def wolfitdm_cheat_menu(cheatvar,messagesoff):
+
+        wolfitdm_return = False
+
+        if cheatvar == "":
+           cheatvar = "cheatmenu"
+
+        givemeall = "givemeall"
+        kcc_code = "DpBnD"
+        codecheat = "Taj0T"
+        codecheat2 = "TajOT"
+        outfits = "outfits"
+        kawaii = "kawaii"
+        show_code = "show"
+        show_code2 = "show2"
+        gettheme = "gettheme"
+        guide = "guide"
+        guide2 = "Guide"
+        guide3 = "GUIDE"
+        changeimg = "changeimg"
+        nudist = "nudist"
+        nonudist = "nonudist"
+        incest = "incest"
+        noincest = "noincest"
+        inceststatus = "inceststatus"
+        nudiststatus = "nudiststatus"
+        fullnudist = "fullnudist"
+        nofullnudist = "nofullnudist"
+        changestyle = "changestyle"
+        best = "best"
+        changegender = "changegender"
+        changeoutfitsall = "changeoutfitsall"
+
+        cheat_codes = [givemeall,kcc_code,codecheat,codecheat2,outfits,kawaii,show_code,show_code2,gettheme,guide,guide2,guide3,changeimg,nudist,nonudist,incest,noincest,inceststatus,nudiststatus,changestyle,fullnudist,nofullnudist,best,changegender,changeoutfitsall]
+
+        if cheatvar == "cheatmenu":
+
+           menu_items = []
+
+           for i in cheat_codes:
+               menu_items.append((i, i))
+
+           menu_items.append(("Return (No Cheat Code Executed)", "nocode"))
+
+           cheatvar = renpy.display_menu(menu_items)  
+
+        if cheatvar == changeoutfitsall:
+
+           wolfitdm_change_outfits_all_menu(messagesoff)      
+
+        elif cheatvar == changegender:
+           
+           wolfitdm_change_gender_menu(messagesoff)
+
+        elif cheatvar == best:
+
+           wolfitdm_best_cheats(messagesoff)
+
+        elif cheatvar == givemeall:
+
+           wolfitdm_give_me_all(messagesoff)
+
+        elif cheatvar == outfits:
+
+           for i in wear_get_chars():
+               for j in wear_get_clothes():
+                   if j not in Char_Data[i]["achiev"]["wear"]:
+                      Char_Data[i]["achiev"]["wear"].append(j)
+
+           for i in ["hero"]:
+               if "my_kawaii_character" in Char_Data[i]["achiev"]["wear"]:
+                   Char_Data[i]["achiev"]["wear"].remove("my_kawaii_character")
+
+               for j in wear_kawaii_get_clothes():
+                   if j not in Char_Data[i]["achiev"]["wear"]:
+                      Char_Data[i]["achiev"]["wear"].append(j)
+
+           if messagesoff:
+              wolfitdm_return = True
+
+           if not wolfitdm_return:
+              msg.msg("All outfits added")
+
+        elif cheatvar == kawaii:   
+
+           if not wear_all_chars_init:
+              wear_get_chars()
+
+           for i in ["hero"]:
+
+               if "my_kawaii_character" in Char_Data[i]["achiev"]["wear"]:
+                  Char_Data[i]["achiev"]["wear"].remove("my_kawaii_character")
+
+               for j in wear_kawaii_get_clothes():
+                   if j not in Char_Data[i]["achiev"]["wear"]:
+                      Char_Data[i]["achiev"]["wear"].append(j)
+
+           if messagesoff:
+              wolfitdm_return = True
+
+           if not wolfitdm_return:
+              msg.msg("kawaii outfit added")
+
+        elif cheatvar == nudist:
+
+           check_playermap_var = True
+           store.check_playermap_var = True
+
+           rewrite_check_playermap_jumps()
+
+           if messagesoff:
+              wolfitdm_return = True
+
+           if not wolfitdm_return:
+              msg.msg("clothes checks off")
+
+        elif cheatvar == nonudist:
+
+           check_playermap_var = False
+           store.check_playermap_var = False
+
+           rewrite_check_playermap_jumps()
+
+           if messagesoff:
+              wolfitdm_return = True
+
+           if not wolfitdm_return:
+              msg.msg("clothes checks off")
+
+        elif cheatvar == incest:
+
+           incest_patch_on = True
+           store.incest_patch_on = True
+
+           if messagesoff:
+              wolfitdm_return = True
+
+           if not wolfitdm_return:
+              msg.msg("incest on")
+
+        elif cheatvar == noincest:
+
+           incest_patch_on = False
+           store.incest_patch_on = False
+
+           if messagesoff:
+              wolfitdm_return = True
+
+           if not wolfitdm_return:
+              msg.msg("incest off")
+
+        elif cheatvar == fullnudist:
+
+           wolfitdm_full_nudist = True
+           store.wolfitdm_full_nudist = True
+
+           if messagesoff:
+              wolfitdm_return = True
+
+           if not wolfitdm_return:
+              msg.msg("fullnudist on")
+
+        elif cheatvar == nofullnudist:
+
+           wolfitdm_full_nudist = False
+           store.wolfitdm_full_nudist = False
+
+           if messagesoff:
+              wolfitdm_return = True
+
+           if not wolfitdm_return:
+              msg.msg("fullnudist off")
+
+        elif cheatvar == show_code:
+
+           if messagesoff:
+              wolfitdm_return = True
+
+           if not wolfitdm_return:
+
+              msg.msg("Give Me All code: givemeall")
+              msg.msg("kawaii outfit: kawaii")
+              msg.msg("All outfits code: outfits")
+              msg.msg("Change Style: changestyle")
+              msg.msg("fullnudist: fullnudist on")
+              msg.msg("nofullnudist: fullnudist off")
+              msg.msg("changegender: change gender")
+              msg.msg("cheatmenu: cheat menu")
+              msg.msg("changeall: change all")
+              msg.msg("guide code: guide")
+              msg.msg("kawaii code editor code (kcc_code): [kcc_code]")
+              msg.msg("Show All Codes 1: show")
+              msg.msg("Show All Codes 2: show2")
+
+        elif cheatvar == show_code2:
+
+           if messagesoff:
+              wolfitdm_return = True
+
+           if not wolfitdm_return:
+
+              msg.msg("cheat mode code: [codecheat]")
+              msg.msg("cheat mode code: [codecheat2]")
+              msg.msg("events code: gettheme")
+              msg.msg("more images code: changeimg")
+              msg.msg("clothes checks off code: nudist")
+              msg.msg("clothes checks on code: nonudist")
+              msg.msg("incest on code: incest")
+              msg.msg("noincest: noincest")
+              msg.msg("best: nudist,outfits,kcc,incest,cheatmode")
+              msg.msg("inceststatus: incest status")
+              msg.msg("nudiststatus: nudist status")
+
+        elif cheatvar == inceststatus:
+           if messagesoff:
+              wolfitdm_return = True
+
+           if not wolfitdm_return:
+              if get_incest_patch_on():
+                 msg.msg("incest: on")
+              else:
+                 msg.msg("incest: off")
+
+        elif cheatvar == nudiststatus:
+
+           if messagesoff:
+              wolfitdm_return = True
+
+           if not wolfitdm_return:
+              if check_playermap_var:
+                 msg.msg("nudist: on")
+              else:
+                 msg.msg("nudist: off")
+
+              if wolfitdm_full_nudist:
+                 msg.msg("fullnudist: on")
+              else:
+                 msg.msg("fullnudist: off")
+
+        elif cheatvar == guide or cheatvar == guide2 or cheatvar == guide3:
+
+            if messagesoff:
+               return
+
+            renpy.jump("UI_Menu_Guide_Code")
+
+        elif cheatvar == codecheat or cheatvar == codecheat2:
+
+            if preferences.cheatmode == False:
+
+               preferences.cheatmode = True
+               preferences.codecheatuse = preferences.codecheat
+
+               if messagesoff:
+                  return
+
+               msg.msg("Cheat Enabled")
+
+            else:
+
+               if messagesoff:
+                  return
+
+               msg.msg("This code is already activated")
+
+        elif cheatvar == gettheme:
+
+            if messagesoff:
+               return
+
+            menu_items = []
+
+            for i in ["Common", "Halloween", "Christmas"]:
+
+                if i == "Christmas":
+                   menu_items.append((i, "XMAS"))
+                else:
+                   menu_items.append((i, i))
+
+            choice = renpy.display_menu(menu_items)
+
+            if choice == "Common":
+               choice = None
+
+            preferences.gametimeevent = choice
+            store.preferences.gametimeevent = choice
+
+        elif cheatvar == changestyle:
+
+            if messagesoff:
+               return
+
+            menu_items = []
+
+            for i in wear_get_chars():
+                if i == "hero":
+                   _wolfitdm_menu_entry = "DEFAULT: "
+                else:
+                   _wolfitdm_menu_entry = i.upper() + ": "
+                
+                fname = "UNKNOWN"
+                lname = "UNKNOWN"
+
+                if hasattr(store, f"fname{i}"):
+                   fname = str(getattr(store, f"fname{i}"))
+
+                if hasattr(store, f"lname{i}"):
+                   lname = str(getattr(store, f"lname{i}"))
+                elif i in ["wsis", "wmom"]:
+                   if hasattr(store, f"lnamestep"):
+                      lname = str(getattr(store, f"lnamestep"))
+                elif i in ["wcou", "wgma"]:
+                   if hasattr(store, f"lnamerela"):
+                      lname = str(getattr(store, f"lnamerela"))
+
+                _wolfitdm_menu_entry = _wolfitdm_menu_entry + fname + " " + lname
+
+                menu_items.append((_wolfitdm_menu_entry, i))
+
+            choice = renpy.display_menu(menu_items)
+
+            wolfitdm_change_style(choice)
+
+        elif cheatvar == kcc_code:
+
+            if not "KCC1" in cellbg:
+               cellbg.insert(1, "KCC6")
+               cellbg.insert(1, "KCC5")
+               cellbg.insert(1, "KCC4")
+               cellbg.insert(1, "KCC3")
+               cellbg.insert(1, "KCC2")
+               cellbg.insert(1, "KCC1")
+
+               if messagesoff:
+                  return
+
+               msg.msg("New photos added to phone Gallery")
+
+            else:
+
+               if messagesoff:
+                  return
+
+               msg.msg("This code is already activated")
+
+        elif cheatvar == changeimg:
+
+            if ("KCC1" in cellbg or "KCC1AI" in cellbg):
+               if "KCC1" in cellbg:
+                  cellbg[cellbg.index("KCC1")] = "KCC1AI"
+                  cellbg[cellbg.index("KCC2")] = "KCC2AI"
+                  cellbg[cellbg.index("KCC3")] = "KCC3AI"
+                  cellbg[cellbg.index("KCC4")] = "KCC4AI"
+                  cellbg[cellbg.index("KCC5")] = "KCC5AI"
+                  cellbg[cellbg.index("KCC6")] = "KCC6AI"
+           
+                  if messagesoff:
+                     return
+
+                  msg.msg("Arts changed to AI generated images")
+               elif "KCC1AI" in cellbg:
+                  cellbg[cellbg.index("KCC1AI")] = "KCC1"
+                  cellbg[cellbg.index("KCC2AI")] = "KCC2"
+                  cellbg[cellbg.index("KCC3AI")] = "KCC3"
+                  cellbg[cellbg.index("KCC4AI")] = "KCC4"
+                  cellbg[cellbg.index("KCC5AI")] = "KCC5"
+                  cellbg[cellbg.index("KCC6AI")] = "KCC6"
+
+                  if messagesoff:
+                     return
+
+                  msg.msg("AI generated images changed to arts")
+            else:
+
+               if messagesoff:
+                  return
+
+               msg.msg("You need to activate the KCC code first")
+        else:
+            if messagesoff:
+               return
+
+            msg.msg("No code was found")
+
+        return
+
+    def wolfitdm_cheat_menu_new():
+        renpy.invoke_in_new_context(wolfitdm_cheat_menu, "cheatmenu", False)
+
+    def wolfitdm_incest_off():
+        incest_patch_on = False
+        store.incest_patch_on = False
+        msg.msg("Incest Patch Off")
+
+    def wolfitdm_nudist_off():
+        check_playermap_var = False
+        store.check_playermap_var = False
+        wolfitdm_full_nudist = False
+        store.wolfitdm_full_nudist = False
+        rewrite_check_playermap_jumps()
+        msg.msg("nudist/fullnudist off")
 
 screen UI_Menu_Options():
     frame:
@@ -305,6 +814,21 @@ screen UI_Menu_Options_Contacts_Redefine():
                         xoffset 20
                         spacing 25
                         cols 1
+                        imagebutton:
+                            idle At("images/UI/SUBMENU_Option_Cheats.png", ButtonIdle)
+                            hover At("images/UI/SUBMENU_Option_Cheats.png", ButtonHover)
+                            action [Function(wolfitdm_cheat_menu_new)]
+
+                        imagebutton:
+                            idle At("images/UI/SUBMENU_Option_Gender.png", ButtonIdle)
+                            hover At("images/UI/SUBMENU_Option_Gender.png", ButtonHover)
+                            action [Function(wolfitdm_change_gender_menu_new)]
+
+                        imagebutton:
+                            idle At("images/UI/SUBMENU_Option_ChangeOutfitsAll.png", ButtonIdle)
+                            hover At("images/UI/SUBMENU_Option_ChangeOutfitsAll.png", ButtonHover)
+                            action [Function(wolfitdm_change_outfits_all_menu_new)]
+
                         if True:
                             if gametimeday >= 2:
                                 imagebutton:
@@ -337,106 +861,42 @@ screen UI_Menu_Options_Contacts_Redefine():
                         imagebutton:
                             idle At("images/UI/SUBMENU_Option_Best_Cheats.png", ButtonIdle)
                             hover At("images/UI/SUBMENU_Option_Best_Cheats.png", ButtonHover)
-                            action Function(wolfitdm_best_cheats)
-                        imagebutton:
-                            idle At("images/UI/QUICK_Time.webp", ButtonIdle)
-                            hover At("images/UI/QUICK_Time.webp", ButtonHover)
-                            action SetVariable("a_menu_4", 3)
+                            action Function(wolfitdm_best_cheats, False)
                         imagebutton:
                             idle At("images/UI/SUBMENU_Option_GiveMeAll.png", ButtonIdle)
                             hover At("images/UI/SUBMENU_Option_GiveMeAll.png", ButtonHover)
-                            action Function(wolfitdm_give_me_all)
+                            action Function(wolfitdm_give_me_all, False)
                         imagebutton:
-                            idle At("images/UI/SUBMENU_Option_Stat.webp", ButtonIdle)
-                            hover At("images/UI/SUBMENU_Option_Stat.webp", ButtonHover)
-                            action SetVariable("a_menu_4", 0)
+                            idle At("images/UI/SUBMENU_Option_IncestOff.png", ButtonIdle)
+                            hover At("images/UI/SUBMENU_Option_IncestOff.png", ButtonHover)
+                            action Function(wolfitdm_incest_off)
                         imagebutton:
-                            idle At("images/UI/SUBMENU_Option_Quest.webp", ButtonIdle)
-                            hover At("images/UI/SUBMENU_Option_Quest.webp", ButtonHover)
-                            action SetVariable("a_menu_4", 2)
+                            idle At("images/UI/SUBMENU_Option_NudistOff.png", ButtonIdle)
+                            hover At("images/UI/SUBMENU_Option_NudistOff.png", ButtonHover)
+                            action Function(wolfitdm_nudist_off)
 
                     vbox:
                         xalign 0.5
                         yalign 0.0
-                        spacing 25
+                        spacing 10
 
-                        if a_menu_4 == 0 and a_menu_1 not in ["none"]:
-                            frame:
-                                side ("c r"):
-                                    area (25, 0, 850, 800)
-                                    viewport id "Scroll_Database":
-                                        draggable True mousewheel True
-                                        vbox:
-                                                text _p("""{size=40}
-                                                            {b}No Data{/b}
-                                                            {/size}""")
-                                    vbar value YScrollValue("Scroll_Database")
-                            null height 20 #just a height set.
-                        elif a_menu_4 == 0 and a_menu_1 == "none":
-                            frame:
-                                side ("c r"):
-                                    area (25, 0, 850, 800)
-                                    viewport id "Scroll_Database":
-                                        draggable True mousewheel True
-                                        vbox:
-                                                text _p("""{size=40}
-                                                            {b}No Data{/b}
-                                                            {/size}""")
-                                    vbar value YScrollValue("Scroll_Database")
-                            null height 20 #just a height set.
-                        elif a_menu_4 == 1:
-                            frame:
-                                side ("c r"):
-                                    area (25, 0, 850, 800)
-                                    viewport id "Scroll_Database":
-                                        draggable True mousewheel True
-                                        vbox:
-                                                text _p("""{size=40}
-                                                            {b}No Data{/b}
-                                                            {/size}""")
-                                    vbar value YScrollValue("Scroll_Database")
-                            null height 20 #just a height set.
-
-                        elif a_menu_4 == 2:
-                            vbox:
-                                xalign 0.0
-                                yalign 0.0
-                                spacing 10
-                                vbox:
-                                    xalign 0.5
-                                    label "Content Progress"
-                                    vbox:
-                                        xalign 0.5
-                                        bar value 1 range 1 xmaximum 650
-                                text ""
-                                frame:
-                                    background "gui/game_menu.webp"
-                                    side ("c r"):
-                                        area (25, 0, 850, 650)
-                                        viewport id "ScrollContent":
-                                            draggable True mousewheel True
-
-                                            vbox:
-                                                xalign 0.0
-                                                yalign 0.0
-                                                spacing 15
-                                                vbox:
-                                                     xalign 0.5
-                                                     label "{p}Unavailable Content" xalign 0.5
-                                                     text "Oops. No data available for this character in the current game version." xalign 0.5
-                                        vbar value YScrollValue("ScrollContent")
-
-                        elif a_menu_4 == 3 and a_menu_1 not in  ["none"]:
+                        if True:
                             side ("c r"):
                                 area (25, 0, 1000, 850)
-                                viewport id "Scroll_Schedule":
-                                    draggable True mousewheel True
+                                viewport id "ScrollOCData":
+                                    draggable True mousewheel True xoffset -10
                                     vbox:
                                         spacing 10
-                                        text "{b}Map:{/b} " + str(Char_Data[a_menu_1]["map"])
-                                        text "{b}Wear:{/b} " + str(Char_Data[a_menu_1]["wear"])
-                                vbar value YScrollValue("Scroll_Schedule")
-
+                                        if not a_menu_1 in ["none"]: 
+                                           text "{b}Name:{/b} " + str(a_menu_1)
+                                           text "{b}Map:{/b} " + str(Char_Data[a_menu_1]["map"])
+                                           text "{b}Wear:{/b} " + str(Char_Data[a_menu_1]["wear"])
+                                           if a_menu_1 == "hero":
+                                              if transform_incest_patch:
+                                                 text "{b}Gender:{/b} Female"
+                                              else:
+                                                 text "{b}Gender:{/b} Male"                                             
+                                vbar value YScrollValue("ScrollOCData")
 
 
 label UI_Menu_Options_Contacts_Redefine:
@@ -451,388 +911,8 @@ label UI_Menu_Options_Contacts_Redefine:
     jump show_ui
 
 label wolfitdm_inputcheat:
-    $ cheatvar = renpy.input("Input a code. To show all codes, type [C_Dat]show[C_Off] or type nothing and press enter", length=12)
+    $ cheatvar = renpy.input("Input a code. To show all codes, type [C_Dat]cheatmenu[C_Off] or type nothing and press enter", length=12)
 
-    if cheatvar == "best":
-       $ wolfitdm_best_cheats()
-       call wolfitdm_inputcheat_exec("nudist",False)
-       call wolfitdm_inputcheat_exec("incest",False)
-       call wolfitdm_inputcheat_exec("DpBnD",False)
-       call wolfitdm_inputcheat_exec("Taj0T",False)
-       call wolfitdm_inputcheat_exec("outfits",False)
-       call wolfitdm_inputcheat_exec("fullnudist",False)
-    else:
-       call wolfitdm_inputcheat_exec(cheatvar,False)
+    $ wolfitdm_cheat_menu(cheatvar, False)
 
     jump UI_Menu_Options
-
-label wolfitdm_inputcheat_exec(cheatvar,messagesoff):
-    if cheatvar == "":
-       $ cheatvar = "show"
-
-    $ wolfitdm_return = False
-
-    python:
-        givemeall = "givemeall"
-        kcc_code = "DpBnD"
-        codecheat = "Taj0T"
-        codecheat2 = "TajOT"
-        outfits = "outfits"
-        kawaii = "kawaii"
-        show_code = "show"
-        show_code2 = "show2"
-        gettheme = "gettheme"
-        guide = "guide"
-        guide2 = "Guide"
-        guide3 = "GUIDE"
-        changeimg = "changeimg"
-        nudist = "nudist"
-        nonudist = "nonudist"
-        incest = "incest"
-        noincest = "noincest"
-        inceststatus = "inceststatus"
-        nudiststatus = "nudiststatus"
-        fullnudist = "fullnudist"
-        nofullnudist = "nofullnudist"
-        changestyle = "changestyle"
-
-        cheat_codes = [givemeall,kcc_code,codecheat,codecheat2,outfits,kawaii,show_code,show_code2,gettheme,guide,guide2,guide3,changeimg,nudist,nonudist,incest,noincest,inceststatus,nudiststatus,changestyle,fullnudist,nofullnudist]
-
-        if cheatvar == givemeall:
-
-           stat_cha += 500
-           stat_int += 500
-           stat_phy += 500
-           perk += 500
-           money += 10000
-           Char_Data["hero"]["stat"]["int"] += 500
-           Char_Data["hero"]["stat"]["cha"] += 500
-           Char_Data["hero"]["stat"]["phy"] += 500
-           Char_Data["hero"]["stat"]["ene"] += 500
-           Char_Data["hero"]["stat"]["hyg"] += 500
-           Char_Data["hero"]["stat"]["eat"] += 500
-           Char_Data["hero"]["stat"]["lust"] += 500
-           Char_Data["hero"]["stat"]["money"] += 10000
-
-           if messagesoff:
-              wolfitdm_return = True
-
-           if not wolfitdm_return:
-              msg.msg("500 charisma added")
-              msg.msg("500 Intelligence added")
-              msg.msg("500 Physics added")
-              msg.msg("500 Perks added")
-              msg.msg("10000 money added")
-
-        elif cheatvar == outfits:
-
-           for i in wear_get_chars():
-               for j in ["home", "under", "sleep", "casual", "dressy", "formal", "sport", "swim", "school", "school_swim", "school_sport", "work", "soap"]:
-                   if j not in Char_Data[i]["achiev"]["wear"]:
-                      Char_Data[i]["achiev"]["wear"].append(j)
-
-           for i in ["hero"]:
-               if "my_kawaii_character" in Char_Data[i]["achiev"]["wear"]:
-                   Char_Data[i]["achiev"]["wear"].remove("my_kawaii_character")
-
-               for j in ["home", "under", "sleep", "casual", "dressy", "formal", "sport", "swim", "school", "school_swim", "school_sport", "work", "soap"]:
-                   j = "kawaii_" + j
-                   if j not in Char_Data[i]["achiev"]["wear"]:
-                      Char_Data[i]["achiev"]["wear"].append(j)
-
-           if messagesoff:
-              wolfitdm_return = True
-
-           if not wolfitdm_return:
-              msg.msg("All outfits added")
-
-        elif cheatvar == kawaii:
-
-           if "my_kawaii_character" in Char_Data[i]["achiev"]["wear"]:
-              Char_Data[i]["achiev"]["wear"].remove("my_kawaii_character")
-   
-           for i in ["hero"]:
-               for j in ["home", "under", "sleep", "casual", "dressy", "formal", "sport", "swim", "school", "school_swim", "school_sport", "work", "soap"]:
-                   j = "kawaii_" + j
-                   if j not in Char_Data[i]["achiev"]["wear"]:
-                      Char_Data[i]["achiev"]["wear"].append(j)
-
-           if messagesoff:
-              wolfitdm_return = True
-
-           if not wolfitdm_return:
-              msg.msg("kawaii outfit added")
-
-        elif cheatvar == "nudist":
-
-           check_playermap_var = True
-           store.check_playermap_var = True
-
-           rewrite_check_playermap_jumps()
-
-           if messagesoff:
-              wolfitdm_return = True
-
-           if not wolfitdm_return:
-              msg.msg("clothes checks off")
-
-        elif cheatvar == "nonudist":
-
-           check_playermap_var = False
-           store.check_playermap_var = False
-
-           rewrite_check_playermap_jumps()
-
-           if messagesoff:
-              wolfitdm_return = True
-
-           if not wolfitdm_return:
-              msg.msg("clothes checks off")
-
-        elif cheatvar == "incest":
-
-           incest_patch_on = True
-           store.incest_patch_on = True
-
-           if messagesoff:
-              wolfitdm_return = True
-
-           if not wolfitdm_return:
-              msg.msg("incest on")
-
-        elif cheatvar == "noincest":
-
-           incest_patch_on = False
-           store.incest_patch_on = False
-
-           if messagesoff:
-              wolfitdm_return = True
-
-           if not wolfitdm_return:
-              msg.msg("incest off")
-
-        elif cheatvar == "fullnudist":
-
-           wolfitdm_full_nudist = True
-           store.wolfitdm_full_nudist = True
-
-           if messagesoff:
-              wolfitdm_return = True
-
-           if not wolfitdm_return:
-              msg.msg("fullnudist on")
-
-        elif cheatvar == "nofullnudist":
-
-           wolfitdm_full_nudist = False
-           store.wolfitdm_full_nudist = False
-
-           if messagesoff:
-              wolfitdm_return = True
-
-           if not wolfitdm_return:
-              msg.msg("fullnudist off")
-
-        elif cheatvar == show_code:
-
-           if messagesoff:
-              wolfitdm_return = True
-
-           if not wolfitdm_return:
-              msg.msg("Give Me All code: givemeall")
-              msg.msg("kawaii outfit: kawaii")
-              msg.msg("All outfits code: outfits")
-              msg.msg("Change Style: changestyle")
-              msg.msg("fullnudist: fullnudist on")
-              msg.msg("nofullnudist: fullnudist off")
-              msg.msg("guide code: guide")
-              msg.msg("kawaii code editor code (kcc_code): [kcc_code]")
-              msg.msg("Show All Codes 1: show")
-              msg.msg("Show All Codes 2: show2")
-
-        elif cheatvar == show_code2:
-
-           if messagesoff:
-              wolfitdm_return = True
-
-           if not wolfitdm_return:
-              msg.msg("cheat mode code: [codecheat]")
-              msg.msg("cheat mode code: [codecheat2]")
-              msg.msg("events code: gettheme")
-              msg.msg("more images code: changeimg")
-              msg.msg("clothes checks off code: nudist")
-              msg.msg("clothes checks on code: nonudist")
-              msg.msg("incest on code: incest")
-              msg.msg("noincest: noincest")
-              msg.msg("best: nudist,outfits,kcc,incest,cheatmode")
-              msg.msg("inceststatus: incest status")
-              msg.msg("nudiststatus: nudist status")
-
-        elif cheatvar == inceststatus:
-
-           if messagesoff:
-              wolfitdm_return = True
-
-           if not wolfitdm_return:
-              if get_incest_patch_on():
-                 msg.msg("incest: on")
-              else:
-                 msg.msg("incest: off")
-        elif cheatvar == nudiststatus:
-
-           if messagesoff:
-              wolfitdm_return = True
-
-           if not wolfitdm_return:
-              if check_playermap_var:
-                 msg.msg("nudist: on")
-              else:
-                 msg.msg("nudist: off")
-
-              if wolfitdm_full_nudist:
-                 msg.msg("fullnudist: on")
-              else:
-                 msg.msg("fullnudist: off")
-
-    if wolfitdm_return:
-       return
-
-    if not cheatvar in cheat_codes:
-
-       if messagesoff:
-          return
-
-       play SE1 "BeepWrong.ogg"
-       $ msg.msg("No code was found")
-       $ cheatvar = ""
-
-    if cheatvar == guide or cheatvar == guide2 or cheatvar == guide3:
-
-       if messagesoff:
-          return
-
-       jump UI_Menu_Guide_Code
-    
-    if cheatvar == codecheat or cheatvar == codecheat2:
-        if preferences.cheatmode == False:
-            $ preferences.cheatmode = True
-            $ preferences.codecheatuse = preferences.codecheat
-
-            if messagesoff:
-              return
-
-            play SE1 "BeepRight.ogg"
-            $ msg.msg("Cheat Enabled")
-        else:
-            if messagesoff:
-              return
-
-            play SE1 "BeepWrong.ogg"
-            $ msg.msg("This code is already activated")
-
-    elif cheatvar == gettheme:
-        if messagesoff:
-           return
-
-        menu:
-            "Common":
-                $ preferences.gametimeevent = None
-            "Halloween":
-                $ preferences.gametimeevent = "Halloween"
-            "Christmas":
-                $ preferences.gametimeevent = "XMAS"
-
-    elif cheatvar == changestyle:
-        if messagesoff:
-           return
-
-        $ menu_items = []
-        python:
-            menu_items = []
-            for i in wear_get_chars():
-                if i == "hero":
-                   _wolfitdm_image = wolfitdm_image_hero
-                   _wolfitdm_image_style = wolfitdm_image_hero_style
-                   _wolfitdm_menu_entry = "DEFAULT: "
-                else:
-                   _wolfitdm_image = i.upper()
-                   _wolfitdm_image_style = _wolfitdm_image + " STYLE"
-                   _wolfitdm_menu_entry = i.upper() + ": "
-                
-                fname = "UNKNOWN"
-                lname = "UNKNOWN"
-
-                if hasattr(store, f"fname{i}"):
-                   fname = str(getattr(store, f"fname{i}"))
-
-                if hasattr(store, f"lname{i}"):
-                   lname = str(getattr(store, f"lname{i}"))
-                elif i in ["wsis", "wmom"]:
-                   if hasattr(store, f"lnamestep"):
-                      lname = str(getattr(store, f"lnamestep"))
-                elif i in ["wcou", "wgma"]:
-                   if hasattr(store, f"lnamerela"):
-                      lname = str(getattr(store, f"lnamerela"))
-
-                _wolfitdm_menu_entry = _wolfitdm_menu_entry + fname + " " + lname
-
-                menu_items.append((_wolfitdm_menu_entry, (_wolfitdm_image, _wolfitdm_image_style, i)))
-
-            wolfitdm_image, wolfitdm_image_style, wolfitdm_hero_name = renpy.display_menu(menu_items)
-
-    elif cheatvar == kcc_code:
-        if not "KCC1" in cellbg:
-            $ cellbg.insert(1, "KCC6")
-            $ cellbg.insert(1, "KCC5")
-            $ cellbg.insert(1, "KCC4")
-            $ cellbg.insert(1, "KCC3")
-            $ cellbg.insert(1, "KCC2")
-            $ cellbg.insert(1, "KCC1")
-
-            if messagesoff:
-              return
-
-            play SE1 "BeepRight.ogg"
-            $ msg.msg("New photos added to phone Gallery")
-        else:
-            if messagesoff:
-              return
-
-            play SE1 "BeepWrong.ogg"
-            $ msg.msg("This code is already activated")
-
-    elif cheatvar == changeimg:
-        if ("KCC1" in cellbg or "KCC1AI" in cellbg):
-            if "KCC1" in cellbg:
-                $ cellbg[cellbg.index("KCC1")] = "KCC1AI"
-                $ cellbg[cellbg.index("KCC2")] = "KCC2AI"
-                $ cellbg[cellbg.index("KCC3")] = "KCC3AI"
-                $ cellbg[cellbg.index("KCC4")] = "KCC4AI"
-                $ cellbg[cellbg.index("KCC5")] = "KCC5AI"
-                $ cellbg[cellbg.index("KCC6")] = "KCC6AI"
-           
-                if messagesoff:
-                   return
-
-                play SE1 "BeepRight.ogg"
-                $ msg.msg("Arts changed to AI generated images")
-            elif "KCC1AI" in cellbg:
-                $ cellbg[cellbg.index("KCC1AI")] = "KCC1"
-                $ cellbg[cellbg.index("KCC2AI")] = "KCC2"
-                $ cellbg[cellbg.index("KCC3AI")] = "KCC3"
-                $ cellbg[cellbg.index("KCC4AI")] = "KCC4"
-                $ cellbg[cellbg.index("KCC5AI")] = "KCC5"
-                $ cellbg[cellbg.index("KCC6AI")] = "KCC6"
-
-                if messagesoff:
-                   return
-
-                $ msg.msg("AI generated images changed to arts")
-        else:
-            if messagesoff:
-               return
-
-            play SE1 "BeepWrong.ogg"
-            $ msg.msg("You need to activate the KCC code first")
-
-    return

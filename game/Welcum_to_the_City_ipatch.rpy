@@ -1,5 +1,13 @@
 default incest_patch_on = True
 
+default transform_incest_patch = False
+
+default wolfitdm_hero_talk_gender = "brother"
+
+default wolfitdm_hero_talk_gender_wsis = "Big Bro"
+
+default wolfitdm_hero_talk_gender2 = "Brother"
+
 init -9000 python:
     def get_incest_patch_on():
         return incest_patch_on
@@ -80,8 +88,8 @@ init 1 python:
         t = incest_replace(t, "{mind}(Well...{w=[wt2]} maybe not much{w=[wt2]}, but it can't be that bad, right?{w=[wt3]} She's not my biological grandmother{w=[wt1]}, but it would still be good to see {nm}[talkto_wgma]{/nm} again.){/mind}","{mind}(Well...{w=[wt2]} maybe not much{w=[wt2]}, but it can't be that bad, right?{w=[wt3]} It would be nice to see {nm}[talkto_wgma]{/nm} again.){/mind}")
         t = incest_replace(t, "(Wait{w=[wt2]}, is it some kind of karma for {nm}[talkabout_wsis]{/nm}?{w=[wt3]} Or maybe this is all just a family tradition of shaming the next generation?)","(Geez, {nm}[talkto_wgma]{/nm}...)")
 
-        t = incest_replace(t, "Tell she's your step-sister","Tell that you're her brother")
-        t = incest_replace(t, "She's my step-sister!","I'm her brother!")
+        t = incest_replace(t, "Tell she's your step-sister","Tell that you're her [wolfitdm_hero_talk_gender]")
+        t = incest_replace(t, "She's my step-sister!","I'm her [wolfitdm_hero_talk_gender]!")
         t = incest_replace(t, "{lg}BWA HA HA HA...{/lg}{w=[wt3]} Did he say {bt}STEP?!{/bt}{w=[wt3]} No, no, no, no, serious!{w=[wt2]} Her mother wanted so much to have a husband who didn't leave her that she really just spread her legs to{w=[wt1]}, like{w=[wt2]}, {bt}everyone on the way!{/bt} {lg}BWA HA HA HA...{/lg}","{lg}BWA HA HA HA...{/lg}{w=[wt3]} Did he say {bt}HER BROTHER?!{/bt}{w=[wt3]} No, no, no, no, serious!{w=[wt2]} Where did you even come from? Your mother is such a whore she doesn't even know how many kids she's had, she really just spread her legs to{w=[wt1]}, like{w=[wt2]}, {bt}everyone on the way!{/bt} {lg}BWA HA HA HA...{/lg}")
 
         t = incest_replace(t, "I see him as my real father{w=[wt2]}, since the man who brought me into the world never had the courage to acknowledge me, you know?{w=[wt3]} S{w=[wt1]}-sorry for bringing this up!{w=[wt1]} I just...","S{w=[wt1]}-sorry for bringing this up!{w=[wt1]} I just...")
@@ -120,11 +128,17 @@ init 1 python:
         t = incest_replace(t, "[hero_to_waun]","Auntie")
         t = incest_replace(t, "[hero_to_wgma]","Grandma")
 
+        t = incest_replace(t, "[wsis_to_hero]","[wolfitdm_hero_talk_gender_wsis]")
+
+        t = incest_replace(t, "[wsis_about_hero]", "[wolfitdm_hero_talk_gender_wsis]")
+
         t = incest_sub("Mother", t)
         t = incest_sub("Sister", t)
         t = incest_sub("Brother", t)
         t = incest_sub("Grandmother", t)
         t = incest_sub("Cousin", t)
+
+        t = incest_replace(t, "Brother", "[wolfitdm_hero_talk_gender2]")
 
 ##################
         return t

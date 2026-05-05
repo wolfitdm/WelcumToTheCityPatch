@@ -258,9 +258,15 @@ image HERO STYLE:
 
 image HERO DEFAULT:
     "HERO PARTS"
+    yalign 1.0
+    ypos 1400
+    zoom 0+(0.25+(1*Char_Data['hero']['size']))*(0.25+(1*Char_Data['hero']['size']))/2.5
 
 image HERO KAWAII:    
     "KAWAII PARTS"
+    yalign 1.0
+    ypos 1400
+    zoom 0+(0.25+(1*Char_Data['hero']['size']))*(0.25+(1*Char_Data['hero']['size']))/2.5
 
 default wolfitdm_image = "HERO DEFAULT"
 
@@ -269,10 +275,6 @@ image HERO:
        "len(Char_Data['hero']['achiev']['wear']) > 0 and isinstance(Char_Data['hero']['achiev']['wear'][get_wear_var('hero')], str) and Char_Data['hero']['achiev']['wear'][get_wear_var('hero')].startswith('kawaii')", "HERO KAWAII",
        "(len(Char_Data['hero']['achiev']['wear']) > 0 and isinstance(Char_Data['hero']['achiev']['wear'][get_wear_var('hero')], str) and Char_Data['hero']['achiev']['wear'][get_wear_var('hero')].startswith('kawaii')) == False", "[wolfitdm_image]"
     )
-    yalign 1.0
-    ypos 1400
-    zoom 0+(0.25+(1*Char_Data['hero']['size']))*(0.25+(1*Char_Data['hero']['size']))/2.5
-
 
 # HRIV
 
