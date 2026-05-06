@@ -1,7 +1,32 @@
 default wolfitdm_hook_labels = {}
 
 init -100000 python:
-    def wolfitdm_label_hook(labels)
+    import os
+    
+    def wolfitdm_list_subdirectories(path):
+        abs_path = os.path.join(config.gamedir, path)
+        if not os.path.exists(abs_path):
+            return []
+        if not os.path.isdir(abs_path):
+           return []
+
+        try:
+            return [
+                name for name in os.listdir(abs_path)
+                if os.path.isdir(os.path.join(abs_path, name))
+            ]
+        except Exception as e:
+            return []
+
+    def wolfitdm_list_directory_files(directory):
+        if not directory.endswith("/"):
+            directory += "/"
+
+        files = [f for f in renpy.list_files() if f.startswith(directory)]
+        return files
+
+
+    def wolfitdm_label_hook(labels):
 
         if isinstance(labels, str):
            labels = [labels]
