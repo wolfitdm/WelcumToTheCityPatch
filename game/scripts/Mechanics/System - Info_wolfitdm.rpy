@@ -39,14 +39,36 @@ default wolfitdm_hero_talk_gender_wsis_female = "Big Sis"
 
 default wolfitdm_hero_talk_gender2_female = "Sister"
 
+default override_check_playermap_wolfitdm_inject = False
+
+default wolfitdm_original_player_map = None
+
+default wolfitdm_override_map = {}
+
 init -9000 python:
     def rewrite_check_playermap_jumps():
+
+        jump_check_playermap = "check_playermap_new"
+
         if check_playermap_var:
-           config.label_overrides["check_playermap"] = "check_playermap_new"
-           store.config.label_overrides["check_playermap"] = "check_playermap_new"
+           jump_check_playermap = "check_playermap_new"
+           config.label_overrides["check_playermap_original"] = "check_playermap"
+           store.config.label_overrides["check_playermap_original"] = "check_playermap"
+           config.label_overrides["check_playermap_override"] = "check_playermap_new"
+           store.config.label_overrides["check_playermap_override"] = "check_playermap_new"
         else:
-           config.label_overrides["check_playermap"] = "check_playermap"
-           store.config.label_overrides["check_playermap"] = "check_playermap"
+           jump_check_playermap = "check_playermap"
+           config.label_overrides["check_playermap_original"] = "check_playermap"
+           store.config.label_overrides["check_playermap_original"] = "check_playermap"
+           config.label_overrides["check_playermap_override"] = "check_playermap"
+           store.config.label_overrides["check_playermap_override"] = "check_playermap"
+
+        if override_check_playermap_wolfitdm_inject:
+           if renpy.has_label("wolfitdm_check_playermap"):
+              jump_check_playermap = "wolfitdm_check_playermap"
+
+        config.label_overrides["check_playermap"] = jump_check_playermap
+        store.config.label_overrides["check_playermap"] = jump_check_playermap
 
     def get_incest_patch_on():
         return incest_patch_on
@@ -630,6 +652,196 @@ init -9000 python:
         rewrite_check_playermap_jumps()
         msg.msg("nudist/fullnudist off")
 
+    def wolfitdm_map_check(i):
+        if i == None:
+           return False
+
+        if i in wear_get_chars():
+           if i in Char_Data and "map" in Char_Data[i]:
+              if "hero" in Char_Data and "map" in Char_Data["hero"]:
+                 return True
+
+        return False
+
+    wolfitdm_original_maps = {} 
+
+    def wolfitdm_change_map_to_me(i):
+
+        if i == "none" or i == "hero":
+
+           del_keys = []
+
+           if "hero" in wolfitdm_original_maps:
+              wolfitdm_original_player_map = wolfitdm_original_maps["hero"]
+              store.wolfitdm_original_player_map = wolfitdm_original_maps["hero"]
+
+           for key in wolfitdm_original_maps:
+
+               wolfitdm_override_map[key] = None
+               store.wolfitdm_override_map[key] = None
+               Char_Data[key]["map"] = wolfitdm_original_maps[key]
+               msg.msg("change map from " + key + " to " +  wolfitdm_original_maps[key])
+               del_keys.append(key)
+
+           for key in del_keys:
+
+               del wolfitdm_original_maps[key]
+
+           override_check_playermap_wolfitdm_inject = False
+           store.override_check_playermap_wolfitdm_inject = False
+
+           return
+
+        if wolfitdm_map_check(i):
+
+           if not "hero" in wolfitdm_original_maps:
+              wolfitdm_original_maps["hero"] = Char_Data["hero"]["map"]
+
+           if "hero" in wolfitdm_original_maps:
+              wolfitdm_original_player_map = wolfitdm_original_maps["hero"]
+              store.wolfitdm_original_player_map = wolfitdm_original_maps["hero"]
+
+           map = Char_Data[i]["map"]
+
+           if map == None:
+              return
+
+           Char_Data["hero"]["map"] = map
+
+           if not map in wolfitdm_get_maps():
+              override_check_playermap_wolfitdm_inject = True
+              store.override_check_playermap_wolfitdm_inject = True
+
+           msg.msg("change map to " + map)
+
+           if renpy.has_label("hide_ui"):
+              renpy.jump("hide_ui")
+
+           if renpy.has_label("show_ui"):
+              renpy.jump("show_ui")
+
+        return
+
+    wolfitdm_original_maps = {}
+
+    def wolfitdm_change_map_to_him(i):
+
+        global wolfitdm_original_maps 
+
+        if i == "none" or i == "hero":
+
+           del_keys = []
+
+           if "hero" in wolfitdm_original_maps:
+              wolfitdm_original_player_map = wolfitdm_original_maps["hero"]
+              store.wolfitdm_original_player_map = wolfitdm_original_maps["hero"]
+
+           for key in wolfitdm_original_maps:
+
+               wolfitdm_override_map[key] = None
+               store.wolfitdm_override_map[key] = None
+               Char_Data[key]["map"] = wolfitdm_original_maps[key]
+               msg.msg("change map from " + key + " to " +  wolfitdm_original_maps[key])
+
+           for key in del_keys:
+               del wolfitdm_original_maps[key]
+
+           override_check_playermap_wolfitdm_inject = False
+           store.override_check_playermap_wolfitdm_inject = False
+
+           if renpy.has_label("hide_ui"):
+              renpy.jump("hide_ui")
+
+           if renpy.has_label("show_ui"):
+              renpy.jump("show_ui")
+
+           return
+
+        if wolfitdm_map_check(i):
+           if not "hero" in wolfitdm_original_maps:
+              wolfitdm_original_maps["hero"] = Char_Data["hero"]["map"]
+
+           if "hero" in wolfitdm_original_maps:
+              wolfitdm_original_player_map = wolfitdm_original_maps["hero"]
+              store.wolfitdm_original_player_map = wolfitdm_original_maps["hero"]
+
+           if not i in wolfitdm_original_maps:
+              wolfitdm_original_maps[i] = Char_Data[i]["map"]
+
+           map = Char_Data["hero"]["map"]
+
+           if map == None:
+              return
+
+           wolfitdm_override_map[i] = map
+           store.wolfitdm_override_map[i] = map
+
+           Char_Data[i]["map"] = map
+
+           if not map in wolfitdm_get_maps():
+              override_check_playermap_wolfitdm_inject = True
+              store.override_check_playermap_wolfitdm_inject = True
+
+           msg.msg("change map from " + i + " to " + map)
+
+           if renpy.has_label("hide_ui"):
+              renpy.jump("hide_ui")
+
+           if renpy.has_label("show_ui"):
+              renpy.jump("show_ui")
+
+        return
+
+    def wolfitdm_get_maps():
+        wolfitdm_maps = []
+
+        wolfitdm_maps.append(Map_Data["city"]["name"])
+        wolfitdm_maps.append(Map_Data["home"]["name"] + " - " + Map_Data["home"]["map"]["facade"]["name"])
+        wolfitdm_maps.append(Map_Data["home"]["name"] + " - " + Map_Data["home"]["map"]["living_room"]["name"])
+        wolfitdm_maps.append(Map_Data["home"]["name"] + " - " + Map_Data["home"]["map"]["hallway"]["name"])
+        wolfitdm_maps.append(Map_Data["home"]["name"] + " - " + Map_Data["home"]["map"]["bedroom_hero"]["name"])
+        wolfitdm_maps.append(Map_Data["home"]["name"] + " - " + Map_Data["home"]["map"]["bedroom_wsis"]["name"])
+        wolfitdm_maps.append(Map_Data["home"]["name"] + " - " + Map_Data["home"]["map"]["bedroom_wmom"]["name"])
+        wolfitdm_maps.append(Map_Data["home"]["name"] + " - " + Map_Data["home"]["map"]["bathroom"]["name"])
+        wolfitdm_maps.append(Map_Data["office"]["name"] + " - " + Map_Data["office"]["map"]["facade"]["name"])
+        wolfitdm_maps.append(Map_Data["office"]["name"] + " - " + Map_Data["office"]["map"]["office_wcou"]["name"])
+        wolfitdm_maps.append(Map_Data["school"]["name"] + " - " + Map_Data["school"]["map"]["facade"]["name"])
+        wolfitdm_maps.append(Map_Data["school"]["name"] + " - " + Map_Data["school"]["map"]["courtyard"]["name"])
+        wolfitdm_maps.append(Map_Data["school"]["name"] + " - " + Map_Data["school"]["map"]["frontyard"]["name"])
+        wolfitdm_maps.append(Map_Data["school"]["name"] + " - " + Map_Data["school"]["map"]["locker_m"]["name"])
+        wolfitdm_maps.append(Map_Data["school"]["name"] + " - " + Map_Data["school"]["map"]["hallway_1"]["name"])
+        wolfitdm_maps.append(Map_Data["school"]["name"] + " - " + Map_Data["school"]["map"]["hallway_2"]["name"])
+        wolfitdm_maps.append(Map_Data["school"]["name"] + " - " + Map_Data["school"]["map"]["class_1a"]["name"])
+        wolfitdm_maps.append(Map_Data["school"]["name"] + " - " + Map_Data["school"]["map"]["class_1b"]["name"])
+        wolfitdm_maps.append(Map_Data["school"]["name"] + " - " + Map_Data["school"]["map"]["class_3a"]["name"])
+        wolfitdm_maps.append(Map_Data["school"]["name"] + " - " + Map_Data["school"]["map"]["library"]["name"])
+        wolfitdm_maps.append(Map_Data["school"]["name"] + " - " + Map_Data["school"]["map"]["swimming_pool"]["name"])
+        wolfitdm_maps.append(Map_Data["school"]["name"] + " - " + Map_Data["school"]["map"]["sports_court"]["name"])
+        wolfitdm_maps.append(Map_Data["school"]["name"] + " - " + Map_Data["school"]["map"]["club_coun"]["name"])
+
+        return wolfitdm_maps
+
+    def wolfitdm_map_menu():
+        menu_items = []
+        for i in wolfitdm_get_maps():
+            menu_items.append((i,i))
+
+        choice = renpy.display_menu(menu_items)
+
+        if "hero" in Char_Data and "map" in Char_Data["hero"]:
+           Char_Data["hero"]["map"] = choice
+
+        if renpy.has_label("hide_ui"):
+           renpy.jump("hide_ui")
+
+        if renpy.has_label("show_ui"):
+           renpy.jump("show_ui")
+
+        return
+
+    def wolfitdm_map_menu_new():
+        renpy.invoke_in_new_context(wolfitdm_map_menu)
+
 screen UI_Menu_Options():
     frame:
         background None
@@ -692,6 +904,10 @@ screen UI_Menu_Options():
                 idle "images/UI/SUBMENU_Option_CodeX.png"
                 hover "images/UI/SUBMENU_Option_CodeX.png"
                 action Jump("wolfitdm_inputcheat")
+            imagebutton:
+                idle "images/UI/SUBMENU_Option_Map.png"
+                hover "images/UI/SUBMENU_Option_Map.png"
+                action Function(wolfitdm_map_menu_new)
             imagebutton:
                 idle "images/UI/SUBMENU_Option_KCC.webp"
                 hover "images/UI/SUBMENU_Option_KCC.webp"
@@ -789,17 +1005,17 @@ screen UI_Menu_Options_Contacts_Redefine():
                 yalign 0.9
                 spacing 50
                 imagebutton:
-                    idle "images/UI/SUBMENU_Option_BottomTriangle IDLE.webp"
-                    hover "images/UI/SUBMENU_Option_BottomTriangle HOVER.webp"
-                    action Jump("UI_Menu_Options_Triangle")
+                    idle "images/UI/SUBMENU_Option_BottomTriangleMapIdle.png"
+                    hover "images/UI/SUBMENU_Option_BottomTriangleMapHover.png"
+                    action Function(wolfitdm_change_map_to_him, a_menu_1)
                 imagebutton:
                     idle "images/UI/SUBMENU_Option_BottomCircle IDLE.webp"
                     hover "images/UI/SUBMENU_Option_BottomCircle HOVER.webp"
                     action Jump("show_ui")
                 imagebutton:
-                    idle "images/UI/SUBMENU_Option_BottomSquare IDLE.webp"
-                    hover "images/UI/SUBMENU_Option_BottomSquare HOVER.webp"
-                    action Jump("show_ui")
+                    idle "images/UI/SUBMENU_Option_BottomSquareMapIdle.png"
+                    hover "images/UI/SUBMENU_Option_BottomSquareMapHover.png"
+                    action Function(wolfitdm_change_map_to_me, a_menu_1)
 
         frame:
             xysize(1200, 1080)
@@ -909,6 +1125,9 @@ label UI_Menu_Options_Contacts_Redefine:
     call hide_ui
     call screen UI_Menu_Options_Contacts_Redefine
     jump show_ui
+
+label wolfitdm_nav_map:
+    show screen wolfitdm_nav_map
 
 label wolfitdm_inputcheat:
     $ cheatvar = renpy.input("Input a code. To show all codes, type [C_Dat]cheatmenu[C_Off] or type nothing and press enter", length=12)
