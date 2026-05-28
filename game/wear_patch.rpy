@@ -13,6 +13,19 @@ default wolfitdm_hero_name = "hero"
 init -1000000 python:
     wear_all_chars_init = False
 
+    def init_char_data_achiev(i):
+        if not hasattr(store, "Char_Data"):
+           setattr(store, "Char_Data", {})
+
+        if not i in Char_Data:
+           Char_Data[i] = {}
+
+        if not "achiev" in Char_Data[i]:
+           Char_Data[i]['achiev'] = {}
+
+        if not "wear" in Char_Data[i]['achiev']:
+           Char_Data[i]['achiev']['wear'] = []
+
     def wear_get_chars():
         wear_hero_chars = ["hero", "wmom", "wsis", "wnei", "wpre", "wota", "wdis", "wgal", "wric", "wgot", "wdel", "wuza", "wlaz", "hprv", "hine", "hriv", "wcou", "wgma", "wsuk", "wdan", "wkuu", "wrin"]
         # wear_hero_chars.extend(["wemo","wido","wtec","wnem","wahu","hbul","hfem","whip","wfat","hbla","hfre","wtpe"])
@@ -43,7 +56,7 @@ init -1000000 python:
 
     def wear_get_char_attrs_cheat_str():
         wear_char_attrs = ["gaming"]
-        return wear_char_attr
+        return wear_char_attrs
 
     def wear_get_char_attrs_all():
         wear_char_attrs = wear_get_old_attrs_cheat()
@@ -55,11 +68,46 @@ init -1000000 python:
 
     class Wolfitdm_Transformer:
        def __init__(self):
+           if not hasattr(store, "Char_Data"):
+              setattr(store, "Char_Data", {})
+
            self.setup_vars_all()
            self.is_old_version = config.version == "0.36.1"
 
        def get_is_old_version(self):
            return self.is_old_version
+
+       def get_old_version(self):
+           return self.is_old_version
+
+       def get_name(self, hero):
+           fname = "UNKNOWN"
+           lname = "UNKNOWN"
+
+           if hasattr(store, f"fname{i}"):
+              fname = str(getattr(store, f"fname{i}"))
+
+           if hasattr(store, f"lname{i}"):
+              lname = str(getattr(store, f"lname{i}"))
+           elif i in ["wsis", "wmom"]:
+              if hasattr(store, f"lnamestep"):
+                 lname = str(getattr(store, f"lnamestep"))
+              elif i in ["wcou", "wgma", "waun"]:
+                 if hasattr(store, f"lnamerela"):
+                    lname = str(getattr(store, f"lnamerela"))
+              elif i in ["wmam", "hpap"]:
+                 if hasattr(store, f"lnamewnei"):
+                    lname = str(getattr(store, f"lnamewnei")) 
+
+            return (fname, lname)
+
+       def get_first_name(self, hero):
+           fname, lname = self.get_name(hero)
+           return fname
+
+       def get_last_name(self, hero):
+           fname, lname = self.get_name(hero)
+           return lname    
 
        def setup_vars(self, hero, varv):
            if not hero in Char_Data:
@@ -275,16 +323,6 @@ init -1000000 python:
             renpy.log(f"Error getting size for {filename}: {e}")
             return False
 
-    def init_char_data_achiev(i):
-        if not i in Char_Data:
-           Char_Data[i] = {}
-
-        if not "achiev" in Char_Data[i]:
-           Char_Data[i]['achiev'] = {}
-
-        if not "wear" in Char_Data[i]['achiev']:
-           Char_Data[i]['achiev']['wear'] = []
-
     def wear_get_clothes():
         return ["home", "under", "sleep", "casual", "dressy", "formal", "sport", "swim", "school", "school_swim", "school_sport", "work", "soap", "nude", "work2"]
 
@@ -340,7 +378,7 @@ init -1000000 python:
 
         achiev_wear = WChar.gvar(i, "achiev_wear")
 
-        len_achiev_var = isinstance(achiev_wear, list) ? len(achiev_wear) : 0
+        len_achiev_var = len(achiev_wear) if isinstance(achiev_wear, list) else 0
 
         if var < len_achiev_var:
            Cur_Wear[i]["wear_string"] = achiev_wear[var]
@@ -363,7 +401,7 @@ init -1000000 python:
 
         achiev_wear = WChar.gvar(i, "achiev_wear")
 
-        len_achiev_var = isinstance(achiev_wear, list) ? len(achiev_wear) : 0
+        len_achiev_var = len(achiev_wear) if isinstance(achiev_wear, list) else 0
 
         if var < len_achiev_var:
            Cur_Wear[i]["wear_string"] = achiev_wear[var]

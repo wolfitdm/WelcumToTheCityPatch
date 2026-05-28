@@ -563,20 +563,7 @@ init -9000 python:
                 else:
                    _wolfitdm_menu_entry = i.upper() + ": "
                 
-                fname = "UNKNOWN"
-                lname = "UNKNOWN"
-
-                if hasattr(store, f"fname{i}"):
-                   fname = str(getattr(store, f"fname{i}"))
-
-                if hasattr(store, f"lname{i}"):
-                   lname = str(getattr(store, f"lname{i}"))
-                elif i in ["wsis", "wmom"]:
-                   if hasattr(store, f"lnamestep"):
-                      lname = str(getattr(store, f"lnamestep"))
-                elif i in ["wcou", "wgma"]:
-                   if hasattr(store, f"lnamerela"):
-                      lname = str(getattr(store, f"lnamerela"))
+                fname, lname = WChar.get_name(i)                  
 
                 _wolfitdm_menu_entry = _wolfitdm_menu_entry + fname + " " + lname
 
@@ -989,12 +976,8 @@ screen UI_Menu_Options_Contacts_Redefine():
             if a_menu_1 != "none":
                 vbox:
                     spacing 10 xalign 0.5 yalign 0.15
-                    if a_menu_1 in ["wsis", "wmom"]:
-                        label str(getattr(store, f"fname{a_menu_1}") + " [lnamestep]") xalign 0.5
-                    elif a_menu_1 in ["wcou", "wgma", "waun"]:
-                        label str(getattr(store, f"fname{a_menu_1}") + " [lnamerela]") xalign 0.5
-                    else:
-                        label str(getattr(store, f"fname{a_menu_1}") + " " + getattr(store, f"lname{a_menu_1}")) xalign 0.5
+                    $ oth_fname, oth_lname = WChar.get_name(a_menu_1)
+                    label str(oth_fname) + " " + str(oth_lname) xalign 0.5
                     hbox:
                         xalign 0.5
                         if len(WChar.gvar(a_menu_1, "achiev_wear")) >= 2:
