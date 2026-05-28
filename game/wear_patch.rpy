@@ -10,15 +10,14 @@ default a_menu_8 = 0
 
 default wolfitdm_hero_name = "hero"
 
-init -100000 python:
+init -1000000 python:
     wear_all_chars_init = False
 
     def wear_get_chars():
         wear_hero_chars = ["hero", "wmom", "wsis", "wnei", "wpre", "wota", "wdis", "wgal", "wric", "wgot", "wdel", "wuza", "wlaz", "hprv", "hine", "hriv", "wcou", "wgma", "wsuk", "wdan", "wkuu", "wrin"]
         # wear_hero_chars.extend(["wemo","wido","wtec","wnem","wahu","hbul","hfem","whip","wfat","hbla","hfre","wtpe"])
 
-        if not config.version == "0.36.1":
-           wear_hero_chars.extend(["wmam", "hpap"])
+        wear_hero_chars.extend(["wmam", "hpap"])
 
         global wear_all_chars_init
 
@@ -102,10 +101,7 @@ init -100000 python:
        def update_vars_specific(self, hero, varv):
            self.setup_vars(hero,varv)
            if self.is_old_version:
-              if varv in wear_get_old_attrs_cheat():
-                 setattr(store, hero + "_" + varv, Char_Data[hero]["stat"][varv])
-
-              elif varv == "itemR":
+              if varv == "itemR":
                  setattr(store, hero + "_" + varv, Char_Data[hero]["item"]["hold_right"])
 
               elif varv == "itemL":
@@ -113,6 +109,9 @@ init -100000 python:
 
               elif varv == "achiev_wear":
                  setattr(store, hero + "_" + varv, Char_Data[hero]["achiev"]["wear"])
+
+              elif varv in wear_get_old_attrs_cheat():
+                 setattr(store, hero + "_" + varv, Char_Data[hero]["stat"][varv])
 
               elif varv in Char_Data[hero]:
                  setattr(store, hero + "_" + varv, Char_Data[hero][varv])
@@ -123,14 +122,14 @@ init -100000 python:
               if hasattr(store, hero + "_" + varv):
                  getvarv = getattr(store, hero + "_" + varv)
 
-                 if varv in wear_get_old_attrs_cheat():
-                    Char_Data[hero]["stat"][varv] = getvarv
-                 elif varv == "itemR":
+                 if varv == "itemR":
                     Char_Data[hero]["item"]["hold_right"] = getvarv
                  elif varv == "itemL":
                     Char_Data[hero]["item"]["hold_left"] = getvarv
                  elif varv == "achiev_wear":
                     Char_Data[hero]["achiev"]["wear"] = getvarv
+                 elif varv in wear_get_old_attrs_cheat():
+                    Char_Data[hero]["stat"][varv] = getvarv
                  elif varv in Char_Data[hero]:
                     Char_Data[hero][varv] = getvarv
 
@@ -146,10 +145,7 @@ init -100000 python:
 
        def gvar(self, hero, varv):
            if self.is_old_version:
-              if varv in wear_get_old_attrs_cheat():
-                 return Char_Data[hero]["stat"][varv]
-
-              elif varv == "itemR":
+              if varv == "itemR":
                  return Char_Data[hero]["item"]["hold_right"]
 
               elif varv == "itemL":
@@ -157,6 +153,9 @@ init -100000 python:
 
               elif varv == "achiev_wear":
                  return Char_Data[hero]["achiev"]["wear"]
+
+              elif varv in wear_get_old_attrs_cheat():
+                 return Char_Data[hero]["stat"][varv]
 
               elif varv in Char_Data[hero]:
                  return Char_Data[hero][varv]
@@ -184,10 +183,7 @@ init -100000 python:
 
        def svar(self, hero, varv, varvv):
            if self.is_old_version:
-              if varv in wear_get_old_attrs_cheat():
-                 Char_Data[hero]["stat"][varv] = varvv
-
-              elif varv == "itemR":
+              if varv == "itemR":
                  Char_Data[hero]["item"]["hold_right"] = varvv
 
               elif varv == "itemL":
@@ -195,6 +191,9 @@ init -100000 python:
 
               elif varv == "achiev_wear":
                  Char_Data[hero]["achiev"]["wear"] = varvv
+
+              elif varv in wear_get_old_attrs_cheat():
+                 Char_Data[hero]["stat"][varv] = varvv
 
               elif varv in Char_Data[hero]:
                  Char_Data[hero][varv] = varvv
@@ -344,7 +343,7 @@ init -100000 python:
         len_achiev_var = isinstance(achiev_wear, list) ? len(achiev_wear) : 0
 
         if var < len_achiev_var:
-           Cur_Wear[i]["wear_string"] = Char_Data[i]['achiev']['wear'][var]
+           Cur_Wear[i]["wear_string"] = achiev_wear[var]
            if i == "hero" and not Cur_Wear[i]["wear_string"].startswith("kawaii"):
               if not wolfitdm_hero_name == i:
                  set_wear_var(wolfitdm_hero_name, var)
@@ -367,7 +366,7 @@ init -100000 python:
         len_achiev_var = isinstance(achiev_wear, list) ? len(achiev_wear) : 0
 
         if var < len_achiev_var:
-           Cur_Wear[i]["wear_string"] = WChar.gvar(i, "achiev_wear")
+           Cur_Wear[i]["wear_string"] = achiev_wear[var]
            WChar.svar(i, "wear", Cur_Wear[i]["wear_string"])          
            #my_renpy_say("Current wear: " + i + ":" + Cur_Wear[i]["wear_string"])   
 
