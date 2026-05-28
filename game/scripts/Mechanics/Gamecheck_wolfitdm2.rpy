@@ -5,7 +5,7 @@ default Char_Data = {}
 # ----------------------------------------------------------------------------------------------------
 
 label check_playermap_new:
-    the_hero_map = WChar.gvar("hero", "map")
+    $ the_hero_map = WChar.gvar("hero", "map")
 
     if the_hero_map == None:
         $ Get_MapName("hero")
@@ -293,7 +293,7 @@ default override_check_playermap_wolfitdm_inject = False
 label wolfitdm_check_playermap:
     $ wolfitdm_check_map_ok("hero")
 
-    the_hero_map = WChar.gvar("hero", "map")
+    $ the_hero_map = WChar.gvar("hero", "map")
 
     if the_hero_map == None:
        $ wolfitdm_original_player_map = None

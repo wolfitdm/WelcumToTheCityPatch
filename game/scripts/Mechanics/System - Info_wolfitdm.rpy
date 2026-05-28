@@ -129,7 +129,7 @@ init -9000 python:
         for i in wear_get_chars():
             arr_var = WChar.gvar(i, "achiev_wear")
             for j in wear_get_clothes():
-                if j not arr_var:
+                if not j in arr_var:
                    arr_var.append(j)
                    WChar.svar(i, "achiev_wear", arr_var)
 
@@ -140,7 +140,7 @@ init -9000 python:
                WChar.svar(i, "achiev_wear", arr_var)
 
             for j in wear_kawaii_get_clothes():
-                if j not in arr_var:
+                if not j in arr_var:
                    arr_var.append(j)
                    WChar.svar(i, "achiev_wear", arr_var)
 
@@ -317,49 +317,48 @@ init -9000 python:
            wolfitdm_give_me_all(messagesoff)
 
         elif cheatvar == outfits:
+           for i in wear_get_chars():
+               arr_var = WChar.gvar(i, "achiev_wear")
+               for j in wear_get_clothes():
+                   if not j in arr_var:
+                      arr_var.append(j)
 
-        for i in wear_get_chars():
-            arr_var = WChar.gvar(i, "achiev_wear")
-            for j in wear_get_clothes():
-                if j not in arr_var:
-                   arr_var.append(j)
+               WChar.svar(i, "achiev_wear", arr_var)
 
-            WChar.svar(i, "achiev_wear", arr_var)
+           for i in ["hero"]:
+               arr_var = WChar.gvar(i, "achiev_wear")
 
-        for i in ["hero"]:
-            arr_var = WChar.gvar(i, "achiev_wear")
+               if "my_kawaii_character" in arr_var:
+                  arr_var.remove("my_kawaii_character")
 
-            if "my_kawaii_character" in arr_var:
-               arr_var.remove("my_kawaii_character")
+               for j in wear_kawaii_get_clothes():
+                   if not j in arr_var:
+                      arr_var.append(j)
 
-            for j in wear_kawaii_get_clothes():
-                if j not in arr_var:
-                   arr_var.append(j)
+               WChar.svar(i, "achiev_wear", arr_var)
 
-            WChar.svar(i, "achiev_wear", arr_var)
+        if messagesoff:
+           wolfitdm_return = True
 
-           if messagesoff:
-              wolfitdm_return = True
-
-           if not wolfitdm_return:
-              msg.msg("All outfits added")
+        if not wolfitdm_return:
+           msg.msg("All outfits added")
 
         elif cheatvar == kawaii:   
 
            if not wear_all_chars_init:
               wear_get_chars()
 
-            for i in ["hero"]:
-                arr_var = WChar.gvar(i, "achiev_wear")
+           for i in ["hero"]:
+               arr_var = WChar.gvar(i, "achiev_wear")
 
-                if "my_kawaii_character" in arr_var:
-                   arr_var.remove("my_kawaii_character")
+               if "my_kawaii_character" in arr_var:
+                  arr_var.remove("my_kawaii_character")
 
-                for j in wear_kawaii_get_clothes():
-                    if j not in arr_var:
-                       arr_var.append(j)
+               for j in wear_kawaii_get_clothes():
+                   if not j in arr_var:
+                      arr_var.append(j)
 
-                WChar.svar(i, "achiev_wear", arr_var)
+               WChar.svar(i, "achiev_wear", arr_var)
 
            if messagesoff:
               wolfitdm_return = True
