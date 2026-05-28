@@ -239,11 +239,11 @@ init -1000000 python:
        def inc_cheat_vars(self, hero, val, val_money):
            if self.is_old_version:
               for i in wear_get_old_attrs_cheat():
-                  inc_val = i == "money" ? val_money : val
+                  inc_val = val_money if i == "money" else val
                   Char_Data[hero]["stat"][i] += inc_val
            else:
               for i in wear_get_old_attrs_cheat():
-                  inc_val = i == "money" ? val_money : val
+                  inc_val = val_money if i == "money" else val
                   gstr = hero + "_" + i
                   if hasattr(store, gstr):
                      valv = getattr(store, gstr)
