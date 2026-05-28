@@ -99,7 +99,7 @@ init -1000000 python:
                  if hasattr(store, f"lnamewnei"):
                     lname = str(getattr(store, f"lnamewnei")) 
 
-            return (fname, lname)
+           return (fname, lname)
 
        def get_first_name(self, hero):
            fname, lname = self.get_name(hero)
