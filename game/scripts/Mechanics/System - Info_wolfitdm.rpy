@@ -45,6 +45,8 @@ default wolfitdm_original_player_map = None
 
 default wolfitdm_override_map = {}
 
+default Char_Data = {}
+
 init -9000 python:
     def rewrite_check_playermap_jumps():
 
@@ -125,20 +127,26 @@ init -9000 python:
         choice_cloth = renpy.display_menu(menu_items)
 
         for i in wear_get_chars():
+            arr_var = WChar.gvar(i, "achiev_wear")
             for j in wear_get_clothes():
-                if j not in Char_Data[i]["achiev"]["wear"]:
-                   Char_Data[i]["achiev"]["wear"].append(j)
+                if j not arr_var:
+                   arr_var.append(j)
+                   WChar.svar(i, "achiev_wear", arr_var)
 
         for i in ["hero"]:
-            if "my_kawaii_character" in Char_Data[i]["achiev"]["wear"]:
-               Char_Data[i]["achiev"]["wear"].remove("my_kawaii_character")
+            arr_var = WChar.gvar(i, "achiev_wear")
+            if "my_kawaii_character" in arr_var:
+               arr_var.remove("my_kawaii_character")
+               WChar.svar(i, "achiev_wear", arr_var)
 
             for j in wear_kawaii_get_clothes():
-                if j not in Char_Data[i]["achiev"]["wear"]:
-                   Char_Data[i]["achiev"]["wear"].append(j)
+                if j not in arr_var:
+                   arr_var.append(j)
+                   WChar.svar(i, "achiev_wear", arr_var)
 
         for i in wear_get_chars():
-            for j, cloth in enumerate(Char_Data[i]["achiev"]["wear"]):
+            arr_var = WChar.gvar(i, "achiev_wear")
+            for j, cloth in enumerate(arr_var):
                 if cloth == choice_cloth:
                    set_wear_var(i, j)
                    continue
@@ -180,17 +188,24 @@ init -9000 python:
         rewrite_check_playermap_jumps()
 
         for i in wear_get_chars():
+            arr_var = WChar.gvar(i, "achiev_wear")
             for j in wear_get_clothes():
-                if j not in Char_Data[i]["achiev"]["wear"]:
-                   Char_Data[i]["achiev"]["wear"].append(j)
+                if j not in arr_var:
+                   arr_var.append(j)
+
+            WChar.svar(i, "achiev_wear", arr_var)
 
         for i in ["hero"]:
-            if "my_kawaii_character" in Char_Data[i]["achiev"]["wear"]:
-               Char_Data[i]["achiev"]["wear"].remove("my_kawaii_character")
+            arr_var = WChar.gvar(i, "achiev_wear")
+
+            if "my_kawaii_character" in arr_var:
+               arr_var.remove("my_kawaii_character")
 
             for j in wear_kawaii_get_clothes():
-                if j not in Char_Data[i]["achiev"]["wear"]:
-                   Char_Data[i]["achiev"]["wear"].append(j)
+                if j not in arr_var:
+                   arr_var.append(j)
+
+            WChar.svar(i, "achiev_wear", arr_var)
 
         if not "KCC1" in cellbg:
            cellbg.insert(1, "KCC6")
@@ -226,18 +241,7 @@ init -9000 python:
                i += 10000
 
         for i in wear_get_chars():
-            if not i in Char_Data:
-               continue
-            for j in ["stat"]:
-                if not j in Char_Data[i]:
-                   continue
-                for k in ["int", "cha", "phy", "ene", "hyg", "eat", "lust", "love", "money"]:
-                   if not k in Char_Data[i][j]:
-                      continue
-                   if not k == "money":
-                      Char_Data[i][j][k] += 500
-                   else:
-                      Char_Data[i][j][k] += 10000
+            WChar.inc_cheat_vars(i, 500, 10000)
 
         if messagesoff:
            return
@@ -314,18 +318,25 @@ init -9000 python:
 
         elif cheatvar == outfits:
 
-           for i in wear_get_chars():
-               for j in wear_get_clothes():
-                   if j not in Char_Data[i]["achiev"]["wear"]:
-                      Char_Data[i]["achiev"]["wear"].append(j)
+        for i in wear_get_chars():
+            arr_var = WChar.gvar(i, "achiev_wear")
+            for j in wear_get_clothes():
+                if j not in arr_var:
+                   arr_var.append(j)
 
-           for i in ["hero"]:
-               if "my_kawaii_character" in Char_Data[i]["achiev"]["wear"]:
-                   Char_Data[i]["achiev"]["wear"].remove("my_kawaii_character")
+            WChar.svar(i, "achiev_wear", arr_var)
 
-               for j in wear_kawaii_get_clothes():
-                   if j not in Char_Data[i]["achiev"]["wear"]:
-                      Char_Data[i]["achiev"]["wear"].append(j)
+        for i in ["hero"]:
+            arr_var = WChar.gvar(i, "achiev_wear")
+
+            if "my_kawaii_character" in arr_var:
+               arr_var.remove("my_kawaii_character")
+
+            for j in wear_kawaii_get_clothes():
+                if j not in arr_var:
+                   arr_var.append(j)
+
+            WChar.svar(i, "achiev_wear", arr_var)
 
            if messagesoff:
               wolfitdm_return = True
@@ -338,14 +349,17 @@ init -9000 python:
            if not wear_all_chars_init:
               wear_get_chars()
 
-           for i in ["hero"]:
+            for i in ["hero"]:
+                arr_var = WChar.gvar(i, "achiev_wear")
 
-               if "my_kawaii_character" in Char_Data[i]["achiev"]["wear"]:
-                  Char_Data[i]["achiev"]["wear"].remove("my_kawaii_character")
+                if "my_kawaii_character" in arr_var:
+                   arr_var.remove("my_kawaii_character")
 
-               for j in wear_kawaii_get_clothes():
-                   if j not in Char_Data[i]["achiev"]["wear"]:
-                      Char_Data[i]["achiev"]["wear"].append(j)
+                for j in wear_kawaii_get_clothes():
+                    if j not in arr_var:
+                       arr_var.append(j)
+
+                WChar.svar(i, "achiev_wear", arr_var)
 
            if messagesoff:
               wolfitdm_return = True
@@ -657,6 +671,9 @@ init -9000 python:
            return False
 
         if i in wear_get_chars():
+           if not WChar.get_old_version():
+              return True
+
            if i in Char_Data and "map" in Char_Data[i]:
               if "hero" in Char_Data and "map" in Char_Data["hero"]:
                  return True
@@ -679,7 +696,7 @@ init -9000 python:
 
                wolfitdm_override_map[key] = None
                store.wolfitdm_override_map[key] = None
-               Char_Data[key]["map"] = wolfitdm_original_maps[key]
+               WChar.svar(key, "map", wolfitdm_original_maps[key])
                msg.msg("change map from " + key + " to " +  wolfitdm_original_maps[key])
                del_keys.append(key)
 
@@ -695,18 +712,18 @@ init -9000 python:
         if wolfitdm_map_check(i):
 
            if not "hero" in wolfitdm_original_maps:
-              wolfitdm_original_maps["hero"] = Char_Data["hero"]["map"]
+              wolfitdm_original_maps["hero"] = WChar.gvar("hero", "map")
 
            if "hero" in wolfitdm_original_maps:
               wolfitdm_original_player_map = wolfitdm_original_maps["hero"]
               store.wolfitdm_original_player_map = wolfitdm_original_maps["hero"]
 
-           map = Char_Data[i]["map"]
+           map = WChar.gvar(i, "map")
 
            if map == None:
               return
 
-           Char_Data["hero"]["map"] = map
+           WChar.svar("hero", "map", map)
 
            if not map in wolfitdm_get_maps():
               override_check_playermap_wolfitdm_inject = True
@@ -740,7 +757,7 @@ init -9000 python:
 
                wolfitdm_override_map[key] = None
                store.wolfitdm_override_map[key] = None
-               Char_Data[key]["map"] = wolfitdm_original_maps[key]
+               WChar.svar(key, "map", wolfitdm_original_maps[key])
                msg.msg("change map from " + key + " to " +  wolfitdm_original_maps[key])
 
            for key in del_keys:
@@ -759,16 +776,16 @@ init -9000 python:
 
         if wolfitdm_map_check(i):
            if not "hero" in wolfitdm_original_maps:
-              wolfitdm_original_maps["hero"] = Char_Data["hero"]["map"]
+              wolfitdm_original_maps["hero"] = WChar.gvar("hero", "map")
 
            if "hero" in wolfitdm_original_maps:
               wolfitdm_original_player_map = wolfitdm_original_maps["hero"]
               store.wolfitdm_original_player_map = wolfitdm_original_maps["hero"]
 
            if not i in wolfitdm_original_maps:
-              wolfitdm_original_maps[i] = Char_Data[i]["map"]
+              wolfitdm_original_maps[i] = WChar.gvar(i, "map")
 
-           map = Char_Data["hero"]["map"]
+           map = WChar.gvar("hero", "map")
 
            if map == None:
               return
@@ -776,7 +793,7 @@ init -9000 python:
            wolfitdm_override_map[i] = map
            store.wolfitdm_override_map[i] = map
 
-           Char_Data[i]["map"] = map
+           WChar.svar(i, "map", map)
 
            if not map in wolfitdm_get_maps():
               override_check_playermap_wolfitdm_inject = True
@@ -828,8 +845,7 @@ init -9000 python:
 
         choice = renpy.display_menu(menu_items)
 
-        if "hero" in Char_Data and "map" in Char_Data["hero"]:
-           Char_Data["hero"]["map"] = choice
+        WChar.svar("hero", "map", choice)
 
         if renpy.has_label("hide_ui"):
            renpy.jump("hide_ui")
@@ -982,13 +998,13 @@ screen UI_Menu_Options_Contacts_Redefine():
                         label str(getattr(store, f"fname{a_menu_1}") + " " + getattr(store, f"lname{a_menu_1}")) xalign 0.5
                     hbox:
                         xalign 0.5
-                        if len(Char_Data[a_menu_1]["achiev"]["wear"]) >= 2:
-                            textbutton "{size=60}◀{/size}" action [SetVariable("a_menu_8", (a_menu_8 - 1) % max(1, len(Char_Data[a_menu_1]["achiev"]["wear"]))), Function(set_wear_var, a_menu_1, a_menu_8)]
+                        if len(WChar.gvar(a_menu_1, "achiev_wear")) >= 2:
+                            textbutton "{size=60}◀{/size}" action [SetVariable("a_menu_8", (a_menu_8 - 1) % max(1, len(WChar.gvar(a_menu_1, "achiev_wear")))), Function(set_wear_var, a_menu_1, a_menu_8)]
                         else:
                             textbutton "{size=60}◀{/size}" action None
                         text "{size=60} Style {/size}"
-                        if len(Char_Data[a_menu_1]["achiev"]["wear"]) >= 2:
-                            textbutton "{size=60}▶{/size}" action [SetVariable("a_menu_8", (a_menu_8 + 1) % max(1, len(Char_Data[a_menu_1]["achiev"]["wear"]))), Function(set_wear_var, a_menu_1, a_menu_8)]
+                        if len(WChar.gvar(a_menu_1, "achiev_wear")) >= 2:
+                            textbutton "{size=60}▶{/size}" action [SetVariable("a_menu_8", (a_menu_8 + 1) % max(1, len(WChar.gvar(a_menu_1, "achiev_wear")))), Function(set_wear_var, a_menu_1, a_menu_8)]
                         else:
                             textbutton "{size=60}▶{/size}" action None
             else:
@@ -1105,8 +1121,8 @@ screen UI_Menu_Options_Contacts_Redefine():
                                         spacing 10
                                         if not a_menu_1 in ["none"]: 
                                            text "{b}Name:{/b} " + str(a_menu_1)
-                                           text "{b}Map:{/b} " + str(Char_Data[a_menu_1]["map"])
-                                           text "{b}Wear:{/b} " + str(Char_Data[a_menu_1]["wear"])
+                                           text "{b}Map:{/b} " + str(WChar.gvar(a_menu_1, "map"))
+                                           text "{b}Wear:{/b} " + str(WChar.gvar(a_menu_1, "wear"))
                                            if a_menu_1 == "hero":
                                               if transform_incest_patch:
                                                  text "{b}Gender:{/b} Female"

@@ -15,10 +15,10 @@ init 90000 python:
     
     def Get_NPCWear(npc_id):
         if wolfitdm_hero_name == npc_id:
-           return Char_Data[npc_id]["wear"]
+           return WChar.gvar(npc_id, "wear")
         else:
            if wolfitdm_full_nudist:
-              return Char_Data[npc_id]["wear"]
+              return WChar.gvar(npc_id, "wear")
            return wolfitdm_Get_NPCWear(npc_id)
 
     def Get_NPCMap(npc_id):

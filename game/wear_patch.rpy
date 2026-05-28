@@ -13,19 +13,12 @@ default wolfitdm_hero_name = "hero"
 init -100000 python:
     wear_all_chars_init = False
 
-    def init_char_data_achiev(i):
-        if not i in Char_Data:
-           Char_Data[i] = {}
-
-        if not "achiev" in Char_Data[i]:
-           Char_Data[i]['achiev'] = {}
-
-        if not "wear" in Char_Data[i]['achiev']:
-           Char_Data[i]['achiev']['wear'] = []
-
     def wear_get_chars():
         wear_hero_chars = ["hero", "wmom", "wsis", "wnei", "wpre", "wota", "wdis", "wgal", "wric", "wgot", "wdel", "wuza", "wlaz", "hprv", "hine", "hriv", "wcou", "wgma", "wsuk", "wdan", "wkuu", "wrin"]
         # wear_hero_chars.extend(["wemo","wido","wtec","wnem","wahu","hbul","hfem","whip","wfat","hbla","hfre","wtpe"])
+
+        if not config.version == "0.36.1":
+           wear_hero_chars.extend(["wmam", "hpap"])
 
         global wear_all_chars_init
 
@@ -37,6 +30,262 @@ init -100000 python:
 
         return wear_hero_chars
 
+    def wear_get_old_attrs_cheat():
+        wear_char_attrs = ["int", "cha", "phy", "ene", "hyg", "eat", "lust", "love", "money", "inti", "bonus"]
+        return wear_char_attrs
+
+    def wear_get_char_attrs():
+        wear_char_attrs = ["size", "body", "itemL", "itemR", "dressed", "wear", "mood", "fx", "map", "quest", "act", "know", "item", "item_love", "prey", "achiev_wear"]
+        return wear_char_attrs
+
+    def wear_get_char_attrs_cheat_int():
+        wear_char_attrs = ["sex", "purity", "diligence"]
+        return wear_char_attrs
+
+    def wear_get_char_attrs_cheat_str():
+        wear_char_attrs = ["gaming"]
+        return wear_char_attr
+
+    def wear_get_char_attrs_all():
+        wear_char_attrs = wear_get_old_attrs_cheat()
+        wear_char_attrs.extend(wear_get_char_attrs())
+        wear_char_attrs.extend(wear_get_char_attrs_cheat_int())
+        wear_char_attrs.extend(wear_get_char_attrs_cheat_str())
+
+        return wear_char_attrs
+
+    class Wolfitdm_Transformer:
+       def __init__(self):
+           self.setup_vars_all()
+           self.is_old_version = config.version == "0.36.1"
+
+       def get_is_old_version(self):
+           return self.is_old_version
+
+       def setup_vars(self, hero, varv):
+           if not hero in Char_Data:
+              Char_Data[hero] = {}
+
+           if not "stat" in Char_Data:
+              Char_Data[hero]["stat"] = {}
+
+           if varv in wear_get_old_attrs_cheat():
+              if not varv in Char_Data[hero]["stat"]:
+                 Char_Data[hero]["stat"][varv] = 0
+
+           elif varv == "itemR" or varv == "itemL":
+              if not "item" in Char_Data[hero]:
+                 Char_Data[hero]["item"] = {}  
+
+              if not "hold_left" in Char_Data[hero]["item"]:
+                 Char_Data[hero]["item"]["hold_left"] = 0
+             
+              if not "hold_right" in Char_Data[hero]["item"]:
+                 Char_Data[hero]["item"]["hold_right"] = 0
+
+           elif varv == "achiev_wear":
+              if not "achiev" in Char_Data[hero]:
+                 Char_Data[hero]["achiev"] = {}
+
+              if not "wear" in Char_Data[hero]["achiev"]:
+                 Char_Data[hero]["achiev"]["wear"] = ""
+
+           else:
+              if varv not in Char_Data[hero]:
+                 getvarv = None
+
+                 if varv == "wear":
+                    getvarv = ""
+
+                 Char_Data[hero][varv] = getvarv
+
+       def update_vars_specific(self, hero, varv):
+           self.setup_vars(hero,varv)
+           if self.is_old_version:
+              if varv in wear_get_old_attrs_cheat():
+                 setattr(store, hero + "_" + varv, Char_Data[hero]["stat"][varv])
+
+              elif varv == "itemR":
+                 setattr(store, hero + "_" + varv, Char_Data[hero]["item"]["hold_right"])
+
+              elif varv == "itemL":
+                 setattr(store, hero + "_" + varv, Char_Data[hero]["item"]["hold_left"])
+
+              elif varv == "achiev_wear":
+                 setattr(store, hero + "_" + varv, Char_Data[hero]["achiev"]["wear"])
+
+              elif varv in Char_Data[hero]:
+                 setattr(store, hero + "_" + varv, Char_Data[hero][varv])
+
+           else:
+              getvarv = None
+
+              if hasattr(store, hero + "_" + varv):
+                 getvarv = getattr(store, hero + "_" + varv)
+
+                 if varv in wear_get_old_attrs_cheat():
+                    Char_Data[hero]["stat"][varv] = getvarv
+                 elif varv == "itemR":
+                    Char_Data[hero]["item"]["hold_right"] = getvarv
+                 elif varv == "itemL":
+                    Char_Data[hero]["item"]["hold_left"] = getvarv
+                 elif varv == "achiev_wear":
+                    Char_Data[hero]["achiev"]["wear"] = getvarv
+                 elif varv in Char_Data[hero]:
+                    Char_Data[hero][varv] = getvarv
+
+       def update_vars(self):
+          for i in wear_get_chars():
+              for j in wear_get_char_attrs_all():
+                  self.update_vars_specific(i,j)
+
+       def setup_vars_all(self):
+          for i in wear_get_chars():
+              for j in wear_get_char_attrs_all():
+                  self.setup_vars(i, j)
+
+       def gvar(self, hero, varv):
+           if self.is_old_version:
+              if varv in wear_get_old_attrs_cheat():
+                 return Char_Data[hero]["stat"][varv]
+
+              elif varv == "itemR":
+                 return Char_Data[hero]["item"]["hold_right"]
+
+              elif varv == "itemL":
+                 return Char_Data[hero]["item"]["hold_left"]
+
+              elif varv == "achiev_wear":
+                 return Char_Data[hero]["achiev"]["wear"]
+
+              elif varv in Char_Data[hero]:
+                 return Char_Data[hero][varv]
+
+              else:
+                 return None
+
+           else:
+              getvarv = None
+
+              if hasattr(store, hero + "_" + varv):
+                 getvarv = getattr(store, hero + "_" + varv)
+
+              return getvarv  
+
+       def avar(self, hero, varv, index):
+           val = self.gvar(hero, varv)
+
+           if not val == None:
+              if isinstance(val, list):
+                 if index < len(val):
+                    return val[index]
+
+           return ""
+
+       def svar(self, hero, varv, varvv):
+           if self.is_old_version:
+              if varv in wear_get_old_attrs_cheat():
+                 Char_Data[hero]["stat"][varv] = varvv
+
+              elif varv == "itemR":
+                 Char_Data[hero]["item"]["hold_right"] = varvv
+
+              elif varv == "itemL":
+                 Char_Data[hero]["item"]["hold_left"] = varvv
+
+              elif varv == "achiev_wear":
+                 Char_Data[hero]["achiev"]["wear"] = varvv
+
+              elif varv in Char_Data[hero]:
+                 Char_Data[hero][varv] = varvv
+
+           else:
+              setattr(store, hero + "_" + varv, varvv)
+
+       def nvar(self, hero, varv):
+           if self.is_old_version:
+
+              if not hero in Char_Data:
+                 Char_Data[hero] = {}
+
+              if not varv in Char_Data[hero]:
+                 Char_Data[hero][varv] = None
+
+           else:
+              if not hasattr(store, hero + "_" + varv):
+                 setattr(store, hero + "_" + varv, None)  
+
+       def gnvar(self, hero, varv):
+           self.nvar(hero, varv)
+           
+           if self.is_old_version:
+              return Char_Data[hero][varv]
+           else:
+              return getattr(store, hero + "_" + varv)
+
+       def snvar(self, hero, varv, varvv):
+           self.nvar(hero, varv)
+           
+           if self.is_old_version:
+              Char_Data[hero][varv] = varvv
+           else:
+              setattr(store, hero + "_" + varv, varvv)
+
+       def dnvar(self, hero, varv):
+           self.snvar(hero, varv, None)
+
+       def dvar(self, hero, varv):
+           self.svar(hero, varv, None)
+
+       def inc_cheat_vars(self, hero, val, val_money):
+           if self.is_old_version:
+              for i in wear_get_old_attrs_cheat():
+                  inc_val = i == "money" ? val_money : val
+                  Char_Data[hero]["stat"][i] += inc_val
+           else:
+              for i in wear_get_old_attrs_cheat():
+                  inc_val = i == "money" ? val_money : val
+                  gstr = hero + "_" + i
+                  if hasattr(store, gstr):
+                     valv = getattr(store, gstr)
+                     valv += inc_val
+                     setattr(store, gstr, valv)
+
+              for i in wear_get_char_attrs_cheat_int():
+                  gstr = hero + "_" + i
+                  if hasattr(store, gstr):
+                     valv = getattr(store, gstr)
+                     if i == "purity":
+                        valv = 0
+                     else:
+                        valv += val
+                     setattr(store, gstr, valv)
+
+    WChar = Wolfitdm_Transformer()
+
+    def wear_test_head(part, name):
+        test_string = "kawaii_" + name
+        image = "kawaii/head/" + name + "/kawaii_head_" + part + "_" + name + ".png"
+        return WChar.gvar("hero", "wear") == test_string and wear_is_image(image)
+
+    def wear_is_image(path):
+        try:
+            width, height = renpy.image_size(filename)
+            return (width == 1 and height == 1) == False
+        except Exception as e:
+            renpy.log(f"Error getting size for {filename}: {e}")
+            return False
+
+    def init_char_data_achiev(i):
+        if not i in Char_Data:
+           Char_Data[i] = {}
+
+        if not "achiev" in Char_Data[i]:
+           Char_Data[i]['achiev'] = {}
+
+        if not "wear" in Char_Data[i]['achiev']:
+           Char_Data[i]['achiev']['wear'] = []
+
     def wear_get_clothes():
         return ["home", "under", "sleep", "casual", "dressy", "formal", "sport", "swim", "school", "school_swim", "school_sport", "work", "soap", "nude", "work2"]
 
@@ -47,20 +296,6 @@ init -100000 python:
             kawaii_clothes.append("kawaii_" + i)
 
         return kawaii_clothes
-
-init -1000 python:
-    def wear_test_head(part, name):
-        test_string = "kawaii_" + name
-        image = "kawaii/head/" + name + "/kawaii_head_" + part + "_" + name + ".png"
-        return Char_Data['hero']['wear'] == test_string and wear_is_image(image)
-
-    def wear_is_image(path):
-        try:
-            width, height = renpy.image_size(filename)
-            return (width == 1 and height == 1) == False
-        except Exception as e:
-            renpy.log(f"Error getting size for {filename}: {e}")
-            return False
 
     def my_renpy_say(text):
         renpy.call_in_new_context("popup", text)
@@ -83,38 +318,57 @@ init -1000 python:
            Cur_Wear[i]["wear_string"] = None
 
     def update_wear_vars():
+        is_old_version = WChar.get_is_old_version()
+
         for i in wear_get_chars():
+
+            if is_old_version:
+               init_char_data_wear(i)
+               init_char_data_achiev(i)
+
             init_cur_wear(i)
-            init_char_data_wear(i)
+
             if not Cur_Wear[i]["wear_string"] == None:
-               Char_Data[i]['wear'] = Cur_Wear[i]["wear_string"]
+               WChar.svar(i, "wear", Cur_Wear[i]["wear_string"])
                #my_renpy_say("Current wear: " + i + ":" + Char_Data[i]['wear'])   
 
     def set_wear_var(i, var):
         init_cur_wear(i)
-        init_char_data_wear(i)
-        init_char_data_achiev(i)
 
-        if var < len(Char_Data[i]['achiev']['wear']):
+        if WChar.get_is_old_version():
+           init_char_data_wear(i)
+           init_char_data_achiev(i)
+
+        achiev_wear = WChar.gvar(i, "achiev_wear")
+
+        len_achiev_var = isinstance(achiev_wear, list) ? len(achiev_wear) : 0
+
+        if var < len_achiev_var:
            Cur_Wear[i]["wear_string"] = Char_Data[i]['achiev']['wear'][var]
            if i == "hero" and not Cur_Wear[i]["wear_string"].startswith("kawaii"):
               if not wolfitdm_hero_name == i:
                  set_wear_var(wolfitdm_hero_name, var)
-           Char_Data[i]['wear'] = Cur_Wear[i]["wear_string"]
+           WChar.svar(i, "wear", Cur_Wear[i]["wear_string"])
            #my_renpy_say("Current wear: " + i + ":" + Cur_Wear[i]["wear_string"])
 
         Cur_Wear[i]["wear"] = var
 
     def get_wear_var(i):
         init_cur_wear(i)
-        init_char_data_wear(i)
-        init_char_data_achiev(i)
+
+        if WChar.get_is_old_version():
+           init_char_data_wear(i)
+           init_char_data_achiev(i)
 
         var = Cur_Wear[i]["wear"]
 
-        if var < len(Char_Data[i]['achiev']['wear']):
-           Cur_Wear[i]["wear_string"] = Char_Data[i]['achiev']['wear'][var]
-           Char_Data[i]['wear'] = Cur_Wear[i]["wear_string"]           
+        achiev_wear = WChar.gvar(i, "achiev_wear")
+
+        len_achiev_var = isinstance(achiev_wear, list) ? len(achiev_wear) : 0
+
+        if var < len_achiev_var:
+           Cur_Wear[i]["wear_string"] = WChar.gvar(i, "achiev_wear")
+           WChar.svar(i, "wear", Cur_Wear[i]["wear_string"])          
            #my_renpy_say("Current wear: " + i + ":" + Cur_Wear[i]["wear_string"])   
 
         return var

@@ -4,7 +4,7 @@ init 90000 python:
            if not renpy.has_label("wolfitdm_fuck_" + i):
               return False
 
-           if Char_Data[i]["stat"]["love"] >= 100:
+           if WChar.gvar(i, "love") >= 100:
               return True
            else:
               return False
