@@ -71,13 +71,57 @@ init -1000000 python:
 
         return wear_all_hero_quests
 
+    def wear_get_styles():
+        wear_get_styles_ = ["common", "gracious"]
+        return wear_get_styles_
+
+    def wear_get_styles_dict():
+        wear_get_styles_ = {}
+
+        wear_get_styles_["None"] = 0
+        wear_get_styles_["none"] = 0
+        wear_get_styles_["common"] = 0
+        wear_get_styles_["gracious"] = 1
+
+        return wear_get_styles_
+
     class Wolfitdm_Transformer:
        def __init__(self):
            if not hasattr(store, "Char_Data"):
               setattr(store, "Char_Data", {})
 
+           self.contains_point_in_version = False
+
+           if "." in config.version:
+              self.version_splitted = config.version.split(".")
+              self.contains_point_in_version = True
+           else:
+              self.version_splitted = [config.version]
+
+           self.version_splitted_int = []
+
+           if self.contains_point_in_version:
+              for i in self.version_splitted:
+                 self.version_splitted_int.append(self.get_int(i))
+
+           self.is_really_old_version = False
+
+           if len(self.version_splitted_int) >= 2:
+              if self.version_splitted_int[0] == 0 and self.version_splitted_int[1] < 36: 
+                 self.is_really_old_version = True
+              elif self.version_splitted_int[0] == 0 and self.version_splitted_int[1] == 36 and len(self.version_splitted_int) == 3:
+                 if self.version_splitted_int[2] == 1:
+                    self.is_really_old_version = True   
+
+           self.is_old_version = config.version == "0.36.1" or self.is_really_old_version
            self.setup_vars_all()
-           self.is_old_version = config.version == "0.36.1"
+
+       def get_int(self, i):
+           try:
+              num = int(i)
+           except:
+              num = 0
+           return num
 
        def get_is_old_version(self):
            return self.is_old_version
@@ -89,20 +133,23 @@ init -1000000 python:
            fname = "UNKNOWN"
            lname = "UNKNOWN"
 
-           if hasattr(store, f"fname{i}"):
-              fname = str(getattr(store, f"fname{i}"))
+           fnameattr = "fname" + str(hero)
+           lnameattr = "lname" + str(hero)
 
-           if i in ["wsis", "wmom"]:
-              if hasattr(store, f"lnamestep"):
-                 lname = str(getattr(store, f"lnamestep"))
-           elif i in ["wcou", "wgma", "waun"]:
-              if hasattr(store, f"lnamerela"):
-                 lname = str(getattr(store, f"lnamerela"))
-           elif i in ["wmam", "hpap"]:
-              if hasattr(store, f"lnamewnei"):
-                 lname = str(getattr(store, f"lnamewnei")) 
-           elif hasattr(store, f"lname{i}"):
-              lname = str(getattr(store, f"lname{i}"))
+           if hasattr(store, fnameattr):
+              fname = str(getattr(store, fnameattr))
+
+           if hero in ["wsis", "wmom"]:
+              if hasattr(store, "lnamestep"):
+                 lname = str(getattr(store, "lnamestep"))
+           elif hero in ["wcou", "wgma", "waun"]:
+              if hasattr(store, "lnamerela"):
+                 lname = str(getattr(store, "lnamerela"))
+           elif hero in ["wmam", "hpap"]:
+              if hasattr(store, "lnamewnei"):
+                 lname = str(getattr(store, "lnamewnei")) 
+           elif hasattr(store, lnameattr):
+              lname = str(getattr(store, lnameattr))
 
            return (fname, lname)
 
@@ -189,8 +236,15 @@ init -1000000 python:
            if not hero in Char_Data:
               Char_Data[hero] = {}
 
+           if not "style" in Char_Data[hero]:
+              Char_Data[hero]["style"] = 0
+
            if not "stat" in Char_Data:
               Char_Data[hero]["stat"] = {}
+
+           for i in wear_get_old_attrs_cheat():
+              if not i in Char_Data[hero]["stat"]:
+                 Char_Data[hero]["stat"][i] = 0
 
            if not "know" in Char_Data:
               Char_Data[hero]["know"] = []
@@ -231,7 +285,10 @@ init -1000000 python:
            self.setup_vars(hero,varv)
            if self.is_old_version:
 
-              if varv == "know":
+              if varv == "style":
+                 setattr(store, hero + "_" + varv, Char_Data[hero]["style"])
+
+              elif varv == "know":
                  setattr(store, hero + "_" + varv, Char_Data[hero]["know"])
 
               elif varv == "itemR":
@@ -260,7 +317,9 @@ init -1000000 python:
               elif hasattr(store, hero + "_" + varv):
                  getvarv = getattr(store, hero + "_" + varv)
 
-                 if varv == "know":
+                 if varv == "style":
+                    Char_Data[hero]["style"] = getvarv
+                 elif varv == "know":
                     Char_Data[hero]["know"] = getvarv
                  elif varv == "itemR":
                     Char_Data[hero]["item"]["hold_right"] = getvarv
@@ -286,7 +345,10 @@ init -1000000 python:
        def gvar(self, hero, varv):
            if self.is_old_version:
 
-              if varv == "know":
+              if varv == "style":
+                 return Char_Data[hero]["style"]
+
+              elif varv == "know":
                  return Char_Data[hero]["know"]
 
               elif varv == "itemR":
@@ -334,7 +396,10 @@ init -1000000 python:
        def svar(self, hero, varv, varvv):
            if self.is_old_version:
 
-              if varv == "know":
+              if varv == "style":
+                 Char_Data[hero]["style"] = varvv
+
+              elif varv == "know":
                  Char_Data[hero]["know"] = varvv
 
               elif varv == "itemR":
@@ -360,6 +425,124 @@ init -1000000 python:
                  self.set_quest_attr(hero, varv, varvv)
               else:
                  setattr(store, hero + "_" + varv, varvv)
+
+       def inc_var(self, hero, varv, step=1):
+           inc_val = self.gvar(hero, varv)
+
+           if inc_val is None:
+              return
+
+           if self.is_int(inc_val):
+              inc_val = int(inc_val)
+           elif self.is_float(inc_val):
+              inc_val = float(inc_val)
+           else:
+              return
+
+           inc_val += step
+
+           self.svar(hero, varv, inc_val)
+
+       def dec_var(self, hero, varv, step=1):
+           inc_val = self.gvar(hero, varv)
+
+           if inc_val is None:
+              return
+
+           if self.is_int(inc_val):
+              inc_val = int(inc_val)
+           elif self.is_float(inc_val):
+              inc_val = float(inc_val)
+           else:
+              return
+
+           inc_val -= step
+
+           self.svar(hero, varv, inc_val)
+
+       def is_float(self, num):
+           try:
+               float(num)
+               return True
+           except:
+               return False
+
+       def is_int(self, num):
+           try:
+               int(num)
+               return True
+           except:
+               return False
+
+       def inc_or_dec_var_style(self, hero, inc=True, set_string=True):
+           current_style = self.gvar(hero, "style")
+
+           if current_style is None:
+              self.svar(hero, "style", 0)
+              return
+
+           inc_val = current_style
+
+           cur_styles = wear_get_styles()
+           cur_styles_ = wear_get_styles_dict()
+
+           current_style_index = -1
+
+           is_inc_or_dec = False
+
+           if self.is_int(inc_val) or self.is_float(inc_val):
+              is_inc_or_dec = True
+
+              if inc:
+                 self.inc_var(hero, "style", 1)
+              else:
+                 self.dec_var(hero, "style", 1)
+
+              current_style = self.get_int(self.gvar(hero, "style"))
+              for index, value in enumerate(cur_styles):
+                  if index == current_style:
+                     current_style_index = index
+                     break
+
+              if current_style_index == -1:
+                 current_style_index = 0
+
+           else:
+              current_style = str(current_style)
+              
+              for index, value in enumerate(cur_styles):
+                  if value == current_style:
+                     current_style_index = index
+                     break
+
+              if current_style_index == -1:
+                 if current_style in cur_styles_:
+                    current_style_index = cur_styles_[current_style]
+                 else:
+                    current_style_index = 0
+
+           if inc:
+
+              if not is_inc_or_dec:
+                 current_style_index += 1
+
+           else:
+
+              if not is_inc_or_dec:
+                 current_style_index -= 1
+
+           if current_style_index  >= len(cur_styles):
+              current_style_index = 0
+
+           if current_style_index <= 0:
+              current_style_index = 0
+
+           if set_string:
+              current_style = cur_styles[current_style_index]
+           else:
+              current_style = current_style_index
+              
+           WChar.svar(hero, "style", current_style)
 
        def nvar(self, hero, varv):
            if self.is_old_version:
@@ -398,7 +581,12 @@ init -1000000 python:
 
        def inc_cheat_vars(self, hero, val, val_money):
            if self.is_old_version:
+              if not "stat" in Char_Data[hero]:
+                 Char_Data[hero]["stat"] = {}
+
               for i in wear_get_old_attrs_cheat():
+                  if not i in Char_Data[hero]["stat"]:
+                     Char_Data[hero]["stat"][i] = 0
                   inc_val = val_money if i == "money" else val
                   Char_Data[hero]["stat"][i] += inc_val
            else:

@@ -1052,6 +1052,22 @@ screen UI_Menu_Options_Contacts_Redefine():
                     hover "images/UI/SUBMENU_Option_BottomSquareMapHover.png"
                     action Function(wolfitdm_change_map_to_me, a_menu_1)
 
+            hbox:
+                xalign 0.5
+                yalign 0.95
+                spacing 45
+                textbutton "{size=20}◀{/size}" action [Function(WChar.inc_or_dec_var_style, a_menu_1, False, False)]
+                text "{size=20}Hair Style {/size}"
+                textbutton "{size=20}▶{/size}" action [Function(WChar.inc_or_dec_var_style, a_menu_1, True, False)]
+
+            hbox:
+                xalign 0.5
+                yalign 0.98
+                spacing 45
+                textbutton "{size=20}◀{/size}" action [Function(WChar.inc_or_dec_var_style, a_menu_1, False, True)]
+                text "{size=20}Hair Style String{/size}"
+                textbutton "{size=20}▶{/size}" action [Function(WChar.inc_or_dec_var_style, a_menu_1, True, True)]
+
         frame:
             xysize(1200, 1080)
             xpadding 25
@@ -1142,6 +1158,7 @@ screen UI_Menu_Options_Contacts_Redefine():
                                            text "{b}Name:{/b} " + str(a_menu_1)
                                            text "{b}Map:{/b} " + str(WChar.gvar(a_menu_1, "map"))
                                            text "{b}Wear:{/b} " + str(WChar.gvar(a_menu_1, "wear"))
+                                           text "{b}Hair Style:{/b} " + str(WChar.gvar(a_menu_1, "style"))
                                            if a_menu_1 == "hero":
                                               if transform_incest_patch:
                                                  text "{b}Gender:{/b} Female"
@@ -1149,14 +1166,14 @@ screen UI_Menu_Options_Contacts_Redefine():
                                                  text "{b}Gender:{/b} Male"
 
                                               if hasattr(preferences, "codecheat"):
-                                                 text "Codecheat: [preferences.codecheat]"
+                                                 text "{b}Codecheat:{/b} [preferences.codecheat]"
 
                                            if a_menu_1 == "hero" and wolfitdm_cheat:
                                               label "{image=icon_hero} [C_Nam][fnamehero][C_Off]"
                                               hbox:
                                                   spacing 10
-                                                  text "{image=images/UI/ICON_StatInt.webp}"
-                                                  if config.version == "0.36.1":
+                                                  text "Intelligence: {image=images/UI/ICON_StatInt.webp}"
+                                                  if WChar.get_is_old_version():
                                                      bar value DictValue(Char_Data["hero"]["stat"], "int", 100) xmaximum 300
                                                      text str(Char_Data["hero"]["stat"]["int"]) + "%"
                                                   else:
@@ -1164,8 +1181,8 @@ screen UI_Menu_Options_Contacts_Redefine():
                                                      text str(stat_int) + "%"
                                               hbox:
                                                   spacing 10
-                                                  text "{image=images/UI/ICON_StatCha.webp}"
-                                                  if config.version == "0.36.1":
+                                                  text "Charisma: {image=images/UI/ICON_StatCha.webp}"
+                                                  if WChar.get_is_old_version():
                                                      bar value DictValue(Char_Data["hero"]["stat"], "cha", 100) xmaximum 300
                                                      text str(Char_Data["hero"]["stat"]["cha"]) + "%"
                                                   else:
@@ -1173,14 +1190,14 @@ screen UI_Menu_Options_Contacts_Redefine():
                                                      text str(stat_cha) + "%"
                                               hbox:
                                                   spacing 10
-                                                  text "{image=images/UI/ICON_StatPhy.webp}"
-                                                  if config.version == "0.36.1":
+                                                  text "Physics: {image=images/UI/ICON_StatPhy.webp}"
+                                                  if WChar.get_is_old_version():
                                                      bar value DictValue(Char_Data["hero"]["stat"], "phy", 100) xmaximum 300
                                                      text str(Char_Data["hero"]["stat"]["phy"]) + "%"
                                                   else:
                                                      bar value VariableValue("stat_phy", 100) xmaximum 300
                                                      text str(stat_phy) + "%"
-                                              if config.version == "0.36.1":
+                                              if WChar.get_is_old_version():
                                                  textbutton "Money: "+str(round(Char_Data["hero"]["stat"]["money"], 2)) action SetDict(Char_Data["hero"]["stat"], "money", math.inf)
                                                  textbutton "Perks: [perk]" action SetVariable("perk", math.inf)
                                               else:
@@ -1193,8 +1210,8 @@ screen UI_Menu_Options_Contacts_Redefine():
                                                   label str(label_str)
                                                   hbox:
                                                       spacing 10
-                                                      text "{image=images/UI/ICON_StatInti.webp}"
-                                                      if config.version == "0.36.1":
+                                                      text "Intimacy: {image=images/UI/ICON_StatInti.webp}"
+                                                      if WChar.get_is_old_version():
                                                          bar value DictValue(Char_Data[i]["stat"], "inti", 100) xmaximum 300
                                                          text str(Char_Data[i]["stat"]["inti"]) + "%"
                                                       else:
@@ -1202,8 +1219,8 @@ screen UI_Menu_Options_Contacts_Redefine():
                                                          text str(getattr(store,i+"_inti")) + "%"
                                                   hbox:
                                                       spacing 10
-                                                      text "{image=images/UI/ICON_StatLove.webp}"
-                                                      if config.version == "0.36.1":
+                                                      text "Love: {image=images/UI/ICON_StatLove.webp}"
+                                                      if WChar.get_is_old_version():
                                                          bar value DictValue(Char_Data[i]["stat"], "love", 100) xmaximum 300
                                                          text str(Char_Data[i]["stat"]["love"]) + "%"
                                                       else:
@@ -1211,8 +1228,8 @@ screen UI_Menu_Options_Contacts_Redefine():
                                                          text str(getattr(store,i+"_love")) + "%"
                                                   hbox:
                                                       spacing 10
-                                                      text "{image=images/UI/ICON_StatLust.webp}"
-                                                      if config.version == "0.36.1":
+                                                      text "Lust: {image=images/UI/ICON_StatLust.webp}"
+                                                      if WChar.get_is_old_version():
                                                          bar value DictValue(Char_Data[i]["stat"], "lust", 100) xmaximum 300
                                                          text str(Char_Data[i]["stat"]["love"]) + "%"
                                                       else:
@@ -1220,8 +1237,8 @@ screen UI_Menu_Options_Contacts_Redefine():
                                                          text str(getattr(store,i+"_lust")) + "%"
                                                   hbox:
                                                       spacing 10
-                                                      text "{image=images/UI/ICON_StatInt.webp}"
-                                                      if config.version == "0.36.1":
+                                                      text "Intelligence: {image=images/UI/ICON_StatInt.webp}"
+                                                      if WChar.get_is_old_version():
                                                          bar value DictValue(Char_Data[i]["stat"], "int", 100) xmaximum 300
                                                          text str(Char_Data[i]["stat"]["int"]) + "%"
                                                       else:
@@ -1229,8 +1246,8 @@ screen UI_Menu_Options_Contacts_Redefine():
                                                          text str(getattr(store,i+"_int")) + "%"
                                                   hbox:
                                                       spacing 10
-                                                      text "{image=images/UI/ICON_StatCha.webp}"
-                                                      if config.version == "0.36.1":
+                                                      text "Charisma: {image=images/UI/ICON_StatCha.webp}"
+                                                      if WChar.get_is_old_version():
                                                          bar value DictValue(Char_Data[i]["stat"], "cha", 100) xmaximum 300
                                                          text str(Char_Data[i]["stat"]["cha"]) + "%"
                                                       else:
@@ -1238,8 +1255,8 @@ screen UI_Menu_Options_Contacts_Redefine():
                                                          text str(getattr(store,i+"_cha")) + "%"
                                                   hbox:
                                                       spacing 10
-                                                      text "{image=images/UI/ICON_StatPhy.webp}"
-                                                      if config.version == "0.36.1":
+                                                      text "Physics: {image=images/UI/ICON_StatPhy.webp}"
+                                                      if WChar.get_is_old_version():
                                                          bar value DictValue(Char_Data[i]["stat"], "phy", 100) xmaximum 300
                                                          text str(Char_Data[i]["stat"]["phy"]) + "%"
                                                       else:
@@ -1247,8 +1264,8 @@ screen UI_Menu_Options_Contacts_Redefine():
                                                          text str(getattr(store,i+"_phy")) + "%"
                                                   hbox:
                                                       spacing 10
-                                                      text "{image=images/UI/ICON_StatHyg.webp}"
-                                                      if config.version == "0.36.1":
+                                                      text "Hygiene: {image=images/UI/ICON_StatHyg.webp}"
+                                                      if WChar.get_is_old_version():
                                                          bar value DictValue(Char_Data[i]["stat"], "hyg", 100) xmaximum 300
                                                          text str(Char_Data[i]["stat"]["hyg"]) + "%"
                                                       else:
@@ -1256,8 +1273,8 @@ screen UI_Menu_Options_Contacts_Redefine():
                                                          text str(getattr(store,i+"_hyg")) + "%"
                                                   hbox:
                                                       spacing 10
-                                                      text "{image=images/UI/ICON_StatPer.webp}"
-                                                      if config.version == "0.36.1":
+                                                      text "Eat: {image=images/UI/ICON_StatPer.webp}"
+                                                      if WChar.get_is_old_version():
                                                          bar value DictValue(Char_Data[i]["stat"], "eat", 100) xmaximum 300
                                                          text str(Char_Data[i]["stat"]["eat"]) + "%"
                                                       else:
@@ -1265,15 +1282,15 @@ screen UI_Menu_Options_Contacts_Redefine():
                                                          text str(getattr(store,i+"_eat")) + "%"
                                                   hbox:
                                                       spacing 10
-                                                      text "{image=images/UI/ICON_StatEne.webp}"
-                                                      if config.version == "0.36.1":
+                                                      text "Energy: {image=images/UI/ICON_StatEne.webp}"
+                                                      if WChar.get_is_old_version():
                                                          bar value DictValue(Char_Data[i]["stat"], "ene", 100) xmaximum 300
                                                          text str(Char_Data[i]["stat"]["ene"]) + "%"
                                                       else:
                                                          bar value VariableValue(i + "_ene", 100) xmaximum 300
                                                          text str(getattr(store,i+"_ene")) + "%"
 
-                                                  if config.version == "0.36.1":
+                                                  if WChar.get_is_old_version():
                                                      textbutton "Money: "+str(round(Char_Data[i]["stat"]["money"], 2)) action SetDict(Char_Data[i]["stat"], "money", math.inf)
                                                   else:
                                                      textbutton "Money: "+str(round(getattr(store, i+"_money"), 2)) action SetVariable(i+"_money", math.inf)
