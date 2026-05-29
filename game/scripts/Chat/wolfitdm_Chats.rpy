@@ -72,7 +72,7 @@ label wcou_interact:
             jump wcou_interact_chat
         "Touch" if not is_specialevent:
             jump wcou_interact_touch
-        "Hang out" if Char_Data["hero"]["quest"]["A New Journey"] >= 3:
+        "Hang out" if WChar.gvar("hero", "A New Journey") >= 3:
             jump wcou_interact_hangout
         "Give item" if not is_specialevent:
             jump wcou_interact_gift
@@ -211,7 +211,7 @@ label wnei_interact:
     menu:
         "Chat" if not is_specialevent:
             if sum(1 for get_id in wnei_know if get_id =="Talk") >= 2:
-                $ Char_Data["wnei"]["mood"] = "O1"
+                $ WChar.svar("wnei", "mood", "O1")
                 wnei "Ehhh...?{w=[wt2]} Enough of chatting! Let's do something fun!"
                 jump wnei_interact
             else:
@@ -290,13 +290,16 @@ label wric_interact:
 
 label wsis_interact:
     call hide_ui
-    if "interacting_hero" not in Char_Data["wsis"]["know"]:
-        $ Char_Data["wsis"]["know"].append("interacting_hero")
+    $ current_wsis_know = WChar.gvar("wsis", "know")
+    $ current_wsis_forgiveness = WChar.gvar("wsis", "Forgiveness")
+    if "interacting_hero" not in current_wsis_know:
+        $ current_wsis_know.append("interacting_hero")
+        $ WChar.svar("wsis", "know", current_wsis_know)
 
     menu:
         "Chat" if not is_specialevent:
-            if sum(1 for buceta in Char_Data["wsis"]["know"] if buceta =="Talk") >= 3 and Char_Data["wsis"]["quest"]["Forgiveness"] == 0:
-                $ Char_Data["wsis"]["mood"] = "O1"
+            if sum(1 for buceta in current_wsis_know if buceta =="Talk") >= 3 and current_wsis_forgiveness == 0:
+                $ WChar.svar("wsis", "mood", "O1")
                 wsis "Enough of chitchatting{w=[wt1]}, don't you think?"
                 jump wsis_interact
             else:

@@ -66,6 +66,11 @@ init -1000000 python:
 
         return wear_char_attrs
 
+    def wear_get_quests():
+        wear_all_hero_quests = ["A New Journey", "Forgiveness"]
+
+        return wear_all_hero_quests
+
     class Wolfitdm_Transformer:
        def __init__(self):
            if not hasattr(store, "Char_Data"):
@@ -107,7 +112,78 @@ init -1000000 python:
 
        def get_last_name(self, hero):
            fname, lname = self.get_name(hero)
-           return lname    
+           return lname
+
+       def setup_quests(self, hero, varv):
+           if not "quest" in Char_Data[hero]:
+              Char_Data[hero]["quest"] = {}
+
+           if hero == "hero":
+              if not "A New Journey" in Char_Data[hero]["quest"]:
+                 Char_Data[hero]["quest"]["A New Journey"] = 0
+
+           return  
+
+       def update_quest_attr(self, hero, varv):
+           if hero == "hero":
+              if varv == "A New Journey":
+                 setattr("hero_quest_3", Char_Data[hero]["quest"]["A New Journey"])
+           elif hero == "wsis":
+              if varv == "Forgiveness":
+                 setattr(store, "wsis_quest_2", Char_Data[hero]["quest"]["Forgiveness"])
+
+       def update_quest_char(self, hero, varv):
+           if hero == "hero":
+              if varv == "A New Journey":
+                 if hasattr(store, "hero_quest_3"):
+                    Char_Data[hero]["quest"]["A New Journey"] = getattr(store, "hero_quest_3")
+           elif hero == "wsis":
+              if varv == "Forgiveness":
+                 if hasattr(store, "wsis_quest_2"):
+                    Char_Data[hero]["quest"]["Forgiveness"] = getattr(store, "wsis_quest_2")
+
+
+       def get_quest_attr(self, hero, varv):
+           if hero == "hero":
+              if varv == "A New Journey":
+                 if hasattr(store, "hero_quest_3"):
+                    return getattr(store, "hero_quest_3")
+           elif hero == "wsis":
+              if varv == "Forgiveness":
+                 if hasattr(store, "wsis_quest_2"):
+                    return getattr(store, "wsis_quest_2")
+
+           return None
+
+       def get_quest_char(self, hero, varv):
+           if hero == "hero":
+              if varv == "A New Journey":
+                 return Char_Data[hero]["quest"]["A New Journey"]
+           elif hero == "wsis":
+              if varv == "Forgiveness":
+                 return Char_Data[hero]["quest"]["Forgiveness"]
+
+           return None
+
+       def set_quest_attr(self, hero, varv, varvv):
+           if hero == "hero":
+              if varv == "A New Journey":
+                 if hasattr(store, "hero_quest_3"):
+                    setattr(store, "hero_quest_3", varvv)
+           elif hero == "wsis":
+              if varv == "Forgiveness":
+                 if hasattr(store, "wsis_quest_2"):
+                    setattr(store, "wsis_quest_2", varvv)
+
+       def set_quest_char(self, hero, varv, varvv):
+           if hero == "hero":
+              if varv == "A New Journey":
+                 Char_Data[hero]["quest"]["A New Journey"] = varvv
+           elif hero == "wsis":
+              if varv == "Forgiveness":
+                 Char_Data[hero]["quest"]["Forgiveness"] = varvv
+
+           return None
 
        def setup_vars(self, hero, varv):
            if not hero in Char_Data:
@@ -115,6 +191,11 @@ init -1000000 python:
 
            if not "stat" in Char_Data:
               Char_Data[hero]["stat"] = {}
+
+           if not "know" in Char_Data:
+              Char_Data[hero]["know"] = []
+
+           self.setup_quests(hero, varv)
 
            if varv in wear_get_old_attrs_cheat():
               if not varv in Char_Data[hero]["stat"]:
@@ -149,7 +230,11 @@ init -1000000 python:
        def update_vars_specific(self, hero, varv):
            self.setup_vars(hero,varv)
            if self.is_old_version:
-              if varv == "itemR":
+
+              if varv == "know":
+                 setattr(store, hero + "_" + varv, Char_Data[hero]["know"])
+
+              elif varv == "itemR":
                  setattr(store, hero + "_" + varv, Char_Data[hero]["item"]["hold_right"])
 
               elif varv == "itemL":
@@ -158,19 +243,26 @@ init -1000000 python:
               elif varv == "achiev_wear":
                  setattr(store, hero + "_" + varv, Char_Data[hero]["achiev"]["wear"])
 
+              elif varv in wear_get_quests():
+                 self.update_quest_attr(hero, varv)
+
               elif varv in wear_get_old_attrs_cheat():
                  setattr(store, hero + "_" + varv, Char_Data[hero]["stat"][varv])
 
               elif varv in Char_Data[hero]:
                  setattr(store, hero + "_" + varv, Char_Data[hero][varv])
-
            else:
               getvarv = None
 
-              if hasattr(store, hero + "_" + varv):
+              if varv in wear_get_quests():
+                 self.update_quest_char(hero, varv)
+
+              elif hasattr(store, hero + "_" + varv):
                  getvarv = getattr(store, hero + "_" + varv)
 
-                 if varv == "itemR":
+                 if varv == "know":
+                    Char_Data[hero]["know"] = getvarv
+                 elif varv == "itemR":
                     Char_Data[hero]["item"]["hold_right"] = getvarv
                  elif varv == "itemL":
                     Char_Data[hero]["item"]["hold_left"] = getvarv
@@ -193,7 +285,11 @@ init -1000000 python:
 
        def gvar(self, hero, varv):
            if self.is_old_version:
-              if varv == "itemR":
+
+              if varv == "know":
+                 return Char_Data[hero]["know"]
+
+              elif varv == "itemR":
                  return Char_Data[hero]["item"]["hold_right"]
 
               elif varv == "itemL":
@@ -201,6 +297,9 @@ init -1000000 python:
 
               elif varv == "achiev_wear":
                  return Char_Data[hero]["achiev"]["wear"]
+
+              elif varv in wear_get_quests():
+                 return self.get_quest_char(hero, varv)
 
               elif varv in wear_get_old_attrs_cheat():
                  return Char_Data[hero]["stat"][varv]
@@ -214,7 +313,10 @@ init -1000000 python:
            else:
               getvarv = None
 
-              if hasattr(store, hero + "_" + varv):
+              if varv in wear_get_quests():
+                 getvarv = self.get_quest_attr(hero, varv)
+
+              elif hasattr(store, hero + "_" + varv):
                  getvarv = getattr(store, hero + "_" + varv)
 
               return getvarv  
@@ -231,7 +333,11 @@ init -1000000 python:
 
        def svar(self, hero, varv, varvv):
            if self.is_old_version:
-              if varv == "itemR":
+
+              if varv == "know":
+                 Char_Data[hero]["know"] = varvv
+
+              elif varv == "itemR":
                  Char_Data[hero]["item"]["hold_right"] = varvv
 
               elif varv == "itemL":
@@ -240,6 +346,9 @@ init -1000000 python:
               elif varv == "achiev_wear":
                  Char_Data[hero]["achiev"]["wear"] = varvv
 
+              elif varv in wear_get_quests():
+                 self.set_quest_char(hero, varv, varvv)
+
               elif varv in wear_get_old_attrs_cheat():
                  Char_Data[hero]["stat"][varv] = varvv
 
@@ -247,7 +356,10 @@ init -1000000 python:
                  Char_Data[hero][varv] = varvv
 
            else:
-              setattr(store, hero + "_" + varv, varvv)
+              if varv in wear_get_quests():
+                 self.set_quest_attr(hero, varv, varvv)
+              else:
+                 setattr(store, hero + "_" + varv, varvv)
 
        def nvar(self, hero, varv):
            if self.is_old_version:

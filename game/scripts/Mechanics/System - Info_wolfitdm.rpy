@@ -45,6 +45,8 @@ default wolfitdm_original_player_map = None
 
 default wolfitdm_override_map = {}
 
+default wolfitdm_cheat = False
+
 default Char_Data = {}
 
 init -9000 python:
@@ -286,8 +288,9 @@ init -9000 python:
         best = "best"
         changegender = "changegender"
         changeoutfitsall = "changeoutfitsall"
+        wolfitdm_cheats = "wolfitdm_cheat"
 
-        cheat_codes = [givemeall,kcc_code,codecheat,codecheat2,outfits,kawaii,show_code,show_code2,gettheme,guide,guide2,guide3,changeimg,nudist,nonudist,incest,noincest,inceststatus,nudiststatus,changestyle,fullnudist,nofullnudist,best,changegender,changeoutfitsall]
+        cheat_codes = [givemeall,kcc_code,codecheat,codecheat2,outfits,kawaii,show_code,show_code2,gettheme,guide,guide2,guide3,changeimg,nudist,nonudist,incest,noincest,inceststatus,nudiststatus,changestyle,fullnudist,nofullnudist,best,changegender,changeoutfitsall,wolfitdm_cheats]
 
         if cheatvar == "cheatmenu":
 
@@ -300,7 +303,23 @@ init -9000 python:
 
            cheatvar = renpy.display_menu(menu_items)  
 
-        if cheatvar == changeoutfitsall:
+        if cheatvar == wolfitdm_cheats:
+
+           if store.wolfitdm_cheat:
+              store.wolfitdm_cheat = False
+           else:
+              store.wolfitdm_cheat = True
+
+           if messagesoff:
+              wolfitdm_return = True
+
+           if not wolfitdm_return:
+              if store.wolfitdm_cheat:
+                 msg.msg("wolfitdm_cheat: on")
+              else:
+                 msg.msg("wolfitdm_cheat: off")
+
+        elif cheatvar == changeoutfitsall:
 
            wolfitdm_change_outfits_all_menu(messagesoff)      
 
@@ -337,11 +356,11 @@ init -9000 python:
 
                WChar.svar(i, "achiev_wear", arr_var)
 
-        if messagesoff:
-           wolfitdm_return = True
+           if messagesoff:
+              wolfitdm_return = True
 
-        if not wolfitdm_return:
-           msg.msg("All outfits added")
+           if not wolfitdm_return:
+              msg.msg("All outfits added")
 
         elif cheatvar == kawaii:   
 
@@ -1132,7 +1151,7 @@ screen UI_Menu_Options_Contacts_Redefine():
                                               if hasattr(preferences, "codecheat"):
                                                  text "Codecheat: [preferences.codecheat]"
 
-                                           if a_menu_1 == "hero":
+                                           if a_menu_1 == "hero" and wolfitdm_cheat:
                                               label "{image=icon_hero} [C_Nam][fnamehero][C_Off]"
                                               hbox:
                                                   spacing 10
@@ -1168,7 +1187,7 @@ screen UI_Menu_Options_Contacts_Redefine():
                                                  textbutton "Money: "+str(round(money, 2)) action SetVariable("money", math.inf)
                                                  textbutton "Perks: [perk]" action SetVariable("perk", math.inf)
                                               text ""
-                                           else:
+                                           elif wolfitdm_cheat:
                                               for i in [a_menu_1]:
                                                   $ label_str = "{image=icon_" + i + "} [C_Nam][fname" + i + "][C_Off]"
                                                   label str(label_str)
@@ -1253,15 +1272,11 @@ screen UI_Menu_Options_Contacts_Redefine():
                                                       else:
                                                          bar value VariableValue(i + "_ene", 100) xmaximum 300
                                                          text str(getattr(store,i+"_ene")) + "%"
-                                                  hbox:
-                                                      spacing 10
-                                                      text "{image=images/UI/ICON_StatMon.webp}"
-                                                      if config.version == "0.36.1":
-                                                         bar value DictValue(Char_Data[i]["stat"], "money", math.inf) xmaximum 300
-                                                         text str(Char_Data[i]["stat"]["money"]) + "$"
-                                                      else:
-                                                         bar value VariableValue(i + "_money", math.inf) xmaximum 300
-                                                         text str(getattr(store,i+"_money")) + "$"
+
+                                                  if config.version == "0.36.1":
+                                                     textbutton "Money: "+str(round(Char_Data[i]["stat"]["money"], 2)) action SetDict(Char_Data[i]["stat"], "money", math.inf)
+                                                  else:
+                                                     textbutton "Money: "+str(round(getattr(store, i+"_money"), 2)) action SetVariable(i+"_money", math.inf)
                                                   text ""
                                 vbar value YScrollValue("ScrollOCData")
 
