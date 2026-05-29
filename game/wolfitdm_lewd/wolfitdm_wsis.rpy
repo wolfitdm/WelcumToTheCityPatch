@@ -78,12 +78,14 @@ label wolfitdm_fuck_wsis:
          if choice == "bro_sis":
             for i in range(0, bro_sis_maxscene + 1):
                 menu_items.append(("Scene " + str(i), i))
+            menu_items.append(("Return", "nochoice"))
             image = renpy.display_menu(menu_items)
          elif choice == "bro_sis_friend":
             for i in range(0, bro_sis_friend_maxscene + 1):
                 menu_items.append(("Scene " + str(i), i))
+            menu_items.append(("Return", "nochoice"))
             image = renpy.display_menu(menu_items)
-         else:
+         elif choice == "random":
             choice = renpy.random.choice(["bro_sis", "bro_sis_friend"])
 
             if choice == "bro_sis":
@@ -91,6 +93,9 @@ label wolfitdm_fuck_wsis:
             elif choice == "bro_sis_friend":
                image = renpy.random.randint(0, bro_sis_friend_maxscene)
 
+         if choice == "nochoice" or image == "nochoice":
+            return
+          
          renpy.call("wolfitdm_fuck_wsis_scene", choice, image)      
 
       return

@@ -93,12 +93,14 @@ label wolfitdm_fuck_wmom:
          if choice == "wmom_friend":
             for i in range(0, wmom_friend_maxscene + 1):
                 menu_items.append(("Scene " + str(i), i))
+            menu_items.append(("Return", "nochoice"))
             image = renpy.display_menu(menu_items)
          elif choice == "wmom_son":
             for i in range(0, wmom_son_maxscene + 1):
                 menu_items.append(("Scene " + str(i), i))
+            menu_items.append(("Return", "nochoice"))
             image = renpy.display_menu(menu_items)
-         else:
+         elif choice == "random":
             choice = renpy.random.choice(["wmom_son", "wmom_friend"])
 
             if choice == "wmom_son":
@@ -106,5 +108,9 @@ label wolfitdm_fuck_wmom:
             elif choice == "wmom_friend":
                image = renpy.random.randint(0, wmom_friend_maxscene)
 
+         if choice == "nochoice" or image == "nochoice":
+            return
+         
          renpy.call("wolfitdm_fuck_wmom_scene", choice, image)
+
       return

@@ -166,6 +166,7 @@ label wolfitdm_fuck_wcou:
          menu_items.append(("Cousin & Friend & Grandma & You / Cousins Office", "cou_friend_oma_hero"))
          menu_items.append(("Cousin & You / Cousins Office", "cou_hero"))
          menu_items.append(("Cousin & Grandma / Cousins Office", "cou_oma"))
+         menu_items.append(("Return", "nochoice"))
 
          choice = renpy.display_menu(menu_items)
 
@@ -174,20 +175,24 @@ label wolfitdm_fuck_wcou:
          if choice == "cou_oma_hero":
             for i in range(0, cou_oma_hero_maxscene + 1):
                 menu_items.append(("Scene " + str(i), i))
+            menu_items.append(("Return", "nochoice"))
             image = renpy.display_menu(menu_items)
          elif choice == "cou_friend_hero":
             for i in range(0, cou_friend_hero_maxscene + 1):
                 menu_items.append(("Scene " + str(i), i))
+            menu_items.append(("Return", "nochoice"))
             image = renpy.display_menu(menu_items)
          elif choice == "cou_friend_oma_hero":
             for i in range(0, cou_friend_oma_hero_maxscene + 1):
                 menu_items.append(("Scene " + str(i), i))
+            menu_items.append(("Return", "nochoice"))
             image = renpy.display_menu(menu_items)
          elif choice == "cou_hero":
             for i in range(0, cou_hero_maxscene + 1):
                 menu_items.append(("Scene " + str(i), i))
+            menu_items.append(("Return", "nochoice"))
             image = renpy.display_menu(menu_items)
-         else:
+         elif choice == "random":
             choice = renpy.random.choice(["cou_oma_hero", "cou_friend_hero", "cou_friend_oma_hero", "cou_hero", "cou_oma"])
 
             if choice == "cou_oma_hero":
@@ -201,6 +206,9 @@ label wolfitdm_fuck_wcou:
             elif choice == "cou_oma":
                image = renpy.random.randint(0, cou_oma_maxscene)
 
+         if choice == "nochoice" or image == "nochoice":
+            return
+         
          renpy.call("wolfitdm_fuck_wcou_scene", choice, image)
 
       return
