@@ -94,8 +94,8 @@ label wolfitdm_fuck_wsis:
                image = renpy.random.randint(0, bro_sis_friend_maxscene)
 
          if choice == "nochoice" or image == "nochoice":
-            return
-          
-         renpy.call("wolfitdm_fuck_wsis_scene", choice, image)      
+            pass
+         else:
+            renpy.call("wolfitdm_fuck_wsis_scene", choice, image)      
 
       return

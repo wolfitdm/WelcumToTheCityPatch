@@ -207,8 +207,8 @@ label wolfitdm_fuck_wcou:
                image = renpy.random.randint(0, cou_oma_maxscene)
 
          if choice == "nochoice" or image == "nochoice":
-            return
-         
-         renpy.call("wolfitdm_fuck_wcou_scene", choice, image)
+            pass
+         else:
+            renpy.call("wolfitdm_fuck_wcou_scene", choice, image)
 
       return
