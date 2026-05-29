@@ -193,6 +193,11 @@ label wolfitdm_fuck_wcou:
                 menu_items.append(("Scene " + str(i), i))
             menu_items.append(("Return", "nochoice"))
             image = renpy.display_menu(menu_items)
+         elif choice == "cou_oma":
+            for i in range(0, cou_oma_maxscene + 1):
+                menu_items.append(("Scene " + str(i), i))
+            menu_items.append(("Return", "nochoice"))
+            image = renpy.display_menu(menu_items)
          elif choice == "random":
             choice = renpy.random.choice(["cou_oma_hero", "cou_friend_hero", "cou_friend_oma_hero", "cou_hero", "cou_oma"])
 
