@@ -977,22 +977,22 @@ screen UI_Menu_Options_Contacts_Redefine():
                 vbox:
                     spacing 10 xalign 0.5 yalign 0.15
                     if a_menu_1 in ["wsis", "wmom"]:
-                       if has_attr(store, f"fname{a_menu_1}) and has_attr(store, "lnamestep"):
+                       if hasattr(store, f"fname{a_menu_1}") and hasattr(store, "lnamestep"):
                           label str(getattr(store, f"fname{a_menu_1}") + " [lnamestep]") xalign 0.5
                        else:
                           label "UNKNOWN UNKNOWN" xalign 0.5
                     elif a_menu_1 in ["wcou", "wgma", "waun"]:
-                       if has_attr(store, f"fname{a_menu_1}) and has_attr(store, "lnamerela"):
+                       if hasattr(store, f"fname{a_menu_1}") and hasattr(store, "lnamerela"):
                           label str(getattr(store, f"fname{a_menu_1}") + " [lnamerela]") xalign 0.5
                        else:
                           label "UNKNOWN UNKNOWN" xalign 0.5
                     elif a_menu_1 in ["wmam", "hpap"]:
-                       if has_attr(store, f"fname{a_menu_1}) and has_attr(store, "lnamewnei"):
+                       if hasattr(store, f"fname{a_menu_1}") and hasattr(store, "lnamewnei"):
                           label str(getattr(store, f"fname{a_menu_1}") + " [lnamewnei]") xalign 0.5
                        else:
                           label "UNKNOWN UNKNOWN" xalign 0.5
                     else:
-                       if has_attr(store, f"fname{a_menu_1}) and has_attr(store, f"lname{a_menu_1}"):
+                       if hasattr(store, f"fname{a_menu_1}") and hasattr(store, f"lname{a_menu_1}"):
                           label str(getattr(store, f"fname{a_menu_1}") + " " + getattr(store, f"lname{a_menu_1}")) xalign 0.5
                        else:
                           label "UNKNOWN UNKNOWN" xalign 0.5                       
