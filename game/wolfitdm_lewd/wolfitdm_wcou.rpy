@@ -171,6 +171,7 @@ label wolfitdm_fuck_wcou:
          choice = renpy.display_menu(menu_items)
 
          menu_items = []
+         image = "nochoice"
 
          if choice == "cou_oma_hero":
             for i in range(0, cou_oma_hero_maxscene + 1):

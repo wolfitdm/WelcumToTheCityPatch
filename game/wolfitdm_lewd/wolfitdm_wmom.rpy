@@ -89,6 +89,7 @@ label wolfitdm_fuck_wmom:
          choice = renpy.display_menu(menu_items)
 
          menu_items = []
+         image = "nochoice"
 
          if choice == "wmom_friend":
             for i in range(0, wmom_friend_maxscene + 1):
