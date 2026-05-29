@@ -87,17 +87,17 @@ init -1000000 python:
            if hasattr(store, f"fname{i}"):
               fname = str(getattr(store, f"fname{i}"))
 
-           if hasattr(store, f"lname{i}"):
-              lname = str(getattr(store, f"lname{i}"))
-           elif i in ["wsis", "wmom"]:
+           if i in ["wsis", "wmom"]:
               if hasattr(store, f"lnamestep"):
                  lname = str(getattr(store, f"lnamestep"))
-              elif i in ["wcou", "wgma", "waun"]:
-                 if hasattr(store, f"lnamerela"):
-                    lname = str(getattr(store, f"lnamerela"))
-              elif i in ["wmam", "hpap"]:
-                 if hasattr(store, f"lnamewnei"):
-                    lname = str(getattr(store, f"lnamewnei")) 
+           elif i in ["wcou", "wgma", "waun"]:
+              if hasattr(store, f"lnamerela"):
+                 lname = str(getattr(store, f"lnamerela"))
+           elif i in ["wmam", "hpap"]:
+              if hasattr(store, f"lnamewnei"):
+                 lname = str(getattr(store, f"lnamewnei")) 
+           elif hasattr(store, f"lname{i}"):
+              lname = str(getattr(store, f"lname{i}"))
 
            return (fname, lname)
 

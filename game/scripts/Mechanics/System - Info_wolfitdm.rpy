@@ -976,8 +976,14 @@ screen UI_Menu_Options_Contacts_Redefine():
             if a_menu_1 != "none":
                 vbox:
                     spacing 10 xalign 0.5 yalign 0.15
-                    $ oth_fname, oth_lname = WChar.get_name(a_menu_1)
-                    label str(oth_fname) + " " + str(oth_lname) xalign 0.5
+                    if a_menu_1 in ["wsis", "wmom"]:
+                        label str(getattr(store, f"fname{a_menu_1}") + " [lnamestep]") xalign 0.5
+                    elif a_menu_1 in ["wcou", "wgma", "waun"]:
+                        label str(getattr(store, f"fname{a_menu_1}") + " [lnamerela]") xalign 0.5
+                    elif a_menu_1 in ["wmam", "hpap"]:
+                        label str(getattr(store, f"fname{a_menu_1}") + " [lnamewnei]") xalign 0.5
+                    else:
+                        label str(getattr(store, f"fname{a_menu_1}") + " " + getattr(store, f"lname{a_menu_1}")) xalign 0.5
                     hbox:
                         xalign 0.5
                         if len(WChar.gvar(a_menu_1, "achiev_wear")) >= 2:
