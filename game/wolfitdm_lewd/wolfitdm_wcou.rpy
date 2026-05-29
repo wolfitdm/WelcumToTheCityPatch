@@ -32,12 +32,20 @@ image wolfitdm_wcou_cou_oma:
 transform wolfitdm_fill_screen:
     size (config.screen_width, config.screen_height)  # Match game resolution
 
-label wolfitdm_fuck_wcou:
-
-      $ choice = renpy.random.choice(["cou_oma_hero", "cou_friend_hero", "cou_friend_oma_hero", "cou_hero", "cou_oma"])
+label wolfitdm_fuck_wcou_scene(choice, image):
 
       if choice == "cou_oma_hero":
-         $ wolfitdm_wcou_cou_oma_hero_var = renpy.random.randint(0, 21)
+
+         $ select_scene = image
+
+         $ max_scene = 21
+
+         if image >= max_scene:
+            $ select_scene = image = max_scene            
+         elif image <= 0:
+            $ select_scene = image = 0
+
+         $ wolfitdm_wcou_cou_oma_hero_var = select_scene
 
          show wolfitdm_wcou_cou_oma_hero at wolfitdm_fill_screen
 
@@ -50,7 +58,17 @@ label wolfitdm_fuck_wcou:
          hide wolfitdm_wcou_cou_oma_hero
 
       elif choice == "cou_friend_hero":
-         $ wolfitdm_wcou_cou_friend_hero_var = renpy.random.randint(0, 0)
+
+         $ select_scene = image
+
+         $ max_scene = 0
+
+         if image >= max_scene:
+            $ select_scene = image = max_scene            
+         elif image <= 0:
+            $ select_scene = image = 0
+
+         $ wolfitdm_wcou_cou_friend_hero_var = select_scene
         
          show wolfitdm_wcou_cou_friend_hero at wolfitdm_fill_screen
 
@@ -62,7 +80,17 @@ label wolfitdm_fuck_wcou:
          hide wolfitdm_wcou_cou_friend_hero
 
       elif choice == "cou_friend_oma_hero":
-         $ wolfitdm_wcou_cou_friend_oma_hero_var = renpy.random.randint(0, 2)
+
+         $ select_scene = image
+
+         $ max_scene = 2
+
+         if image >= max_scene:
+            $ select_scene = image = max_scene            
+         elif image <= 0:
+            $ select_scene = image = 0
+
+         $ wolfitdm_wcou_cou_friend_oma_hero_var = select_scene
         
          show wolfitdm_wcou_cou_friend_oma_hero at wolfitdm_fill_screen
 
@@ -75,7 +103,16 @@ label wolfitdm_fuck_wcou:
          hide wolfitdm_wcou_cou_friend_oma_hero
 
       elif choice == "cou_hero":
-         $ wolfitdm_wcou_cou_hero_var = renpy.random.randint(0, 6)
+         $ select_scene = image
+
+         $ max_scene = 6
+
+         if image >= max_scene:
+            $ select_scene = image = max_scene            
+         elif image <= 0:
+            $ select_scene = image = 0
+
+         $ wolfitdm_wcou_cou_hero_var = select_scene
         
          show wolfitdm_wcou_cou_hero at wolfitdm_fill_screen
 
@@ -87,7 +124,16 @@ label wolfitdm_fuck_wcou:
          hide wolfitdm_wcou_cou_hero
 
       elif choice == "cou_oma":
-         $ wolfitdm_wcou_cou_oma_var = renpy.random.randint(0, 0)
+         $ select_scene = image
+
+         $ max_scene = 0
+
+         if image >= max_scene:
+            $ select_scene = image = max_scene            
+         elif image <= 0:
+            $ select_scene = image = 0
+
+         $ wolfitdm_wcou_cou_oma_var = select_scene
         
          show wolfitdm_wcou_cou_oma at wolfitdm_fill_screen
 
@@ -98,5 +144,63 @@ label wolfitdm_fuck_wcou:
          wgma "I love you so much."
 
          hide wolfitdm_wcou_cou_oma
+
+      return
+
+label wolfitdm_fuck_wcou:
+
+      # wcou_office
+      
+      python:
+         menu_items = []
+
+         cou_oma_hero_maxscene = 21
+         cou_friend_hero_maxscene = 0
+         cou_friend_oma_hero_maxscene = 2
+         cou_hero_maxscene = 6
+         cou_oma_maxscene = 0
+
+         menu_items.append(("Random / Cousins Office", "random"))
+         menu_items.append(("Cousin & Grandma & You / Cousins Office", "cou_oma_hero"))
+         menu_items.append(("Cousin & Friend & You / Cousins Office", "cou_friend_hero"))
+         menu_items.append(("Cousin & Friend & Grandma & You / Cousins Office", "cou_friend_oma_hero"))
+         menu_items.append(("Cousin & You / Cousins Office", "cou_hero"))
+         menu_items.append(("Cousin & Grandma / Cousins Office", "cou_oma"))
+
+         choice = renpy.display_menu(menu_items)
+
+         menu_items = []
+
+         if choice == "cou_oma_hero":
+            for i in range(0, cou_oma_hero_maxscene + 1):
+                menu_items.append(("Scene " + str(i), i))
+            image = renpy.display_menu(menu_items)
+         elif choice == "cou_friend_hero":
+            for i in range(0, cou_friend_hero_maxscene + 1):
+                menu_items.append(("Scene " + str(i), i))
+            image = renpy.display_menu(menu_items)
+         elif choice == "cou_friend_oma_hero":
+            for i in range(0, cou_friend_oma_hero_maxscene + 1):
+                menu_items.append(("Scene " + str(i), i))
+            image = renpy.display_menu(menu_items)
+         elif choice == "cou_hero":
+            for i in range(0, cou_hero_maxscene + 1):
+                menu_items.append(("Scene " + str(i), i))
+            image = renpy.display_menu(menu_items)
+         else:
+            choice = renpy.random.choice(["cou_oma_hero", "cou_friend_hero", "cou_friend_oma_hero", "cou_hero", "cou_oma"])
+
+            if choice == "cou_oma_hero":
+               image = renpy.random.randint(0, cou_oma_hero_maxscene)
+            elif choice == "cou_friend_hero":
+               image = renpy.random.randint(0, cou_friend_hero_maxscene)
+            elif choice == "cou_friend_oma_hero":
+               image = renpy.random.randint(0, cou_friend_oma_hero_maxscene)
+            elif choice == "cou_hero":
+               image = renpy.random.randint(0, cou_hero_maxscene)
+            elif choice == "cou_oma":
+               image = renpy.random.randint(0, cou_oma_maxscene)
+
+         renpy.call("wolfitdm_fuck_wcou_scene", choice, image)
 
       return
