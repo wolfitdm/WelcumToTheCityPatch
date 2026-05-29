@@ -1127,7 +1127,142 @@ screen UI_Menu_Options_Contacts_Redefine():
                                               if transform_incest_patch:
                                                  text "{b}Gender:{/b} Female"
                                               else:
-                                                 text "{b}Gender:{/b} Male"                                             
+                                                 text "{b}Gender:{/b} Male"
+
+                                              if hasattr(preferences, "codecheat"):
+                                                 text "Codecheat: [preferences.codecheat]"
+
+                                           if a_menu_1 == "hero":
+                                              label "{image=icon_hero} [C_Nam][fnamehero][C_Off]"
+                                              hbox:
+                                                  spacing 10
+                                                  text "{image=images/UI/ICON_StatInt.webp}"
+                                                  if config.version == "0.36.1":
+                                                     bar value DictValue(Char_Data["hero"]["stat"], "int", 100) xmaximum 300
+                                                     text str(Char_Data["hero"]["stat"]["int"]) + "%"
+                                                  else:
+                                                     bar value VariableValue("stat_int", 100) xmaximum 300
+                                                     text str(stat_int) + "%"
+                                              hbox:
+                                                  spacing 10
+                                                  text "{image=images/UI/ICON_StatCha.webp}"
+                                                  if config.version == "0.36.1":
+                                                     bar value DictValue(Char_Data["hero"]["stat"], "cha", 100) xmaximum 300
+                                                     text str(Char_Data["hero"]["stat"]["cha"]) + "%"
+                                                  else:
+                                                     bar value VariableValue("stat_cha", 100) xmaximum 300
+                                                     text str(stat_cha) + "%"
+                                              hbox:
+                                                  spacing 10
+                                                  text "{image=images/UI/ICON_StatPhy.webp}"
+                                                  if config.version == "0.36.1":
+                                                     bar value DictValue(Char_Data["hero"]["stat"], "phy", 100) xmaximum 300
+                                                     text str(Char_Data["hero"]["stat"]["phy"]) + "%"
+                                                  else:
+                                                     bar value VariableValue("stat_phy", 100) xmaximum 300
+                                                     text str(stat_phy) + "%"
+                                              if config.version == "0.36.1":
+                                                 textbutton "Money: "+str(round(Char_Data["hero"]["stat"]["money"], 2)) action SetDict(Char_Data["hero"]["stat"], "money", math.inf)
+                                                 textbutton "Perks: [perk]" action SetVariable("perk", math.inf)
+                                              else:
+                                                 textbutton "Money: "+str(round(money, 2)) action SetVariable("money", math.inf)
+                                                 textbutton "Perks: [perk]" action SetVariable("perk", math.inf)
+                                              text ""
+                                           else:
+                                              for i in [a_menu_1]:
+                                                  $ label_str = "{image=icon_" + i + "} [C_Nam][fname" + i + "][C_Off]"
+                                                  label str(label_str)
+                                                  hbox:
+                                                      spacing 10
+                                                      text "{image=images/UI/ICON_StatInti.webp}"
+                                                      if config.version == "0.36.1":
+                                                         bar value DictValue(Char_Data[i]["stat"], "inti", 100) xmaximum 300
+                                                         text str(Char_Data[i]["stat"]["inti"]) + "%"
+                                                      else:
+                                                         bar value VariableValue(i + "_inti", 100) xmaximum 300
+                                                         text str(getattr(store,i+"_inti")) + "%"
+                                                  hbox:
+                                                      spacing 10
+                                                      text "{image=images/UI/ICON_StatLove.webp}"
+                                                      if config.version == "0.36.1":
+                                                         bar value DictValue(Char_Data[i]["stat"], "love", 100) xmaximum 300
+                                                         text str(Char_Data[i]["stat"]["love"]) + "%"
+                                                      else:
+                                                         bar value VariableValue(i + "_love", 100) xmaximum 300
+                                                         text str(getattr(store,i+"_love")) + "%"
+                                                  hbox:
+                                                      spacing 10
+                                                      text "{image=images/UI/ICON_StatLust.webp}"
+                                                      if config.version == "0.36.1":
+                                                         bar value DictValue(Char_Data[i]["stat"], "lust", 100) xmaximum 300
+                                                         text str(Char_Data[i]["stat"]["love"]) + "%"
+                                                      else:
+                                                         bar value VariableValue(i + "_lust", 100) xmaximum 300
+                                                         text str(getattr(store,i+"_lust")) + "%"
+                                                  hbox:
+                                                      spacing 10
+                                                      text "{image=images/UI/ICON_StatInt.webp}"
+                                                      if config.version == "0.36.1":
+                                                         bar value DictValue(Char_Data[i]["stat"], "int", 100) xmaximum 300
+                                                         text str(Char_Data[i]["stat"]["int"]) + "%"
+                                                      else:
+                                                         bar value VariableValue(i + "_int", 100) xmaximum 300
+                                                         text str(getattr(store,i+"_int")) + "%"
+                                                  hbox:
+                                                      spacing 10
+                                                      text "{image=images/UI/ICON_StatCha.webp}"
+                                                      if config.version == "0.36.1":
+                                                         bar value DictValue(Char_Data[i]["stat"], "cha", 100) xmaximum 300
+                                                         text str(Char_Data[i]["stat"]["cha"]) + "%"
+                                                      else:
+                                                         bar value VariableValue(i + "_cha", 100) xmaximum 300
+                                                         text str(getattr(store,i+"_cha")) + "%"
+                                                  hbox:
+                                                      spacing 10
+                                                      text "{image=images/UI/ICON_StatPhy.webp}"
+                                                      if config.version == "0.36.1":
+                                                         bar value DictValue(Char_Data[i]["stat"], "phy", 100) xmaximum 300
+                                                         text str(Char_Data[i]["stat"]["phy"]) + "%"
+                                                      else:
+                                                         bar value VariableValue(i + "_phy", 100) xmaximum 300
+                                                         text str(getattr(store,i+"_phy")) + "%"
+                                                  hbox:
+                                                      spacing 10
+                                                      text "{image=images/UI/ICON_StatHyg.webp}"
+                                                      if config.version == "0.36.1":
+                                                         bar value DictValue(Char_Data[i]["stat"], "hyg", 100) xmaximum 300
+                                                         text str(Char_Data[i]["stat"]["hyg"]) + "%"
+                                                      else:
+                                                         bar value VariableValue(i + "_hyg", 100) xmaximum 300
+                                                         text str(getattr(store,i+"_hyg")) + "%"
+                                                  hbox:
+                                                      spacing 10
+                                                      text "{image=images/UI/ICON_StatPer.webp}"
+                                                      if config.version == "0.36.1":
+                                                         bar value DictValue(Char_Data[i]["stat"], "eat", 100) xmaximum 300
+                                                         text str(Char_Data[i]["stat"]["eat"]) + "%"
+                                                      else:
+                                                         bar value VariableValue(i + "_eat", 100) xmaximum 300
+                                                         text str(getattr(store,i+"_eat")) + "%"
+                                                  hbox:
+                                                      spacing 10
+                                                      text "{image=images/UI/ICON_StatEne.webp}"
+                                                      if config.version == "0.36.1":
+                                                         bar value DictValue(Char_Data[i]["stat"], "ene", 100) xmaximum 300
+                                                         text str(Char_Data[i]["stat"]["ene"]) + "%"
+                                                      else:
+                                                         bar value VariableValue(i + "_ene", 100) xmaximum 300
+                                                         text str(getattr(store,i+"_ene")) + "%"
+                                                  hbox:
+                                                      spacing 10
+                                                      text "{image=images/UI/ICON_StatMon.webp}"
+                                                      if config.version == "0.36.1":
+                                                         bar value DictValue(Char_Data[i]["stat"], "money", math.inf) xmaximum 300
+                                                         text str(Char_Data[i]["stat"]["money"]) + "$"
+                                                      else:
+                                                         bar value VariableValue(i + "_money", math.inf) xmaximum 300
+                                                         text str(getattr(store,i+"_money")) + "$"
+                                                  text ""
                                 vbar value YScrollValue("ScrollOCData")
 
 
