@@ -1141,6 +1141,10 @@ screen UI_Menu_Options_Contacts_Redefine():
                             idle At("images/UI/SUBMENU_Option_NudistOff.png", ButtonIdle)
                             hover At("images/UI/SUBMENU_Option_NudistOff.png", ButtonHover)
                             action Function(wolfitdm_nudist_off)
+                        imagebutton:
+                            idle At("images/UI/QUICK_Time.webp", ButtonIdle)
+                            hover At("images/UI/QUICK_Time.webp", ButtonHover)
+                            action Jump("gametimepassbutton")
 
                     vbox:
                         xalign 0.5
