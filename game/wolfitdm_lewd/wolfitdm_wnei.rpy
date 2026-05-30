@@ -63,7 +63,7 @@ label wolfitdm_fuck_wnei_scene(choice, image):
       elif choice == "wmam_wnei_school_sc":
          $ select_scene = image
 
-         $ max_scene = 0
+         $ max_scene = 1
 
          if image >= max_scene:
             $ select_scene = image = max_scene            
