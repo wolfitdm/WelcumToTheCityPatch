@@ -116,7 +116,7 @@ label wolfitdm_fuck_wnei:
          menu_items = []
 
          hpap_wnei_school_sc_maxscene = 1
-         wmam_wnei_school_sc_maxscene = 0
+         wmam_wnei_school_sc_maxscene = 1
 
          menu_items.append(("Random", "random"))
          menu_items.append(("Father & Daughter / School - Sports Court", "hpap_wnei_school_sc"))
@@ -148,6 +148,6 @@ label wolfitdm_fuck_wnei:
          if choice == "nochoice" or image == "nochoice":
             pass
          else:
-            renpy.call("wolfitdm_fuck_wsis_scene", choice, image)      
+            renpy.call("wolfitdm_fuck_wnei_scene", choice, image)      
 
       return
