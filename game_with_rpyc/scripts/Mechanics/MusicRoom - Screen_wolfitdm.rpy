@@ -35,3 +35,7 @@ init python:
     wolfitdm_add_audio("South Park Top 10 Songs", "South Park", "wolfitdm_audio/top10southpark.mp3", "Unknown", "Unknown")
     wolfitdm_add_audio("Family Guy Pop Tart", "Family Guy", "wolfitdm_audio/familyguypoptart.mp3", "Unknown", "Unknown")
     wolfitdm_add_audio("Family Guy Harmony", "Family Guy", "wolfitdm_audio/familyguyharmony.mp3", "Unknown", "Unknown")
+    wolfitdm_add_audio("Avril Lavigne - Girlfriend", "Avril Lavigne", "wolfitdm_audio/AvrilLavigne_Girlfriend.mp3", "Unknown", "Unknown")
+    wolfitdm_add_audio("Carly Rae Jepson - Call Me Maybe", "Carly Rae Jepson", "wolfitdm_audio/CarlyRaeJepsen_CallMeMaybe.mp3", "Unknown", "Unknown")
+    wolfitdm_add_audio("Kesha - Tik Tok", "Kesha", "wolfitdm_audio/Kesha_TiKToK.mp3", "Unknown", "Unknown")
+    wolfitdm_add_audio("Wake Me Up Before You Go Go", "WHAM!", "wolfitdm_audio/WakeMeUpBeforeYouGoGo.mp3", "Unknown", "Unknown")
