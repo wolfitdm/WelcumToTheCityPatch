@@ -176,6 +176,19 @@ init -9000 python:
 
            msg.msg("Style changed to " + i)
 
+    def wolfitdm_unlock_gallery(messagesoff):
+        full_gallery = ["SHOT_WatchingTV", "SHOT_WatchingTV_HERO", "SHOT_WatchingTV_WSIS", "SHOT_SchoolSelfieTogether_2", "SHOT_SchoolSelfieTogether_1", "PER_Intimate", "PER_Reserved", "PER_Kind", "PER_Hentai", "PER_Common"]
+        full_gallery.extend(["KCC6", "KCC5", "KCC4", "KCC3", "KCC2", "KCC1"])
+
+        for i in full_gallery:
+            if not i in cellbg:
+               cellbg.insert(1, i)
+
+        if messagesoff:
+           return
+
+        msg.msg("Unlock Full Gallery")
+
     def wolfitdm_best_cheats(messagesoff):
         preferences.cheatmode = True
         preferences.codecheatuse = preferences.codecheat
@@ -209,13 +222,7 @@ init -9000 python:
 
             WChar.svar(i, "achiev_wear", arr_var)
 
-        if not "KCC1" in cellbg:
-           cellbg.insert(1, "KCC6")
-           cellbg.insert(1, "KCC5")
-           cellbg.insert(1, "KCC4")
-           cellbg.insert(1, "KCC3")
-           cellbg.insert(1, "KCC2")
-           cellbg.insert(1, "KCC1")
+        wolfitdm_unlock_gallery(messagesoff)
 
         if messagesoff:
            return
@@ -289,8 +296,9 @@ init -9000 python:
         changegender = "changegender"
         changeoutfitsall = "changeoutfitsall"
         wolfitdm_cheats = "wolfitdm_cheat"
+        fullgalleryunlock = "fullgallery"
 
-        cheat_codes = [givemeall,kcc_code,codecheat,codecheat2,outfits,kawaii,show_code,show_code2,gettheme,guide,guide2,guide3,changeimg,nudist,nonudist,incest,noincest,inceststatus,nudiststatus,changestyle,fullnudist,nofullnudist,best,changegender,changeoutfitsall,wolfitdm_cheats]
+        cheat_codes = [givemeall,kcc_code,codecheat,codecheat2,outfits,kawaii,show_code,show_code2,gettheme,guide,guide2,guide3,changeimg,nudist,nonudist,incest,noincest,inceststatus,nudiststatus,changestyle,fullnudist,nofullnudist,best,changegender,changeoutfitsall,wolfitdm_cheats,fullgalleryunlock]
 
         if cheatvar == "cheatmenu":
 
@@ -303,7 +311,11 @@ init -9000 python:
 
            cheatvar = renpy.display_menu(menu_items)  
 
-        if cheatvar == wolfitdm_cheats:
+        if cheatvar == fullgalleryunlock:
+
+           wolfitdm_unlock_gallery(messagesoff)
+
+        elif cheatvar == wolfitdm_cheats:
 
            if store.wolfitdm_cheat:
               store.wolfitdm_cheat = False
