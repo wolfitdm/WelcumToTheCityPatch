@@ -579,18 +579,28 @@ init -1000000 python:
        def dvar(self, hero, varv):
            self.svar(hero, varv, None)
 
+       def remove_caps(self, hero, stat, val=100):
+           varattr = hero + "_" + stat + "_cap"
+           if hasattr(store, varattr):
+              varval = getattr(store, varattr)
+              if isinstance(varval, (int, float)):
+                 if varval <= val:
+                    setattr(store, varattr, val)
+
        def inc_cheat_vars(self, hero, val, val_money):
            if self.is_old_version:
               if not "stat" in Char_Data[hero]:
                  Char_Data[hero]["stat"] = {}
 
               for i in wear_get_old_attrs_cheat():
+                  self.remove_caps(hero, i)
                   if not i in Char_Data[hero]["stat"]:
                      Char_Data[hero]["stat"][i] = 0
                   inc_val = val_money if i == "money" else val
                   Char_Data[hero]["stat"][i] += inc_val
            else:
               for i in wear_get_old_attrs_cheat():
+                  self.remove_caps(hero, i)
                   inc_val = val_money if i == "money" else val
                   gstr = hero + "_" + i
                   if hasattr(store, gstr):
@@ -599,6 +609,7 @@ init -1000000 python:
                      setattr(store, gstr, valv)
 
               for i in wear_get_char_attrs_cheat_int():
+                  self.remove_caps(hero, i)
                   gstr = hero + "_" + i
                   if hasattr(store, gstr):
                      valv = getattr(store, gstr)
