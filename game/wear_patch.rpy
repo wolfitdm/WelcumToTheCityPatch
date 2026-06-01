@@ -586,6 +586,16 @@ init -1000000 python:
               if isinstance(varval, (int, float)):
                  if varval <= val:
                     setattr(store, varattr, val)
+                    msg.msg("remove_caps " + hero)
+
+
+            varattr = "char_" + stat + "_cap"
+            if hasattr(store, varattr):
+               varval = getattr(store, varattr)
+               if isinstance(varval, (int, float)):
+                  if varval <= val:
+                     setattr(store, varattr, val)
+                     msg.msg("remove_caps char " + hero)
 
        def inc_cheat_vars(self, hero, val, val_money):
            if self.is_old_version:
