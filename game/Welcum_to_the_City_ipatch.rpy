@@ -9,6 +9,13 @@ default wolfitdm_hero_talk_gender_wsis = "Big Bro"
 default wolfitdm_hero_talk_gender2 = "Brother"
 
 init -9000 python:
+    for i in ["talkabout_wmom", "talkabout_wcou", "talkabout_wgma", "talkabout_wsis", "talkto_wmom", "talkto_wcou", "talkto_wgma", "talkto_wsis"]:
+        if not hasattr(store, i):
+           n = i.replace("talkabout", "hero_about")
+           n = n.replace("talkto", "hero_to")
+           n = "[" + n + "]"
+           setattr(store, i, n)
+
     def get_incest_patch_on():
         return incest_patch_on
 

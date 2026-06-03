@@ -1,8 +1,81 @@
 # ----------------------------------------------------------------------------------------------------
 # KAWAII
 # ----------------------------------------------------------------------------------------------------
+
+default kawaii_path = "kawaiis/kawaii"
+
+init python:
+     import os
+
+     def wolfitdm_add_modloader_path():
+         mod_loader_path = os.path.join(config.basedir, "game", "wolfitdm")
+
+         os.makedirs(mod_loader_path, exist_ok=True)
+
+         if not mod_loader_path in config.searchpath:
+            config.searchpath.append(mod_loader_path)
+
+     def init_kawaii_path():
+         wolfitdm_add_modloader_path()
+         kawaii_dir = os.path.join(config.basedir, "game", "wolfitdm", "kawaiis", "kawaii")
+         os.makedirs(kawaii_dir, exist_ok=True)
+         setattr(store, "kawaii_path", "kawaiis/kawaii")
+
+     init_kawaii_path()
+
+     def get_kawaii_path():
+         if hasattr(store, "my_kawaii_path"):
+            return getattr(store, "my_kawaii_path")
+
+         if hasattr(store, "kawaii_path"):
+            return getattr(store, "kawaii_path")
+
+         return ""
+
+     def get_current_kawaii_folders():
+         root_path =  os.path.join(config.basedir, "game", "wolfitdm", "kawaiis")
+
+         os.makedirs(root_path, exist_ok=True)
+
+         if not isinstance(root_path, str):
+            return
+
+         if not os.path.exists(root_path):
+            return
+
+         if not os.path.isdir(root_path):
+            return
+
+         kawaii_dirs = []
+
+         for current_path, dirs, files in os.walk(root_path):
+             for d in dirs:
+                 kawaii_dirs.append(d)
+             break
+
+         if not "kawaii" in kawaii_dirs:
+            kawaii_dirs.append("kawaii")
+
+         return kawaii_dirs
+
+     def switch_kawaii_folder(folder):
+         kawaii_folders = get_current_kawaii_folders()
+
+         if folder in kawaii_folders:
+            if folder == "kawaii":
+               if hasattr(store, "my_kawaii_path"):
+                  delattr(store, "my_kawaii_path")
+
+               return folder
+            else:
+               setattr(store, "my_kawaii_path", "kawaiis/" + folder)
+               return folder
+        
+         return None
+
+
 image KAWAII EYES:
-    "kawaii/eyes/kawaii_eyes0.png",
+    "%s/eyes/kawaii_eyes0.png" % get_kawaii_path(),
     choice:
         0.15
     choice:
@@ -15,162 +88,162 @@ image KAWAII EYES:
         6
     choice:
         7
-    "kawaii/eyes/kawaii_eyes2.png",
+    "%s/eyes/kawaii_eyes2.png" % get_kawaii_path(),
     0.15
-    "kawaii/eyes/kawaii_eyes1.png",
+    "%s/eyes/kawaii_eyes1.png" % get_kawaii_path(),
     0.1
     repeat
 
 image KAWAII MOUTH:
     ConditionSwitch(
-        "WChar.gvar('hero', 'mood') == 'A1'", "kawaii/mouth/general_mouth_2_A1.png",
-        "WChar.gvar('hero', 'mood') == 'A2'", "kawaii/mouth/general_mouth_2_A2.png",
-        "WChar.gvar('hero', 'mood') == 'A3'", "kawaii/mouth/general_mouth_2_A3.png",
-        "WChar.gvar('hero', 'mood') == 'A4'", "kawaii/mouth/general_mouth_2_A4.png",
-        "WChar.gvar('hero', 'mood') == 'O1'", "kawaii/mouth/general_mouth_2_O1.png",
-        "WChar.gvar('hero', 'mood') == 'O2'", "kawaii/mouth/general_mouth_2_O2.png",
-        "WChar.gvar('hero', 'mood') == 'O3'", "kawaii/mouth/general_mouth_2_O3.png",
-        "WChar.gvar('hero', 'mood') == 'O4'", "kawaii/mouth/general_mouth_2_O4.png",
-        "True", "kawaii/mouth/general_mouth_2_A1.png"
+        "WChar.gvar('hero', 'mood') == 'A1'", "%s/mouth/general_mouth_2_A1.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'mood') == 'A2'", "%s/mouth/general_mouth_2_A2.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'mood') == 'A3'", "%s/mouth/general_mouth_2_A3.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'mood') == 'A4'", "%s/mouth/general_mouth_2_A4.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'mood') == 'O1'", "%s/mouth/general_mouth_2_O1.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'mood') == 'O2'", "%s/mouth/general_mouth_2_O2.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'mood') == 'O3'", "%s/mouth/general_mouth_2_O3.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'mood') == 'O4'", "%s/mouth/general_mouth_2_O4.png" % get_kawaii_path(),
+        "True", "%s/mouth/general_mouth_2_A1.png" % get_kawaii_path()
     ),
     .15
     ConditionSwitch(
-        "WChar.gvar('hero', 'mood') == 'A1'", "kawaii/mouth/kawaii_mouth_1_A1.png",
-        "WChar.gvar('hero', 'mood') == 'A2'", "kawaii/mouth/kawaii_mouth_1_A2.png",
-        "WChar.gvar('hero', 'mood') == 'A3'", "kawaii/mouth/kawaii_mouth_1_A3.png",
-        "WChar.gvar('hero', 'mood') == 'A4'", "kawaii/mouth/kawaii_mouth_1_A4.png",
-        "WChar.gvar('hero', 'mood') == 'O1'", "kawaii/mouth/kawaii_mouth_1_O1.png",
-        "WChar.gvar('hero', 'mood') == 'O2'", "kawaii/mouth/kawaii_mouth_1_O2.png",
-        "WChar.gvar('hero', 'mood') == 'O3'", "kawaii/mouth/kawaii_mouth_1_O3.png",
-        "WChar.gvar('hero', 'mood') == 'O4'", "kawaii/mouth/kawaii_mouth_1_O4.png",
-        "True", "kawaii/mouth/kawaii_mouth_1_A1.png"
+        "WChar.gvar('hero', 'mood') == 'A1'", "%s/mouth/kawaii_mouth_1_A1.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'mood') == 'A2'", "%s/mouth/kawaii_mouth_1_A2.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'mood') == 'A3'", "%s/mouth/kawaii_mouth_1_A3.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'mood') == 'A4'", "%s/mouth/kawaii_mouth_1_A4.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'mood') == 'O1'", "%s/mouth/kawaii_mouth_1_O1.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'mood') == 'O2'", "%s/mouth/kawaii_mouth_1_O2.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'mood') == 'O3'", "%s/mouth/kawaii_mouth_1_O3.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'mood') == 'O4'", "%s/mouth/kawaii_mouth_1_O4.png" % get_kawaii_path(),
+        "True", "%s/mouth/kawaii_mouth_1_A1.png" % get_kawaii_path()
     )
     .15
     repeat
 
 image KAWAII WEAR:
     ConditionSwitch(
-        "WChar.gvar('hero', 'wear') == 'kawaii_home'", "kawaii/body_wear_phone/kawaii_body_wear_home.png",
-        "WChar.gvar('hero', 'wear') == 'kawaii_under'", "kawaii/body_wear_phone/kawaii_body_wear_under.png",
-        "WChar.gvar('hero', 'wear') == 'kawaii_sleep'", "kawaii/body_wear_phone/kawaii_body_wear_sleep.png",
-        "WChar.gvar('hero', 'wear') == 'kawaii_casual'", "kawaii/body_wear_phone/kawaii_body_wear_casual.png",
-        "WChar.gvar('hero', 'wear') == 'kawaii_dressy'", "kawaii/body_wear_phone/kawaii_body_wear_dressy.png",
-        "WChar.gvar('hero', 'wear') == 'kawaii_formal'", "kawaii/body_wear_phone/kawaii_body_wear_formal.png",
-        "WChar.gvar('hero', 'wear') == 'kawaii_sport'", "kawaii/body_wear_phone/kawaii_body_wear_sport.png",
-        "WChar.gvar('hero', 'wear') == 'kawaii_swim'", "kawaii/body_wear_phone/kawaii_body_wear_swim.png",
-        "WChar.gvar('hero', 'wear') == 'kawaii_school'", "kawaii/body_wear_phone/kawaii_body_wear_school.png",
-        "WChar.gvar('hero', 'wear') == 'kawaii_school_swim'", "kawaii/body_wear_phone/kawaii_body_wear_school_swim.png",
-        "WChar.gvar('hero', 'wear') == 'kawaii_school_sport'", "kawaii/body_wear_phone/kawaii_body_wear_school_sport.png",
-        "WChar.gvar('hero', 'wear') == 'kawaii_work'", "kawaii/body_wear_phone/kawaii_body_wear_work.png",
-        "WChar.gvar('hero', 'wear') == 'kawaii_soap'", "kawaii/body_wear_phone/kawaii_body_wear_soap.png",
+        "WChar.gvar('hero', 'wear') == 'kawaii_home'", "%s/body_wear_phone/kawaii_body_wear_home.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'wear') == 'kawaii_under'", "%s/body_wear_phone/kawaii_body_wear_under.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'wear') == 'kawaii_sleep'", "%s/body_wear_phone/kawaii_body_wear_sleep.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'wear') == 'kawaii_casual'", "%s/body_wear_phone/kawaii_body_wear_casual.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'wear') == 'kawaii_dressy'", "%s/body_wear_phone/kawaii_body_wear_dressy.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'wear') == 'kawaii_formal'", "%s/body_wear_phone/kawaii_body_wear_formal.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'wear') == 'kawaii_sport'", "%s/body_wear_phone/kawaii_body_wear_sport.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'wear') == 'kawaii_swim'", "%s/body_wear_phone/kawaii_body_wear_swim.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'wear') == 'kawaii_school'", "%s/body_wear_phone/kawaii_body_wear_school.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'wear') == 'kawaii_school_swim'", "%s/body_wear_phone/kawaii_body_wear_school_swim.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'wear') == 'kawaii_school_sport'", "%s/body_wear_phone/kawaii_body_wear_school_sport.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'wear') == 'kawaii_work'", "%s/body_wear_phone/kawaii_body_wear_work.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'wear') == 'kawaii_soap'", "%s/body_wear_phone/kawaii_body_wear_soap.png" % get_kawaii_path(),
         "True", Null()
     ),
 
 image KAWAII HEADFG PARTS = Composite(
     (720,1080),
-    (0,0), "kawaii/eyes/kawaii_eyes3.png",
+    (0,0), "%s/eyes/kawaii_eyes3.png" % get_kawaii_path(),
     (0,0), ConditionSwitch(
-         "WChar.gvar('hero', 'wear') == 'kawaii_school_swim'", "kawaii/head/school_swim/kawaii_head_mg_school_swim.png",
-         "WChar.gvar('hero', 'wear') == 'kawaii_school_sport'", "kawaii/head/school_sport/kawaii_head_mg_school_sport.png",
-         "WChar.gvar('hero', 'wear') == 'kawaii_casual'", "kawaii/head/casual/kawaii_head_mg_casual.png",
-         "WChar.gvar('hero', 'wear') == 'kawaii_dressy'", "kawaii/head/dressy/kawaii_head_mg_dressy.png",
-         "WChar.gvar('hero', 'wear') == 'kawaii_formal'", "kawaii/head/formal/kawaii_head_mg_formal.png",
-         "WChar.gvar('hero', 'wear') == 'kawaii_home'", "kawaii/head/home/kawaii_head_mg_home.png",
-         "WChar.gvar('hero', 'wear') == 'kawaii_school'", "kawaii/head/school/kawaii_head_mg_school.png",
-         "WChar.gvar('hero', 'wear') == 'kawaii_sleep'", "kawaii/head/sleep/kawaii_head_mg_sleep.png",
-         "WChar.gvar('hero', 'wear') == 'kawaii_soap'", "kawaii/head/soap/kawaii_head_mg_soap.png",
-         "WChar.gvar('hero', 'wear') == 'kawaii_under'", "kawaii/head/under/kawaii_head_mg_under.png",
-         "WChar.gvar('hero', 'wear') == 'kawaii_work'", "kawaii/head/work/kawaii_head_mg_work.png",
-         "True", "kawaii/head/kawaii_head_mg.png"
+         "WChar.gvar('hero', 'wear') == 'kawaii_school_swim'", "%s/head/school_swim/kawaii_head_mg_school_swim.png" % get_kawaii_path(),
+         "WChar.gvar('hero', 'wear') == 'kawaii_school_sport'", "%s/head/school_sport/kawaii_head_mg_school_sport.png" % get_kawaii_path(),
+         "WChar.gvar('hero', 'wear') == 'kawaii_casual'", "%s/head/casual/kawaii_head_mg_casual.png" % get_kawaii_path(),
+         "WChar.gvar('hero', 'wear') == 'kawaii_dressy'", "%s/head/dressy/kawaii_head_mg_dressy.png" % get_kawaii_path(),
+         "WChar.gvar('hero', 'wear') == 'kawaii_formal'", "%s/head/formal/kawaii_head_mg_formal.png" % get_kawaii_path(),
+         "WChar.gvar('hero', 'wear') == 'kawaii_home'", "%s/head/home/kawaii_head_mg_home.png" % get_kawaii_path(),
+         "WChar.gvar('hero', 'wear') == 'kawaii_school'", "%s/head/school/kawaii_head_mg_school.png" % get_kawaii_path(),
+         "WChar.gvar('hero', 'wear') == 'kawaii_sleep'", "%s/head/sleep/kawaii_head_mg_sleep.png" % get_kawaii_path(),
+         "WChar.gvar('hero', 'wear') == 'kawaii_soap'", "%s/head/soap/kawaii_head_mg_soap.png" % get_kawaii_path(),
+         "WChar.gvar('hero', 'wear') == 'kawaii_under'", "%s/head/under/kawaii_head_mg_under.png" % get_kawaii_path(),
+         "WChar.gvar('hero', 'wear') == 'kawaii_work'", "%s/head/work/kawaii_head_mg_work.png" % get_kawaii_path(),
+         "True", "%s/head/kawaii_head_mg.png" % get_kawaii_path()
     ),
     (0,0), ConditionSwitch(
-        "WChar.gvar('hero', 'fx') == 0", "kawaii/fx/kawaii_fx_0.png",
-        "WChar.gvar('hero', 'fx') == 1", "kawaii/fx/kawaii_fx_1.png",
-        "WChar.gvar('hero', 'fx') == 2", "kawaii/fx/kawaii_fx_2.png",
-        "WChar.gvar('hero', 'fx') == 3", "kawaii/fx/kawaii_fx_3.png",
-        "True", "kawaii/fx/kawaii_fx_0.png"
+        "WChar.gvar('hero', 'fx') == 0", "%s/fx/kawaii_fx_0.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'fx') == 1", "%s/fx/kawaii_fx_1.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'fx') == 2", "%s/fx/kawaii_fx_2.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'fx') == 3", "%s/fx/kawaii_fx_3.png" % get_kawaii_path(),
+        "True", "%s/fx/kawaii_fx_0.png" % get_kawaii_path()
     ),
     (0,0), WhileSpeaking("hero", "KAWAII MOUTH", ConditionSwitch(
-        "WChar.gvar('hero', 'mood') == 'A1'", "kawaii/mouth/general_mouth_2_A1.png",
-        "WChar.gvar('hero', 'mood') == 'A2'", "kawaii/mouth/general_mouth_2_A2.png",
-        "WChar.gvar('hero', 'mood') == 'A3'", "kawaii/mouth/general_mouth_2_A3.png",
-        "WChar.gvar('hero', 'mood') == 'A4'", "kawaii/mouth/general_mouth_2_A4.png",
-        "WChar.gvar('hero', 'mood') == 'O1'", "kawaii/mouth/general_mouth_2_O1.png",
-        "WChar.gvar('hero', 'mood') == 'O2'", "kawaii/mouth/general_mouth_2_O2.png",
-        "WChar.gvar('hero', 'mood') == 'O3'", "kawaii/mouth/general_mouth_2_O3.png",
-        "WChar.gvar('hero', 'mood') == 'O4'", "kawaii/mouth/general_mouth_2_O4.png",
-        "True", "kawaii/mouth/general_mouth_2_A1.png"
+        "WChar.gvar('hero', 'mood') == 'A1'", "%s/mouth/general_mouth_2_A1.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'mood') == 'A2'", "%s/mouth/general_mouth_2_A2.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'mood') == 'A3'", "%s/mouth/general_mouth_2_A3.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'mood') == 'A4'", "%s/mouth/general_mouth_2_A4.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'mood') == 'O1'", "%s/mouth/general_mouth_2_O1.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'mood') == 'O2'", "%s/mouth/general_mouth_2_O2.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'mood') == 'O3'", "%s/mouth/general_mouth_2_O3.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'mood') == 'O4'", "%s/mouth/general_mouth_2_O4.png" % get_kawaii_path(),
+        "True", "%s/mouth/general_mouth_2_A1.png" % get_kawaii_path()
     )),
     (0,0), ConditionSwitch(
-         "WChar.gvar('hero', 'wear') == 'kawaii_school_swim'", "kawaii/head/school_swim/kawaii_head_wear_school_swim.png",
-         "WChar.gvar('hero', 'wear') == 'kawaii_school_sport'", "kawaii/head/school_sport/kawaii_head_wear_school_sport.png",
-         "WChar.gvar('hero', 'wear') == 'kawaii_casual'", "kawaii/head/casual/kawaii_head_wear_casual.png",
-         "WChar.gvar('hero', 'wear') == 'kawaii_dressy'", "kawaii/head/dressy/kawaii_head_wear_dressy.png",
-         "WChar.gvar('hero', 'wear') == 'kawaii_formal'", "kawaii/head/formal/kawaii_head_wear_formal.png",
-         "WChar.gvar('hero', 'wear') == 'kawaii_home'", "kawaii/head/home/kawaii_head_wear_home.png",
-         "WChar.gvar('hero', 'wear') == 'kawaii_school'", "kawaii/head/school/kawaii_head_wear_school.png",
-         "WChar.gvar('hero', 'wear') == 'kawaii_sleep'", "kawaii/head/sleep/kawaii_head_wear_sleep.png",
-         "WChar.gvar('hero', 'wear') == 'kawaii_soap'", "kawaii/head/soap/kawaii_head_wear_soap.png",
-         "WChar.gvar('hero', 'wear') == 'kawaii_under'", "kawaii/head/under/kawaii_head_wear_under.png",
-         "WChar.gvar('hero', 'wear') == 'kawaii_work'", "kawaii/head/work/kawaii_head_wear_work.png",
-         "True", "kawaii/head/kawaii_head_wear.png"
+         "WChar.gvar('hero', 'wear') == 'kawaii_school_swim'", "%s/head/school_swim/kawaii_head_wear_school_swim.png" % get_kawaii_path(),
+         "WChar.gvar('hero', 'wear') == 'kawaii_school_sport'", "%s/head/school_sport/kawaii_head_wear_school_sport.png" % get_kawaii_path(),
+         "WChar.gvar('hero', 'wear') == 'kawaii_casual'", "%s/head/casual/kawaii_head_wear_casual.png" % get_kawaii_path(),
+         "WChar.gvar('hero', 'wear') == 'kawaii_dressy'", "%s/head/dressy/kawaii_head_wear_dressy.png" % get_kawaii_path(),
+         "WChar.gvar('hero', 'wear') == 'kawaii_formal'", "%s/head/formal/kawaii_head_wear_formal.png" % get_kawaii_path(),
+         "WChar.gvar('hero', 'wear') == 'kawaii_home'", "%s/head/home/kawaii_head_wear_home.png" % get_kawaii_path(),
+         "WChar.gvar('hero', 'wear') == 'kawaii_school'", "%s/head/school/kawaii_head_wear_school.png" % get_kawaii_path(),
+         "WChar.gvar('hero', 'wear') == 'kawaii_sleep'", "%s/head/sleep/kawaii_head_wear_sleep.png" % get_kawaii_path(),
+         "WChar.gvar('hero', 'wear') == 'kawaii_soap'", "%s/head/soap/kawaii_head_wear_soap.png" % get_kawaii_path(),
+         "WChar.gvar('hero', 'wear') == 'kawaii_under'", "%s/head/under/kawaii_head_wear_under.png" % get_kawaii_path(),
+         "WChar.gvar('hero', 'wear') == 'kawaii_work'", "%s/head/work/kawaii_head_wear_work.png" % get_kawaii_path(),
+         "True", "%s/head/kawaii_head_wear.png" % get_kawaii_path()
     ),
     (0,0), "KAWAII EYES",
     (0,0), ConditionSwitch(
-         "WChar.gvar('hero', 'wear') == 'kawaii_school_swim'", "kawaii/head/school_swim/kawaii_head_fg1_school_swim.png",
-         "WChar.gvar('hero', 'wear') == 'kawaii_school_sport'", "kawaii/head/school_sport/kawaii_head_fg1_school_sport.png",
-         "WChar.gvar('hero', 'wear') == 'kawaii_casual'", "kawaii/head/casual/kawaii_head_fg1_casual.png",
-         "WChar.gvar('hero', 'wear') == 'kawaii_dressy'", "kawaii/head/dressy/kawaii_head_fg1_dressy.png",
-         "WChar.gvar('hero', 'wear') == 'kawaii_formal'", "kawaii/head/formal/kawaii_head_fg1_formal.png",
-         "WChar.gvar('hero', 'wear') == 'kawaii_home'", "kawaii/head/home/kawaii_head_fg1_home.png",
-         "WChar.gvar('hero', 'wear') == 'kawaii_school'", "kawaii/head/school/kawaii_head_fg1_school.png",
-         "WChar.gvar('hero', 'wear') == 'kawaii_sleep'", "kawaii/head/sleep/kawaii_head_fg1_sleep.png",
-         "WChar.gvar('hero', 'wear') == 'kawaii_soap'", "kawaii/head/soap/kawaii_head_fg1_soap.png",
-         "WChar.gvar('hero', 'wear') == 'kawaii_under'", "kawaii/head/under/kawaii_head_fg1_under.png",
-         "WChar.gvar('hero', 'wear') == 'kawaii_work'", "kawaii/head/work/kawaii_head_fg1_work.png",
-         "True", "kawaii/head/kawaii_head_fg1.png"
+         "WChar.gvar('hero', 'wear') == 'kawaii_school_swim'", "%s/head/school_swim/kawaii_head_fg1_school_swim.png" % get_kawaii_path(),
+         "WChar.gvar('hero', 'wear') == 'kawaii_school_sport'", "%s/head/school_sport/kawaii_head_fg1_school_sport.png" % get_kawaii_path(),
+         "WChar.gvar('hero', 'wear') == 'kawaii_casual'", "%s/head/casual/kawaii_head_fg1_casual.png" % get_kawaii_path(),
+         "WChar.gvar('hero', 'wear') == 'kawaii_dressy'", "%s/head/dressy/kawaii_head_fg1_dressy.png" % get_kawaii_path(),
+         "WChar.gvar('hero', 'wear') == 'kawaii_formal'", "%s/head/formal/kawaii_head_fg1_formal.png" % get_kawaii_path(),
+         "WChar.gvar('hero', 'wear') == 'kawaii_home'", "%s/head/home/kawaii_head_fg1_home.png" % get_kawaii_path(),
+         "WChar.gvar('hero', 'wear') == 'kawaii_school'", "%s/head/school/kawaii_head_fg1_school.png" % get_kawaii_path(),
+         "WChar.gvar('hero', 'wear') == 'kawaii_sleep'", "%s/head/sleep/kawaii_head_fg1_sleep.png" % get_kawaii_path(),
+         "WChar.gvar('hero', 'wear') == 'kawaii_soap'", "%s/head/soap/kawaii_head_fg1_soap.png" % get_kawaii_path(),
+         "WChar.gvar('hero', 'wear') == 'kawaii_under'", "%s/head/under/kawaii_head_fg1_under.png" % get_kawaii_path(),
+         "WChar.gvar('hero', 'wear') == 'kawaii_work'", "%s/head/work/kawaii_head_fg1_work.png" % get_kawaii_path(),
+         "True", "%s/head/kawaii_head_fg1.png" % get_kawaii_path()
     ),
     (0,0), ConditionSwitch(
-         "WChar.gvar('hero', 'wear') == 'kawaii_school_swim'", "kawaii/head/school_swim/kawaii_head_fg2_school_swim.png",
-         "WChar.gvar('hero', 'wear') == 'kawaii_school_sport'", "kawaii/head/school_sport/kawaii_head_fg2_school_sport.png",
-         "WChar.gvar('hero', 'wear') == 'kawaii_casual'", "kawaii/head/casual/kawaii_head_fg2_casual.png",
-         "WChar.gvar('hero', 'wear') == 'kawaii_dressy'", "kawaii/head/dressy/kawaii_head_fg2_dressy.png",
-         "WChar.gvar('hero', 'wear') == 'kawaii_formal'", "kawaii/head/formal/kawaii_head_fg2_formal.png",
-         "WChar.gvar('hero', 'wear') == 'kawaii_home'", "kawaii/head/home/kawaii_head_fg2_home.png",
-         "WChar.gvar('hero', 'wear') == 'kawaii_school'", "kawaii/head/school/kawaii_head_fg2_school.png",
-         "WChar.gvar('hero', 'wear') == 'kawaii_sleep'", "kawaii/head/sleep/kawaii_head_fg2_sleep.png",
-         "WChar.gvar('hero', 'wear') == 'kawaii_soap'", "kawaii/head/soap/kawaii_head_fg2_soap.png",
-         "WChar.gvar('hero', 'wear') == 'kawaii_under'", "kawaii/head/under/kawaii_head_fg2_under.png",
-         "WChar.gvar('hero', 'wear') == 'kawaii_work'", "kawaii/head/work/kawaii_head_fg2_work.png",
-         "True", "kawaii/head/kawaii_head_fg2.png"
+         "WChar.gvar('hero', 'wear') == 'kawaii_school_swim'", "%s/head/school_swim/kawaii_head_fg2_school_swim.png" % get_kawaii_path(),
+         "WChar.gvar('hero', 'wear') == 'kawaii_school_sport'", "%s/head/school_sport/kawaii_head_fg2_school_sport.png" % get_kawaii_path(),
+         "WChar.gvar('hero', 'wear') == 'kawaii_casual'", "%s/head/casual/kawaii_head_fg2_casual.png" % get_kawaii_path(),
+         "WChar.gvar('hero', 'wear') == 'kawaii_dressy'", "%s/head/dressy/kawaii_head_fg2_dressy.png" % get_kawaii_path(),
+         "WChar.gvar('hero', 'wear') == 'kawaii_formal'", "%s/head/formal/kawaii_head_fg2_formal.png" % get_kawaii_path(),
+         "WChar.gvar('hero', 'wear') == 'kawaii_home'", "%s/head/home/kawaii_head_fg2_home.png" % get_kawaii_path(),
+         "WChar.gvar('hero', 'wear') == 'kawaii_school'", "%s/head/school/kawaii_head_fg2_school.png" % get_kawaii_path(),
+         "WChar.gvar('hero', 'wear') == 'kawaii_sleep'", "%s/head/sleep/kawaii_head_fg2_sleep.png" % get_kawaii_path(),
+         "WChar.gvar('hero', 'wear') == 'kawaii_soap'", "%s/head/soap/kawaii_head_fg2_soap.png" % get_kawaii_path(),
+         "WChar.gvar('hero', 'wear') == 'kawaii_under'", "%s/head/under/kawaii_head_fg2_under.png" % get_kawaii_path(),
+         "WChar.gvar('hero', 'wear') == 'kawaii_work'", "%s/head/work/kawaii_head_fg2_work.png" % get_kawaii_path(),
+         "True", "%s/head/kawaii_head_fg2.png" % get_kawaii_path()
     ),
     (0,0), ConditionSwitch(
-        "WChar.gvar('hero', 'mood') == 'A1'", "kawaii/eyes/kawaii_eyebrow_A1.png",
-        "WChar.gvar('hero', 'mood') == 'A2'", "kawaii/eyes/kawaii_eyebrow A2.png",
-        "WChar.gvar('hero', 'mood') == 'A3'", "kawaii/eyes/kawaii_eyebrow_A3.png",
-        "WChar.gvar('hero', 'mood') == 'A4'", "kawaii/eyes/kawaii_eyebrow_A4.png",
-        "WChar.gvar('hero', 'mood') == 'O1'", "kawaii/eyes/kawaii_eyebrow_O1.png",
-        "WChar.gvar('hero', 'mood') == 'O2'", "kawaii/eyes/kawaii_eyebrow_O2.png",
-        "WChar.gvar('hero', 'mood') == 'O3'", "kawaii/eyes/kawaii_eyebrow_O3.png",
-        "WChar.gvar('hero', 'mood') == 'O4'", "kawaii/eyes/kawaii_eyebrow_O4.png",
-        "True", "kawaii/eyes/kawaii_eyebrow_A1.png"
+        "WChar.gvar('hero', 'mood') == 'A1'", "%s/eyes/kawaii_eyebrow_A1.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'mood') == 'A2'", "%s/eyes/kawaii_eyebrow A2.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'mood') == 'A3'", "%s/eyes/kawaii_eyebrow_A3.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'mood') == 'A4'", "%s/eyes/kawaii_eyebrow_A4.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'mood') == 'O1'", "%s/eyes/kawaii_eyebrow_O1.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'mood') == 'O2'", "%s/eyes/kawaii_eyebrow_O2.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'mood') == 'O3'", "%s/eyes/kawaii_eyebrow_O3.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'mood') == 'O4'", "%s/eyes/kawaii_eyebrow_O4.png" % get_kawaii_path(),
+        "True", "%s/eyes/kawaii_eyebrow_A1.png" % get_kawaii_path()
     ),
     )
 
 image KAWAII HEADBG:
     ConditionSwitch(
-        "WChar.gvar('hero', 'wear') == 'kawaii_school_swim'", "kawaii/head/school_swim/kawaii_head_bg_school_swim.png", 
-        "WChar.gvar('hero', 'wear') == 'kawaii_school_sport'", "kawaii/head/school_sport/kawaii_head_bg_school_sport.png",
-        "WChar.gvar('hero', 'wear') == 'kawaii_casual'", "kawaii/head/casual/kawaii_head_bg_casual.png", 
-        "WChar.gvar('hero', 'wear') == 'kawaii_dressy'", "kawaii/head/dressy/kawaii_head_bg_dressy.png",
-        "WChar.gvar('hero', 'wear') == 'kawaii_formal'", "kawaii/head/formal/kawaii_head_bg_formal.png",
-        "WChar.gvar('hero', 'wear') == 'kawaii_home'", "kawaii/head/home/kawaii_head_bg_home.png",
-        "WChar.gvar('hero', 'wear') == 'kawaii_school'", "kawaii/head/school/kawaii_head_bg_school.png",
-        "WChar.gvar('hero', 'wear') == 'kawaii_sleep'", "kawaii/head/sleep/kawaii_head_bg_sleep.png",
-        "WChar.gvar('hero', 'wear') == 'kawaii_soap'", "kawaii/head/soap/kawaii_head_bg_soap.png",
-        "WChar.gvar('hero', 'wear') == 'kawaii_under'", "kawaii/head/under/kawaii_head_bg_under.png",
-        "WChar.gvar('hero', 'wear') == 'kawaii_work'", "kawaii/head/work/kawaii_head_bg_work.png",
-        "True", "kawaii/head/kawaii_head_bg_common.png"
+        "WChar.gvar('hero', 'wear') == 'kawaii_school_swim'", "%s/head/school_swim/kawaii_head_bg_school_swim.png" % get_kawaii_path(), 
+        "WChar.gvar('hero', 'wear') == 'kawaii_school_sport'", "%s/head/school_sport/kawaii_head_bg_school_sport.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'wear') == 'kawaii_casual'", "%s/head/casual/kawaii_head_bg_casual.png" % get_kawaii_path(), 
+        "WChar.gvar('hero', 'wear') == 'kawaii_dressy'", "%s/head/dressy/kawaii_head_bg_dressy.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'wear') == 'kawaii_formal'", "%s/head/formal/kawaii_head_bg_formal.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'wear') == 'kawaii_home'", "%s/head/home/kawaii_head_bg_home.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'wear') == 'kawaii_school'", "%s/head/school/kawaii_head_bg_school.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'wear') == 'kawaii_sleep'", "%s/head/sleep/kawaii_head_bg_sleep.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'wear') == 'kawaii_soap'", "%s/head/soap/kawaii_head_bg_soap.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'wear') == 'kawaii_under'", "%s/head/under/kawaii_head_bg_under.png" % get_kawaii_path(),
+        "WChar.gvar('hero', 'wear') == 'kawaii_work'", "%s/head/work/kawaii_head_bg_work.png" % get_kawaii_path(),
+        "True", "%s/head/kawaii_head_bg_common.png" % get_kawaii_path()
     )
     zoom 1.5/WChar.gvar('hero', 'size')
     xoffset int((WChar.gvar('hero', 'size') - 1.50) * 206)
@@ -186,8 +259,8 @@ image KAWAII PARTS = Composite(
     (720,1080),
     (0,0), "KAWAII HEADBG",
     (0,0), ConditionSwitch(
-        "len(WChar.gvar('hero', 'achiev_wear')) > 0 and isinstance(WChar.avar('hero', 'achiev_wear', get_wear_var('hero')), str) and WChar.avar('hero', 'achiev_wear', get_wear_var('hero')).startswith('kawaii')", "kawaii/body_wear_phone/kawaii_body_1.png",
-        "True", "kawaii/body_wear_phone/kawaii_body_0.png"
+        "len(WChar.gvar('hero', 'achiev_wear')) > 0 and isinstance(WChar.avar('hero', 'achiev_wear', get_wear_var('hero')), str) and WChar.avar('hero', 'achiev_wear', get_wear_var('hero')).startswith('kawaii')", "%s/body_wear_phone/kawaii_body_1.png" % get_kawaii_path(),
+        "True", "%s/body_wear_phone/kawaii_body_0.png" % get_kawaii_path()
     ),
     (0,0), "KAWAII WEAR",
     (0,0), "KAWAII HEADFG",
@@ -197,21 +270,21 @@ image KAWAII STYLE = Composite(
     (720,1080),
     (0,0), "KAWAII HEADBG",
     (0,0), ConditionSwitch(
-        "len(WChar.gvar('hero', 'achiev_wear')) > 0 and isinstance(WChar.avar('hero', 'achiev_wear', get_wear_var('hero')), str) and WChar.avar('hero', 'achiev_wear', get_wear_var('hero')).startswith('kawaii')", "kawaii/body_wear_phone/kawaii_body_1.png",
-        "True", "kawaii/body_wear_phone/kawaii_body_0.png"
+        "len(WChar.gvar('hero', 'achiev_wear')) > 0 and isinstance(WChar.avar('hero', 'achiev_wear', get_wear_var('hero')), str) and WChar.avar('hero', 'achiev_wear', get_wear_var('hero')).startswith('kawaii')", "%s/body_wear_phone/kawaii_body_1.png" % get_kawaii_path(),
+        "True", "%s/body_wear_phone/kawaii_body_0.png" % get_kawaii_path()
     ),
     (0,0), ConditionSwitch(
-        "len(WChar.gvar('hero', 'achiev_wear')) > 0 and WChar.avar('hero', 'achiev_wear', get_wear_var('hero')) == 'kawaii_home'", "kawaii/body_wear_phone/kawaii_body_wear_home.png",
-        "len(WChar.gvar('hero', 'achiev_wear')) > 0 and WChar.avar('hero', 'achiev_wear', get_wear_var('hero')) == 'kawaii_under'", "kawaii/body_wear_phone/kawaii_body_wear_under.png",
-        "len(WChar.gvar('hero', 'achiev_wear')) > 0 and WChar.avar('hero', 'achiev_wear', get_wear_var('hero')) == 'kawaii_sleep'", "kawaii/body_wear_phone/kawaii_body_wear_sleep.png",
-        "len(WChar.gvar('hero', 'achiev_wear')) > 0 and WChar.avar('hero', 'achiev_wear', get_wear_var('hero')) == 'kawaii_casual'", "kawaii/body_wear_phone/kawaii_body_wear_casual.png",
-        "len(WChar.gvar('hero', 'achiev_wear')) > 0 and WChar.avar('hero', 'achiev_wear', get_wear_var('hero')) == 'kawaii_school'", "kawaii/body_wear_phone/kawaii_body_wear_school.png",
-        "len(WChar.gvar('hero', 'achiev_wear')) > 0 and WChar.avar('hero', 'achiev_wear', get_wear_var('hero')) == 'kawaii_school_swim'", "kawaii/body_wear_phone/kawaii_body_wear_school_swim.png",
-        "len(WChar.gvar('hero', 'achiev_wear')) > 0 and WChar.avar('hero', 'achiev_wear', get_wear_var('hero')) == 'kawaii_school_sport'", "kawaii/body_wear_phone/kawaii_body_wear_school_sport.png",
-        "len(WChar.gvar('hero', 'achiev_wear')) > 0 and WChar.avar('hero', 'achiev_wear', get_wear_var('hero')) == 'kawaii_soap'", "kawaii/body_wear_phone/kawaii_body_wear_soap.png",
-        "len(WChar.gvar('hero', 'achiev_wear')) > 0 and WChar.avar('hero', 'achiev_wear', get_wear_var('hero')) == 'kawaii_work'", "kawaii/body_wear_phone/kawaii_body_wear_work.png",
-        "len(WChar.gvar('hero', 'achiev_wear')) > 0 and WChar.avar('hero', 'achiev_wear', get_wear_var('hero')) == 'kawaii_dressy'", "kawaii/body_wear_phone/kawaii_body_wear_dressy.png",
-        "len(WChar.gvar('hero', 'achiev_wear')) > 0 and WChar.avar('hero', 'achiev_wear', get_wear_var('hero')) == 'kawaii_formal'", "kawaii/body_wear_phone/kawaii_body_wear_formal.png",
+        "len(WChar.gvar('hero', 'achiev_wear')) > 0 and WChar.avar('hero', 'achiev_wear', get_wear_var('hero')) == 'kawaii_home'", "%s/body_wear_phone/kawaii_body_wear_home.png" % get_kawaii_path(),
+        "len(WChar.gvar('hero', 'achiev_wear')) > 0 and WChar.avar('hero', 'achiev_wear', get_wear_var('hero')) == 'kawaii_under'", "%s/body_wear_phone/kawaii_body_wear_under.png" % get_kawaii_path(),
+        "len(WChar.gvar('hero', 'achiev_wear')) > 0 and WChar.avar('hero', 'achiev_wear', get_wear_var('hero')) == 'kawaii_sleep'", "%s/body_wear_phone/kawaii_body_wear_sleep.png" % get_kawaii_path(),
+        "len(WChar.gvar('hero', 'achiev_wear')) > 0 and WChar.avar('hero', 'achiev_wear', get_wear_var('hero')) == 'kawaii_casual'", "%s/body_wear_phone/kawaii_body_wear_casual.png" % get_kawaii_path(),
+        "len(WChar.gvar('hero', 'achiev_wear')) > 0 and WChar.avar('hero', 'achiev_wear', get_wear_var('hero')) == 'kawaii_school'", "%s/body_wear_phone/kawaii_body_wear_school.png" % get_kawaii_path(),
+        "len(WChar.gvar('hero', 'achiev_wear')) > 0 and WChar.avar('hero', 'achiev_wear', get_wear_var('hero')) == 'kawaii_school_swim'", "%s/body_wear_phone/kawaii_body_wear_school_swim.png" % get_kawaii_path(),
+        "len(WChar.gvar('hero', 'achiev_wear')) > 0 and WChar.avar('hero', 'achiev_wear', get_wear_var('hero')) == 'kawaii_school_sport'", "%s/body_wear_phone/kawaii_body_wear_school_sport.png" % get_kawaii_path(),
+        "len(WChar.gvar('hero', 'achiev_wear')) > 0 and WChar.avar('hero', 'achiev_wear', get_wear_var('hero')) == 'kawaii_soap'", "%s/body_wear_phone/kawaii_body_wear_soap.png" % get_kawaii_path(),
+        "len(WChar.gvar('hero', 'achiev_wear')) > 0 and WChar.avar('hero', 'achiev_wear', get_wear_var('hero')) == 'kawaii_work'", "%s/body_wear_phone/kawaii_body_wear_work.png" % get_kawaii_path(),
+        "len(WChar.gvar('hero', 'achiev_wear')) > 0 and WChar.avar('hero', 'achiev_wear', get_wear_var('hero')) == 'kawaii_dressy'", "%s/body_wear_phone/kawaii_body_wear_dressy.png" % get_kawaii_path(),
+        "len(WChar.gvar('hero', 'achiev_wear')) > 0 and WChar.avar('hero', 'achiev_wear', get_wear_var('hero')) == 'kawaii_formal'", "%s/body_wear_phone/kawaii_body_wear_formal.png" % get_kawaii_path(),
         "True", Null()
     ),
     (0,0), "KAWAII HEADFG",

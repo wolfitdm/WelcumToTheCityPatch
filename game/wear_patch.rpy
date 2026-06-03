@@ -66,10 +66,41 @@ init -1000000 python:
 
         return wear_char_attrs
 
-    def wear_get_quests():
-        wear_all_hero_quests = ["A New Journey", "Forgiveness"]
+    def wear_get_quests(hero):
+        wear_all_hero_quests = {}
+        wear_all_hero_quests["hero"] = ["Day 1: Memories", "Day 2: City Life", "A New Journey"]
+        wear_all_hero_quests["wsis"] = ["Memories I", "Forgiveness", "Memories II", "Late Night Snack", "Sleep Together", "Girl's Sleepover", "Movie_Action", "Movie_Romance", "Movie_Horror"]
+        wear_all_hero_quests["wnei"] = ["Cartoons Aint Borin'", "Appropriate Goodbye", "Copy & Paste DNA", "Parents Care", "Watch TV Together", "Neighbors Reunion"]
+        wear_all_hero_quests["wcou"] = ["A Drive Around The City"]
+        wear_all_hero_quests["wpre"] = ["Body Formula"]
+        wear_all_hero_quests["wric"] = ["School Princess"]
+        wear_all_hero_quests["wgal"] = ["Hard To Deal"]
+        wear_all_hero_quests["wdis"] = ["Weird Girl"]
+        wear_all_hero_quests["wota"] = ["Vivid Imagination Problems"]
+        wear_all_hero_quests["wdel"] = ["School Is A Prison, Let's Rebel!"]
+        wear_all_hero_quests["wgot"] = ["Lady of Death"]
+        wear_all_hero_quests["wlaz"] = ["Video Game > Sports"]
+        wear_all_hero_quests["wuza"] = ["THERE'S NO SUCH THING AS A BAD DAY!"]
+        wear_all_hero_quests["hprv"] = ["Technical Analysis of Female Anatomy and Underwears"]
+        wear_all_hero_quests["hine"] = ["Clubs Start"]
+        wear_all_hero_quests["wdan"] = ["Meeting"]
+        wear_all_hero_quests["wnem"] = ["Meeting"]
+        wear_all_hero_quests["wahu"] = ["Meeting"]
+        wear_all_hero_quests["wkuu"] = ["Meeting"]
+        wear_all_hero_quests["wido"] = ["Meeting"]
+        wear_all_hero_quests["wemo"] = ["Meeting"]
+        wear_all_hero_quests["hriv"] = ["Meeting"]
+        wear_all_hero_quests["hbul"] = ["Meeting"]
+        wear_all_hero_quests["hfem"] = ["Meeting"]
+        wear_all_hero_quests["wtec"] = ["Meeting"]
+        wear_all_hero_quests["wrin"] = ["Meeting"]
+        wear_all_hero_quests["wsuk"] = ["Meeting", "Trigger Enable"]
+        wear_all_hero_quests["wtpe"] = ["Meeting"]
 
-        return wear_all_hero_quests
+        if hero in wear_all_hero_quests:
+           return wear_all_hero_quests[hero]
+        else:
+           return []
 
     def wear_get_styles():
         wear_get_styles_ = ["common", "gracious"]
@@ -93,10 +124,10 @@ init -1000000 python:
            self.contains_point_in_version = False
 
            if "." in config.version:
-              self.version_splitted = config.version.split(".")
+              self.version_splitted = self.get_version().split(".")
               self.contains_point_in_version = True
            else:
-              self.version_splitted = [config.version]
+              self.version_splitted = [self.get_version()]
 
            self.version_splitted_int = []
 
@@ -113,7 +144,7 @@ init -1000000 python:
                  if self.version_splitted_int[2] == 1:
                     self.is_really_old_version = True   
 
-           self.is_old_version = config.version == "0.36.1" or self.is_really_old_version
+           self.is_old_version = self.get_version() == "0.36.1" or self.is_really_old_version
            self.setup_vars_all()
 
        def get_int(self, i):
@@ -128,6 +159,12 @@ init -1000000 python:
 
        def get_old_version(self):
            return self.is_old_version
+
+       def get_version(self):
+           if hasattr(config, "version"):
+              return getattr(config, "version")
+
+           return "0.40.0"
 
        def get_name(self, hero):
            fname = "UNKNOWN"
@@ -161,7 +198,7 @@ init -1000000 python:
            fname, lname = self.get_name(hero)
            return lname
 
-       def setup_quests(self, hero, varv):
+       def setup_quests(self, hero):
            if not "quest" in Char_Data[hero]:
               Char_Data[hero]["quest"] = {}
 
@@ -169,26 +206,383 @@ init -1000000 python:
               if not "A New Journey" in Char_Data[hero]["quest"]:
                  Char_Data[hero]["quest"]["A New Journey"] = 0
 
-           return  
+              if not "Day 1: Memories" in Char_Data[hero]["quest"]:
+                 Char_Data[hero]["quest"]["Day 1: Memories"] = 0
+
+              if not "Day 2: City Life" in Char_Data[hero]["quest"]:
+                 Char_Data[hero]["quest"]["Day 2: City Life"] = 0
+
+           if hero == "wmom":
+              if not "Morning Routine" in Char_Data[hero]["quest"]:
+                 Char_Data[hero]["quest"]["Morning Routine"] = 0
+
+              if not "Cooking Together" in Char_Data[hero]["quest"]:
+                 Char_Data[hero]["quest"]["Cooking Together"] = 0
+
+              if not "Family Dinner" in Char_Data[hero]["quest"]:
+                 Char_Data[hero]["quest"]["Family Dinner"] = 0
+
+              if not "Late Night Talk" in Char_Data[hero]["quest"]:
+                 Char_Data[hero]["quest"]["Late Night Talk"] = 0
+
+           if hero == "wsis":
+              if not "Memories I" in Char_Data[hero]["quest"]:
+                 Char_Data[hero]["quest"]["Memories I"] = 0
+
+              if not "Forgiveness" in Char_Data[hero]["quest"]:
+                 Char_Data[hero]["quest"]["Forgiveness"] = 0
+
+              if not "Memories II" in Char_Data[hero]["quest"]:
+                 Char_Data[hero]["quest"]["Memories II"] = 0
+
+              if not "Late Night Snack" in Char_Data[hero]["quest"]:
+                 Char_Data[hero]["quest"]["Late Night Snack"] = 0
+
+              if not "Sleep Together" in Char_Data[hero]["quest"]:
+                 Char_Data[hero]["quest"]["Sleep Together"] = 0
+
+              if not "Girl's Sleepover" in Char_Data[hero]["quest"]:
+                 Char_Data[hero]["quest"]["Girl's Sleepover"] = 0
+
+              if not "Movie_Action" in Char_Data[hero]["quest"]:
+                 Char_Data[hero]["quest"]["Movie_Action"] = 0
+
+              if not "Movie_Romance" in Char_Data[hero]["quest"]:
+                 Char_Data[hero]["quest"]["Movie_Romance"] = 0
+
+              if not "Movie_Horror" in Char_Data[hero]["quest"]:
+                 Char_Data[hero]["quest"]["Movie_Horror"] = 0
+
+           if hero == "wnei":
+              if not "Cartoons Aint Borin'" in Char_Data[hero]["quest"]:
+                 Char_Data[hero]["quest"]["Cartoons Aint Borin'"] = 0
+
+              if not "Appropriate Goodbye" in Char_Data[hero]["quest"]:
+                 Char_Data[hero]["quest"]["Appropriate Goodbye"] = 0
+
+              if not "Copy & Paste DNA" in Char_Data[hero]["quest"]:
+                 Char_Data[hero]["quest"]["Copy & Paste DNA"] = 0
+
+              if not "Parents Care" in Char_Data[hero]["quest"]:
+                 Char_Data[hero]["quest"]["Parents Care"] = 0
+
+              if not "Watch TV Together" in Char_Data[hero]["quest"]:
+                 Char_Data[hero]["quest"]["Watch TV Together"] = 0
+
+              if not "Neighbors Reunion" in Char_Data[hero]["quest"]:
+                 Char_Data[hero]["quest"]["Neighbors Reunion"] = 0
+
+           if hero == "wcou":
+              if not "A Drive Around The City" in Char_Data[hero]["quest"]:
+                 Char_Data[hero]["quest"]["A Drive Around The City"] = 0
+
+           if hero == "wpre":
+              if not "Body Formula" in Char_Data[hero]["quest"]:
+                 Char_Data[hero]["quest"]["Body Formula"] = 0
+
+           if hero == "wric":
+              if not "School Princess" in Char_Data[hero]["quest"]:
+                 Char_Data[hero]["quest"]["School Princess"] = 0
+
+           if hero == "wgal":
+              if not "Hard To Deal" in Char_Data[hero]["quest"]:
+                 Char_Data[hero]["quest"]["Hard To Deal"] = 0
+
+           if hero == "wdis":
+              if not "Weird Girl" in Char_Data[hero]["quest"]:
+                 Char_Data[hero]["quest"]["Weird Girl"] = 0
+
+           if hero == "wota":
+              if not "Vivid Imagination Problems" in Char_Data[hero]["quest"]:
+                 Char_Data[hero]["quest"]["Vivid Imagination Problems"] = 0
+
+           if hero == "wdel":
+              if not "School Is A Prison, Let's Rebel!" in Char_Data[hero]["quest"]:
+                 Char_Data[hero]["quest"]["School Is A Prison, Let's Rebel!"] = 0
+
+           if hero == "wgot":
+              if not "Lady of Death" in Char_Data[hero]["quest"]:
+                 Char_Data[hero]["quest"]["Lady of Death"] = 0
+
+           if hero == "wlaz":
+              if not "Video Game > Sports" in Char_Data[hero]["quest"]:
+                 Char_Data[hero]["quest"]["Video Game > Sports"] = 0
+
+           if hero == "wuza":
+              if not "THERE'S NO SUCH THING AS A BAD DAY!" in Char_Data[hero]["quest"]:
+                 Char_Data[hero]["quest"]["THERE'S NO SUCH THING AS A BAD DAY!"] = 0
+
+           if hero == "hprv":
+              if not "Technical Analysis of Female Anatomy and Underwears" in Char_Data[hero]["quest"]:
+                 Char_Data[hero]["quest"]["Technical Analysis of Female Anatomy and Underwears"] = 0
+
+           if hero == "hine":
+              if not "Clubs Start" in Char_Data[hero]["quest"]:
+                 Char_Data[hero]["quest"]["Clubs Start"] = 0
+
+           if hero in ["wdan", "wnem", "wahu", "wkuu", "wido", "wemo", "hriv", "hbul", "hfem", "wtec", "wrin", "wsuk", "wtpe"]:
+              if not "Meeting" in Char_Data[hero]["quest"]:
+                 Char_Data[hero]["quest"]["Meeting"] = 0
+
+           if hero == "wsuk":
+              if not "Trigger Enable" in Char_Data[hero]["quest"]:
+                 Char_Data[hero]["quest"]["Trigger Enable"] = 0 
+
+           return                                                        
 
        def update_quest_attr(self, hero, varv):
            if hero == "hero":
               if varv == "A New Journey":
-                 setattr("hero_quest_3", Char_Data[hero]["quest"]["A New Journey"])
-           elif hero == "wsis":
-              if varv == "Forgiveness":
+                 setattr(store, "hero_quest_3", Char_Data[hero]["quest"]["A New Journey"])
+              elif varv == "Day 1: Memories":
+                 setattr(store, "hero_quest_1", Char_Data[hero]["quest"]["Day 1: Memories"])
+              elif varv == "Day 2: City Life":
+                 setattr(store, "hero_quest_2", Char_Data[hero]["quest"]["Day 2: City Life"])
+
+           if hero == "wmom":
+              if varv == "Morning Routine":
+                 setattr(store, "wmom_quest_1", Char_Data[hero]["quest"]["Morning Routine"])
+              elif varv == "Cooking Together":
+                 setattr(store, "wmom_quest_2", Char_Data[hero]["quest"]["Cooking Together"])
+              elif varv == "Family Dinner":
+                 setattr(store, "wmom_quest_3", Char_Data[hero]["quest"]["Family Dinner"])
+              elif varv == "Late Night Talk":
+                 setattr(store, "wmom_quest_4", Char_Data[hero]["quest"]["Late Night Talk"])
+
+           if hero == "wsis":
+              if varv == "Memories I":
+                 setattr(store, "wsis_quest_1", Char_Data[hero]["quest"]["Memories I"])
+              elif varv == "Forgiveness":
                  setattr(store, "wsis_quest_2", Char_Data[hero]["quest"]["Forgiveness"])
+              elif varv == "Memories II":
+                 setattr(store, "wsis_quest_3", Char_Data[hero]["quest"]["Memories II"])
+              elif varv == "Late Night Snack":
+                 setattr(store, "wsis_quest_4", Char_Data[hero]["quest"]["Late Night Snack"])
+              elif varv == "Sleep Together":
+                 setattr(store, "wsis_quest_5", Char_Data[hero]["quest"]["Sleep Together"])
+              elif varv == "Girl's Sleepover":
+                 setattr(store, "wsis_quest_6", Char_Data[hero]["quest"]["Girl's Sleepover"])
+              elif varv == "Movie_Action":
+                 setattr(store, "wsis_quest_7", Char_Data[hero]["quest"]["Movie_Action"])
+              elif varv == "Movie_Romance":
+                 setattr(store, "wsis_quest_8", Char_Data[hero]["quest"]["Movie_Romance"])
+              elif varv == "Movie_Horror":
+                 setattr(store, "wsis_quest_9", Char_Data[hero]["quest"]["Movie_Horror"])
+
+           if hero == "wnei":
+              if varv == "Cartoons Aint Borin'":
+                 setattr(store, "wnei_quest_1", Char_Data[hero]["quest"]["Cartoons Aint Borin'"])
+              elif varv == "Appropriate Goodbye":
+                 setattr(store, "wnei_quest_2", Char_Data[hero]["quest"]["Appropriate Goodbye"])
+              elif varv == "Copy & Paste DNA":
+                 setattr(store, "wnei_quest_3", Char_Data[hero]["quest"]["Copy & Paste DNA"])
+              elif varv == "Parents Care":
+                 setattr(store, "wnei_quest_4", Char_Data[hero]["quest"]["Parents Care"])
+              elif varv == "Watch TV Together":
+                 setattr(store, "wnei_quest_5", Char_Data[hero]["quest"]["Watch TV Together"])
+              elif varv == "Neighbors Reunion":
+                 setattr(store, "wnei_quest_6", Char_Data[hero]["quest"]["Neighbors Reunion"])
+
+           if hero == "wcou":
+              if varv == "A Drive Around The City":
+                 setattr(store, "wcou_quest_1", Char_Data[hero]["quest"]["A Drive Around The City"])
+
+           if hero == "wpre":
+              if varv == "Body Formula":
+                 setattr(store, "wpre_quest_1", Char_Data[hero]["quest"]["Body Formula"])           
+
+           if hero == "wric":
+              if varv == "School Princess":
+                 setattr(store, "wric_quest_1", Char_Data[hero]["quest"]["School Princess"])    
+
+           if hero == "wgal":
+              if varv == "Hard To Deal":
+                 setattr(store, "wgal_quest_1", Char_Data[hero]["quest"]["Hard To Deal"])  
+
+           if hero == "wdis":
+              if varv == "Weird Girl":
+                 setattr(store, "wdis_quest_1", Char_Data[hero]["quest"]["Weird Girl"])  
+
+           if hero == "wota":
+              if varv == "Vivid Imagination Problems":
+                 setattr(store, "wota_quest_1", Char_Data[hero]["quest"]["Vivid Imagination Problems"])  
+
+           if hero == "wdel":
+              if varv == "School Is A Prison, Let's Rebel!":
+                 setattr(store, "wdel_quest_1", Char_Data[hero]["quest"]["School Is A Prison, Let's Rebel!"])  
+
+           if hero == "wgot":
+              if varv == "Lady of Death":
+                 setattr(store, "wgot_quest_1", Char_Data[hero]["quest"]["Lady of Death"])  
+
+           if hero == "wlaz":
+              if varv == "Video Game > Sports":
+                 setattr(store, "wlaz_quest_1", Char_Data[hero]["quest"]["Video Game > Sports"])  
+
+           if hero == "wuza":
+              if varv == "THERE'S NO SUCH THING AS A BAD DAY!":
+                 setattr(store, "wuza_quest_1", Char_Data[hero]["quest"]["THERE'S NO SUCH THING AS A BAD DAY!"])  
+
+           if hero == "hprv":
+              if varv == "Technical Analysis of Female Anatomy and Underwears":
+                 setattr(store, "hprv_quest_1", Char_Data[hero]["quest"]["Technical Analysis of Female Anatomy and Underwears"])  
+
+           if hero == "hine":
+              if varv == "Clubs Start":
+                 setattr(store, "hine_quest_1", Char_Data[hero]["quest"]["Clubs Start"])
+
+           if hero in ["wdan", "wnem", "wahu", "wkuu", "wido", "wemo", "hriv", "hbul", "hfem", "wtec", "wrin", "wsuk", "wtpe"]:
+              if varv == "Meeting":
+                 setattr(store, hero + "_quest_1", Char_Data[hero]["quest"]["Meeting"])  
+
+           if hero == "wsuk":
+              if varv == "Trigger Enable":
+                 setattr(store, "wsuk_quest_2", Char_Data[hero]["quest"]["Trigger Enable"])  
 
        def update_quest_char(self, hero, varv):
            if hero == "hero":
               if varv == "A New Journey":
                  if hasattr(store, "hero_quest_3"):
                     Char_Data[hero]["quest"]["A New Journey"] = getattr(store, "hero_quest_3")
-           elif hero == "wsis":
-              if varv == "Forgiveness":
+              elif varv == "Day 1: Memories":
+                 if hasattr(store, "hero_quest_1"):
+                    Char_Data[hero]["quest"]["Day 1: Memories"] = getattr(store, "hero_quest_1")
+              elif varv == "Day 2: City Life":
+                 if hasattr(store, "hero_quest_2"):
+                    Char_Data[hero]["quest"]["Day 2: City Life"] = getattr(store, "hero_quest_2")
+
+           if hero == "wmom":
+              if varv == "Morning Routine":
+                if hasattr(store, "wmom_quest_1"):
+                   Char_Data[hero]["quest"]["Morning Routine"] = getattr(store, "wmom_quest_1")
+              elif varv == "Cooking Together":
+                if hasattr(store, "wmom_quest_2"):
+                   Char_Data[hero]["quest"]["Cooking Together"] = getattr(store, "wmom_quest_2")
+              elif varv == "Family Dinner":
+                if hasattr(store, "wmom_quest_3"):
+                   Char_Data[hero]["quest"]["Family Dinner"] = getattr(store, "wmom_quest_3")
+              elif varv == "Late Night Talk":
+                if hasattr(store, "wmom_quest_4"):
+                   Char_Data[hero]["quest"]["Late Night Talk"] = getattr(store, "wmom_quest_4")
+           
+           if hero == "wsis":
+              if varv == "Memories I":
+                 if hasattr(store, "wsis_quest_1"):
+                    Char_Data[hero]["quest"]["Memories I"] = getattr(store, "wsis_quest_1")
+              elif varv == "Forgiveness":
                  if hasattr(store, "wsis_quest_2"):
                     Char_Data[hero]["quest"]["Forgiveness"] = getattr(store, "wsis_quest_2")
+              elif varv == "Memories II":
+                 if hasattr(store, "wsis_quest_3"):
+                    Char_Data[hero]["quest"]["Memories II"] = getattr(store, "wsis_quest_3")
+              elif varv == "Late Night Snack":
+                 if hasattr(store, "wsis_quest_4"):
+                    Char_Data[hero]["quest"]["Late Night Snack"] = getattr(store, "wsis_quest_4")
+              elif varv == "Sleep Together":
+                 if hasattr(store, "wsis_quest_5"):
+                    Char_Data[hero]["quest"]["Sleep Together"] = getattr(store, "wsis_quest_5")
+              elif varv == "Girl's Sleepover":
+                 if hasattr(store, "wsis_quest_6"):
+                    Char_Data[hero]["quest"]["Girl's Sleepover"] = getattr(store, "wsis_quest_6")
+              elif varv == "Movie_Action":
+                 if hasattr(store, "wsis_quest_7"):
+                    Char_Data[hero]["quest"]["Movie_Action"] = getattr(store, "wsis_quest_7")
+              elif varv == "Movie_Romance":
+                 if hasattr(store, "wsis_quest_8"):
+                    Char_Data[hero]["quest"]["Movie_Romance"] = getattr(store, "wsis_quest_8")
+              elif varv == "Movie_Horror":
+                 if hasattr(store, "wsis_quest_9"):
+                    Char_Data[hero]["quest"]["Movie_Horror"] = getattr(store, "wsis_quest_9")
 
+           if hero == "wnei":
+              if varv == "Cartoons Aint Borin'":
+                 if hasattr(store, "wnei_quest_1"):
+                    Char_Data[hero]["quest"]["Cartoons Aint Borin'"] = getattr(store, "wnei_quest_1")
+              elif varv == "Appropriate Goodbye":
+                 if hasattr(store, "wnei_quest_2"):
+                    Char_Data[hero]["quest"]["Appropriate Goodbye"] = getattr(store, "wnei_quest_2")
+              elif varv == "Copy & Paste DNA":
+                 if hasattr(store, "wnei_quest_3"):
+                    Char_Data[hero]["quest"]["Copy & Paste DNA"] = getattr(store, "wnei_quest_3")
+              elif varv == "Parents Care":
+                 if hasattr(store, "wnei_quest_4"):
+                    Char_Data[hero]["quest"]["Parents Care"] = getattr(store, "wnei_quest_4")
+              elif varv == "Watch TV Together":
+                 if hasattr(store, "wnei_quest_5"):
+                    Char_Data[hero]["quest"]["Watch TV Together"] = getattr(store, "wnei_quest_5")
+              elif varv == "Neighbors Reunion":
+                 if hasattr(store, "wnei_quest_6"):
+                    Char_Data[hero]["quest"]["Neighbors Reunion"] = getattr(store, "wnei_quest_6")
+
+           if hero == "wcou":
+              if varv == "A Drive Around The City":
+                 if hasattr(store, "wcou_quest_1"):
+                    Char_Data[hero]["quest"]["A Drive Around The City"] = getattr(store, "wcou_quest_1")
+
+           if hero == "wpre":
+              if varv == "Body Formula":
+                 if hasattr(store, "wpre_quest_1"):
+                    Char_Data[hero]["quest"]["Body Formula"] = getattr(store, "wpre_quest_1")         
+
+           if hero == "wric":
+              if varv == "School Princess":
+                 if hasattr(store, "wric_quest_1"):
+                    Char_Data[hero]["quest"]["School Princess"] = getattr(store, "wric_quest_1")            
+
+           if hero == "wgal":
+              if varv == "Hard To Deal":
+                 if hasattr(store, "wgal_quest_1"):
+                    Char_Data[hero]["quest"]["Hard To Deal"] = getattr(store, "wgal_quest_1")    
+
+           if hero == "wdis":
+              if varv == "Weird Girl":
+                 if hasattr(store, "wdis_quest_1"):
+                    Char_Data[hero]["quest"]["Weird Girl"] = getattr(store, "wdis_quest_1")
+
+           if hero == "wota":
+              if varv == "Vivid Imagination Problems":
+                 if hasattr(store, "wota_quest_1"):
+                    Char_Data[hero]["quest"]["Vivid Imagination Problems"] = getattr(store, "wota_quest_1")
+
+           if hero == "wdel":
+              if varv == "School Is A Prison, Let's Rebel!":
+                 if hasattr(store, "wdel_quest_1"):
+                    Char_Data[hero]["quest"]["School Is A Prison, Let's Rebel!"] = getattr(store, "wdel_quest_1") 
+
+           if hero == "wgot":
+              if varv == "Lady of Death":
+                 if hasattr(store, "wgot_quest_1"):
+                    Char_Data[hero]["quest"]["Lady of Death"] = getattr(store, "wgot_quest_1")
+
+           if hero == "wlaz":
+              if varv == "Video Game > Sports":
+                 if hasattr(store, "wlaz_quest_1"):
+                    Char_Data[hero]["quest"]["Video Game > Sports"] = getattr(store, "wlaz_quest_1")
+
+           if hero == "wuza":
+              if varv == "THERE'S NO SUCH THING AS A BAD DAY!":
+                 if hasattr(store, "wuza_quest_1"):
+                    Char_Data[hero]["quest"]["THERE'S NO SUCH THING AS A BAD DAY!"] = getattr(store, "wuza_quest_1")
+
+           if hero == "hprv":
+              if varv == "Technical Analysis of Female Anatomy and Underwears":
+                 if hasattr(store, "hprv_quest_1"):
+                    Char_Data[hero]["quest"]["Technical Analysis of Female Anatomy and Underwears"] = getattr(store, "hprv_quest_1")
+
+           if hero == "hine":
+              if varv == "Clubs Start":
+                 if hasattr(store, "hine_quest_1"):
+                    Char_Data[hero]["quest"]["Clubs Start"] = getattr(store, "hine_quest_1")
+
+           if hero in ["wdan", "wnem", "wahu", "wkuu", "wido", "wemo", "hriv", "hbul", "hfem", "wtec", "wrin", "wsuk", "wtpe"]:
+              if varv == "Meeting":
+                 if hasattr(store, hero + "_quest_1"):
+                    Char_Data[hero]["quest"]["Meeting"] = getattr(store, hero + "_quest_1")
+
+           if hero == "wsuk":
+              if varv == "Trigger Enable":
+                 if hasattr(store, "wsuk_quest_2"):
+                    Char_Data[hero]["quest"]["Trigger Enable"] = getattr(store, "wsuk_quest_2")
 
        def get_quest_attr(self, hero, varv):
            if hero == "hero":
@@ -200,7 +594,7 @@ init -1000000 python:
                  if hasattr(store, "wsis_quest_2"):
                     return getattr(store, "wsis_quest_2")
 
-           return None
+           return 0
 
        def get_quest_char(self, hero, varv):
            if hero == "hero":
@@ -210,7 +604,7 @@ init -1000000 python:
               if varv == "Forgiveness":
                  return Char_Data[hero]["quest"]["Forgiveness"]
 
-           return None
+           return 0
 
        def set_quest_attr(self, hero, varv, varvv):
            if hero == "hero":
@@ -230,8 +624,6 @@ init -1000000 python:
               if varv == "Forgiveness":
                  Char_Data[hero]["quest"]["Forgiveness"] = varvv
 
-           return None
-
        def setup_vars(self, hero, varv):
            if not hero in Char_Data:
               Char_Data[hero] = {}
@@ -249,7 +641,7 @@ init -1000000 python:
            if not "know" in Char_Data:
               Char_Data[hero]["know"] = []
 
-           self.setup_quests(hero, varv)
+           self.setup_quests(hero)
 
            if varv in wear_get_old_attrs_cheat():
               if not varv in Char_Data[hero]["stat"]:
@@ -281,9 +673,19 @@ init -1000000 python:
 
                  Char_Data[hero][varv] = getvarv
 
-       def update_vars_specific(self, hero, varv):
+       def update_vars_specific(self, hero, varv, mode=0):
            self.setup_vars(hero,varv)
-           if self.is_old_version:
+
+           cond = True
+
+           if mode == 0:
+              cond = self.is_old_version
+           elif mode == 1:
+              cond = True
+           elif mode == 2:
+              cond = False
+
+           if cond:
 
               if varv == "style":
                  setattr(store, hero + "_" + varv, Char_Data[hero]["style"])
@@ -300,7 +702,7 @@ init -1000000 python:
               elif varv == "achiev_wear":
                  setattr(store, hero + "_" + varv, Char_Data[hero]["achiev"]["wear"])
 
-              elif varv in wear_get_quests():
+              elif varv in wear_get_quests(hero):
                  self.update_quest_attr(hero, varv)
 
               elif varv in wear_get_old_attrs_cheat():
@@ -311,7 +713,7 @@ init -1000000 python:
            else:
               getvarv = None
 
-              if varv in wear_get_quests():
+              if varv in wear_get_quests(hero):
                  self.update_quest_char(hero, varv)
 
               elif hasattr(store, hero + "_" + varv):
@@ -332,10 +734,13 @@ init -1000000 python:
                  elif varv in Char_Data[hero]:
                     Char_Data[hero][varv] = getvarv
 
-       def update_vars(self):
+       def update_vars(self, mode=0):
           for i in wear_get_chars():
               for j in wear_get_char_attrs_all():
-                  self.update_vars_specific(i,j)
+                  self.update_vars_specific(i,j,mode)
+
+              for j in wear_get_quests(i):
+                  self.update_vars_specific(i,j,mode)
 
        def setup_vars_all(self):
           for i in wear_get_chars():
@@ -360,7 +765,7 @@ init -1000000 python:
               elif varv == "achiev_wear":
                  return Char_Data[hero]["achiev"]["wear"]
 
-              elif varv in wear_get_quests():
+              elif varv in wear_get_quests(hero):
                  return self.get_quest_char(hero, varv)
 
               elif varv in wear_get_old_attrs_cheat():
@@ -375,7 +780,7 @@ init -1000000 python:
            else:
               getvarv = None
 
-              if varv in wear_get_quests():
+              if varv in wear_get_quests(hero):
                  getvarv = self.get_quest_attr(hero, varv)
 
               elif hasattr(store, hero + "_" + varv):
@@ -411,7 +816,7 @@ init -1000000 python:
               elif varv == "achiev_wear":
                  Char_Data[hero]["achiev"]["wear"] = varvv
 
-              elif varv in wear_get_quests():
+              elif varv in wear_get_quests(hero):
                  self.set_quest_char(hero, varv, varvv)
 
               elif varv in wear_get_old_attrs_cheat():
@@ -421,7 +826,7 @@ init -1000000 python:
                  Char_Data[hero][varv] = varvv
 
            else:
-              if varv in wear_get_quests():
+              if varv in wear_get_quests(hero):
                  self.set_quest_attr(hero, varv, varvv)
               else:
                  setattr(store, hero + "_" + varv, varvv)
@@ -586,16 +991,28 @@ init -1000000 python:
               if isinstance(varval, (int, float)):
                  if varval <= val:
                     setattr(store, varattr, val)
-                    msg.msg("remove_caps " + hero)
 
+           varattr = "char_" + stat + "_cap"
+           if hasattr(store, varattr):
+              varval = getattr(store, varattr)
+              if isinstance(varval, (int, float)):
+                 if varval <= val:
+                    setattr(store, varattr, val)
 
-            varattr = "char_" + stat + "_cap"
-            if hasattr(store, varattr):
-               varval = getattr(store, varattr)
-               if isinstance(varval, (int, float)):
-                  if varval <= val:
-                     setattr(store, varattr, val)
-                     msg.msg("remove_caps char " + hero)
+       def remove_caps_old(self, hero, stat, val=100):
+           varattr = hero + "_max_" + stat 
+           if hasattr(store, varattr):
+              varval = getattr(store, varattr)
+              if isinstance(varval, (int, float)):
+                 if varval <= val:
+                    setattr(store, varattr, val)
+
+           varattr = "max_" + stat
+           if hasattr(store, varattr):
+              varval = getattr(store, varattr)
+              if isinstance(varval, (int, float)):
+                 if varval <= val:
+                    setattr(store, varattr, val)
 
        def inc_cheat_vars(self, hero, val, val_money):
            if self.is_old_version:
@@ -603,14 +1020,12 @@ init -1000000 python:
                  Char_Data[hero]["stat"] = {}
 
               for i in wear_get_old_attrs_cheat():
-                  self.remove_caps(hero, i)
                   if not i in Char_Data[hero]["stat"]:
                      Char_Data[hero]["stat"][i] = 0
                   inc_val = val_money if i == "money" else val
                   Char_Data[hero]["stat"][i] += inc_val
            else:
               for i in wear_get_old_attrs_cheat():
-                  self.remove_caps(hero, i)
                   inc_val = val_money if i == "money" else val
                   gstr = hero + "_" + i
                   if hasattr(store, gstr):
@@ -619,7 +1034,6 @@ init -1000000 python:
                      setattr(store, gstr, valv)
 
               for i in wear_get_char_attrs_cheat_int():
-                  self.remove_caps(hero, i)
                   gstr = hero + "_" + i
                   if hasattr(store, gstr):
                      valv = getattr(store, gstr)
