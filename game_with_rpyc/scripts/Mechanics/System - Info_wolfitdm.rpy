@@ -263,6 +263,45 @@ init -9000 python:
         msg.msg("10000 money to all chars added")
         msg.msg("Give Me All Cheat Executed")
 
+    def wolfitdm_download_songs(messagesoff=False):
+        download_wolfitdm_music()
+
+        if messagesoff:
+           return
+
+        msg.msg("Download songs completed!")
+
+    def wolfitdm_switch_kawaii_folder(folder, messagesoff=False):
+        switched_folder = switch_kawaii_folder(folder)
+
+        if messagesoff:
+           return
+
+        if not switched_folder is None:
+           msg.msg("switched kawaii folder to " + folder)
+
+    def wolfitdm_switch_kawaii_menu(messagesoff):
+        menu_items = []
+        for i in get_current_kawaii_folders():
+            if "kawaiis/" + i == get_kawaii_path():
+               menu_items.append((i,"nokawaii"))
+            else:
+               menu_items.append((i,i))
+
+        menu_items.append(("Return", "nokawaiii"))
+
+        choice = renpy.display_menu(menu_items)
+
+        if not choice.startswith("nokawaii"):
+           wolfitdm_switch_kawaii_folder(choice, messagesoff)
+
+        elif choice == "nokawaii":
+           if messagesoff:
+              return
+
+           msg.msg("this folder is the current kawaii folder")
+
+
     def wolfitdm_cheat_menu(cheatvar,messagesoff):
 
         wolfitdm_return = False
@@ -297,8 +336,10 @@ init -9000 python:
         changeoutfitsall = "changeoutfitsall"
         wolfitdm_cheats = "wolfitdm_cheat"
         fullgalleryunlock = "fullgallery"
+        downloadsongs = "downloadsongs"
+        switchkawaii = "switchkawaii"
 
-        cheat_codes = [givemeall,kcc_code,codecheat,codecheat2,outfits,kawaii,show_code,show_code2,gettheme,guide,guide2,guide3,changeimg,nudist,nonudist,incest,noincest,inceststatus,nudiststatus,changestyle,fullnudist,nofullnudist,best,changegender,changeoutfitsall,wolfitdm_cheats,fullgalleryunlock]
+        cheat_codes = [givemeall,kcc_code,codecheat,codecheat2,outfits,kawaii,show_code,show_code2,gettheme,guide,guide2,guide3,changeimg,nudist,nonudist,incest,noincest,inceststatus,nudiststatus,changestyle,fullnudist,nofullnudist,best,changegender,changeoutfitsall,wolfitdm_cheats,fullgalleryunlock,downloadsongs,switchkawaii]
 
         if cheatvar == "cheatmenu":
 
@@ -311,7 +352,15 @@ init -9000 python:
 
            cheatvar = renpy.display_menu(menu_items)  
 
-        if cheatvar == fullgalleryunlock:
+        if switchkawaii:
+
+           wolfitdm_switch_kawaii_menu(messagesoff)
+
+        elif downloadsongs:
+
+           wolfitdm_download_songs(messagesoff)
+
+        elif cheatvar == fullgalleryunlock:
 
            wolfitdm_unlock_gallery(messagesoff)
 
@@ -669,6 +718,23 @@ init -9000 python:
 
     def wolfitdm_cheat_menu_new():
         renpy.invoke_in_new_context(wolfitdm_cheat_menu, "cheatmenu", False)
+
+    def wolfitdm_fix_save_data(old_to_new=True, messagesoff=False):
+        if old_to_new:
+           WChar.update_vars(1)
+        else:
+           WChar.update_vars(2)
+
+        if messagesoff:
+           return
+
+        if old_to_new:
+           msg.msg("Variables migrated from 0.36.1 to " + WChar.get_version())
+
+        else:
+           msg.msg("Variables migrated from " + WChar.get_version() + " to 0.36.1")
+
+        return
 
     def wolfitdm_incest_off():
         incest_patch_on = False
@@ -1170,7 +1236,18 @@ screen UI_Menu_Options_Contacts_Redefine():
                                     draggable True mousewheel True xoffset -10
                                     vbox:
                                         spacing 10
-                                        if not a_menu_1 in ["none"]: 
+                                        if a_menu_1 in ["none"]:
+                                           textbutton "Click Me Download Songs" action Function(wolfitdm_download_songs)
+                                           textbutton "Migrate Save Data 0.36.1 => [WChar.get_version()]" action Function(wolfitdm_fix_save_data, True, False)
+                                           textbutton "Migrate Save Data [WChar.get_version()] => 0.36.1" action Function(wolfitdm_fix_save_data, False, False)
+                                           text "{b}Manage Multiple Kawaii Folders:{/b}"
+                                           text "{b}Path game/wolfitdm/kawaiis/:{/b}"
+                                           for i in get_current_kawaii_folders():
+                                               if "kawaiis/" + i == get_kawaii_path():
+                                                   textbutton "Switch To >> [i] << (Current)" action None
+                                               else:
+                                                   textbutton "Switch To >> [i] <<" action Function(wolfitdm_switch_kawaii_folder, i)
+                                        elif not a_menu_1 in ["none"]: 
                                            text "{b}Name:{/b} " + str(a_menu_1)
                                            text "{b}Map:{/b} " + str(WChar.gvar(a_menu_1, "map"))
                                            text "{b}Wear:{/b} " + str(WChar.gvar(a_menu_1, "wear"))

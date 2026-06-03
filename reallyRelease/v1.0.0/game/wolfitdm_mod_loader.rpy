@@ -5,4 +5,5 @@ init python:
 
     os.makedirs(mod_loader_path, exist_ok=True)
 
-    config.searchpath.append(mod_loader_path)
+    if not mod_loader_path in config.searchpath:
+       config.searchpath.append(mod_loader_path)

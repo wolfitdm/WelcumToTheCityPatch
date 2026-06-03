@@ -301,6 +301,25 @@ init -9000 python:
 
            msg.msg("this folder is the current kawaii folder")
 
+    def remove_stat_limits_v361(val=100, messagesoff=False):
+        for i in wear_get_chars():
+            for j in wear_get_old_attrs_cheat():
+                WChar.remove_caps_old(i, j, val)
+
+        if messagesoff:
+           return
+
+        msg.msg("All stat limits removed!")
+
+    def remove_stat_limits(val=100, messagesoff=False):
+        for i in wear_get_chars():
+            for j in wear_get_old_attrs_cheat():
+                WChar.remove_caps_old(i, j, val)
+
+        if messagesoff:
+           return
+
+        msg.msg("All stat limits removed!")
 
     def wolfitdm_cheat_menu(cheatvar,messagesoff):
 
@@ -338,8 +357,10 @@ init -9000 python:
         fullgalleryunlock = "fullgallery"
         downloadsongs = "downloadsongs"
         switchkawaii = "switchkawaii"
+        remove_stat_limits_v361_ = "removestatlimits036"
+        remove_stat_limits_ = "removestatlimits"
 
-        cheat_codes = [givemeall,kcc_code,codecheat,codecheat2,outfits,kawaii,show_code,show_code2,gettheme,guide,guide2,guide3,changeimg,nudist,nonudist,incest,noincest,inceststatus,nudiststatus,changestyle,fullnudist,nofullnudist,best,changegender,changeoutfitsall,wolfitdm_cheats,fullgalleryunlock,downloadsongs,switchkawaii]
+        cheat_codes = [givemeall,kcc_code,codecheat,codecheat2,outfits,kawaii,show_code,show_code2,gettheme,guide,guide2,guide3,changeimg,nudist,nonudist,incest,noincest,inceststatus,nudiststatus,changestyle,fullnudist,nofullnudist,best,changegender,changeoutfitsall,wolfitdm_cheats,fullgalleryunlock,downloadsongs,switchkawaii, remove_stat_limits_v361_, remove_stat_limits_]
 
         if cheatvar == "cheatmenu":
 
@@ -352,7 +373,15 @@ init -9000 python:
 
            cheatvar = renpy.display_menu(menu_items)  
 
-        if switchkawaii:
+        if remove_stat_limits_:
+
+           remove_stat_limits(messagesoff)
+
+        elif remove_stat_limits_v361_:
+
+           remove_stat_limits_v361(messagesoff)
+
+        elif switchkawaii:
 
            wolfitdm_switch_kawaii_menu(messagesoff)
 
@@ -1240,6 +1269,8 @@ screen UI_Menu_Options_Contacts_Redefine():
                                            textbutton "Click Me Download Songs" action Function(wolfitdm_download_songs)
                                            textbutton "Migrate Save Data 0.36.1 => [WChar.get_version()]" action Function(wolfitdm_fix_save_data, True, False)
                                            textbutton "Migrate Save Data [WChar.get_version()] => 0.36.1" action Function(wolfitdm_fix_save_data, False, False)
+                                           textbutton "Remove Stat Limits 0.36.1" action Function(remove_stat_limits_v361, False)
+                                           textbutton "Remove Stat Limits [WChar.get_version()]" action Function(remove_stat_limits, False)
                                            text "{b}Manage Multiple Kawaii Folders:{/b}"
                                            text "{b}Path game/wolfitdm/kawaiis/:{/b}"
                                            for i in get_current_kawaii_folders():
